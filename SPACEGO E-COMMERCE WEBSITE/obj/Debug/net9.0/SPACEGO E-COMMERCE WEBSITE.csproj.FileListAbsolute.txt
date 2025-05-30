@@ -1,0 +1,93 @@
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\appsettings.Development.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\appsettings.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.staticwebassets.runtime.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.staticwebassets.endpoints.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.exe
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.deps.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.runtimeconfig.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.dll
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\bin\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.pdb
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.AssemblyInfoInputs.cache
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.AssemblyInfo.cs
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.csproj.CoreCompileInputs.cache
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.MvcApplicationPartsAssemblyInfo.cache
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.RazorAssemblyInfo.cache
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.RazorAssemblyInfo.cs
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\scopedcss\bundle\SPACEGO E-COMMERCE WEBSITE.styles.css
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\scopedcss\projectbundle\SPACEGO E-COMMERCE WEBSITE.bundle.scp.css
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\syp502qk2k-b9sayid5wm.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\fooelf9kdm-61n19gt1b8.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\5b0sik471s-xtxxf3hu2r.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\ksqrd40y7w-bqjiyaj88i.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\sv78il2155-c2jlpeoesf.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\b4vpmb7lj2-erw9l3u2r3.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\q2hf4t3yuj-aexeepp0ev.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\nfit23fylu-d7shbmvgxk.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\0crlrnzjz5-ausgxo2sd3.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\fmlcdltl0p-k8d9w2qqmf.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\jvyaxce1d1-cosvhxvwiu.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\hx8pfxqnn2-ub07r2b239.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\my8oe9lsfy-fvhpjtyr6v.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\sjs47r1ryr-b7pk76d08c.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\usus1k05o5-fsbi9cje9m.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\hsieafurm9-rzd6atqjts.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\r4vbt52lj7-ee0r1s7dh0.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\rw8ok6ikan-dxx9fxp4il.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\9b361jcc3u-jd9uben2k1.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\w7fiuw93mp-khv3u5hwcm.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\7oei9juo7p-r4e9w2rdcm.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\dykkfn1edo-lcd1t2u6c8.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\cx8c71ggre-c2oey78nd0.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\xvhg4ti3o7-tdbxkamptv.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\jgfe9i4tgs-j5mq2jizvt.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\mqr7fmros7-06098lyss8.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\1tvof4j9qp-nvvlpmu67g.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\ggtbu49xhf-s35ty4nyc5.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\0ccqebvb78-pj5nd1wqec.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\0e4qt82vmy-46ein0sx1k.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\ham481smtg-v0zj4ognzu.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\7idc9lh4c8-37tfw0ft22.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\q3d6zwaecx-hrwsygsryq.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\d0hveohh6w-pk9g2wxc8p.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\l7g3alcy52-ft3s53vfgj.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\fq8jv5rpid-6cfz1n2cew.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\5fh6669ih6-6pdc2jztkx.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\9eljm4wopx-493y06b0oq.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\dc1lweu9be-iovd86k7lj.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\hk5n6m51zn-vr1egmr9el.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\q4e8sgbzts-kbrnm935zg.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\y08lses137-jj8uyg4cgr.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\oonbzg8nxl-y7v9cxd14o.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\elg9p240wp-notf2xhcfb.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\wrsccapnc7-h1s4sie4z3.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\keltx0q2k7-63fj8s7r0e.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\s8i5io85t3-0j3bgjxly4.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\1b2k6xo22k-47otxtyo56.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\vkvenw5ny7-4v8eqarkd7.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\8760ugwv03-356vix0kms.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\nw0cbroxa4-83jwlth58m.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\m2eno630rc-mrlpezrjn3.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\i31kmpvfjk-lzl9nlhx6b.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\3mpbpuwyc3-ag7o75518u.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\wfdsjbd504-x0q3zqp4vz.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\xtj2oivlwo-0i3buxo5is.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\0wx2crrows-o1o13a6vjx.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\up2318q7ds-ttgo8qnofa.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\sg1t0pji1n-2z0ns9nrw6.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\vh9qsrhp4m-muycvpuwrr.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\ta6aa9p7ul-87fc7y1x7t.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\jk0q5c5i0z-mlv21k5csn.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\nbg3fav2jh-nw4mt05bcu.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\compressed\sepw5wls0l-nw4mt05bcu.gz
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\staticwebassets.build.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\staticwebassets.build.json.cache
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\staticwebassets.development.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.dll
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\refint\SPACEGO E-COMMERCE WEBSITE.dll
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.pdb
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\SPACEGO E-COMMERCE WEBSITE.genruntimeconfig.cache
+D:\Tai Lieu Hoc Tap\Lap Trinh Web\Do An\SpaceGo.TowkTeam\SPACEGO E-COMMERCE WEBSITE\obj\Debug\net9.0\ref\SPACEGO E-COMMERCE WEBSITE.dll
