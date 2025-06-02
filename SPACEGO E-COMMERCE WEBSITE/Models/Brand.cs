@@ -12,7 +12,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         [DisplayName("Tên thương hiệu")]
         public string BrandName { get; set; }
 
-        public string BrandDescription { get; set; }
-        public string ImageUrl { get; set; }
+        public string? BrandDescription { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }
