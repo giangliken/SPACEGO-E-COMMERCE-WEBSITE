@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 
@@ -5,6 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+.AddDefaultTokenProviders()
+.AddDefaultUI()
+.AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddRazorPages();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -25,6 +32,7 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Login}/{id?}")
