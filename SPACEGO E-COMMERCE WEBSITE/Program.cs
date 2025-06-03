@@ -13,6 +13,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 // Add services to the container.
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
