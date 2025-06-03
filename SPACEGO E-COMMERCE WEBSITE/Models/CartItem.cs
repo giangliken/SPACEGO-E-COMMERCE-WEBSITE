@@ -7,5 +7,8 @@
         //public string UserId { get; set; }
         //public ApplicationUser? User { get; set; }
         public List<DetailCartItem> DetailCartItems { get; set; }
+        // Khóa ngoại đến bảng AspNetUsers
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }  // Điều này cần ApplicationUser kế thừa từ IdentityUser
     }
 }

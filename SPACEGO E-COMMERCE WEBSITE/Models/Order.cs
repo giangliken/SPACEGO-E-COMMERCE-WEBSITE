@@ -9,7 +9,8 @@
         public string PaymentMethod { get; set; }
         public bool? OrderStatus { get; set; }
         public List<OrderProduct> OrderProducts { get; set; }
-        //public string UserId { get; set; }
-        //public ApplicationUser? User { get; set; }
+
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }  
     }
 }
