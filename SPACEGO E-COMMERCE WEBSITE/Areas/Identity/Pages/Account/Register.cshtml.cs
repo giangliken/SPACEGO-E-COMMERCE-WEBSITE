@@ -139,6 +139,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.CreatedDate = DateTime.Now;
 
                 user.FullName = Input.FullName;
                 await _userStore.SetUserNameAsync(user, Input.Email.Split('@')[0], CancellationToken.None);
