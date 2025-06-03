@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 
@@ -11,9 +12,11 @@ using SPACEGO_E_COMMERCE_WEBSITE.Models;
 namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603044218_ExtendIdentityUser")]
+    partial class ExtendIdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,13 +361,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Property<decimal?>("Total")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("OrderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -474,15 +471,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ReviewId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -568,17 +559,6 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Order", b =>
-                {
-                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.OrderProduct", b =>
                 {
                     b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Order", "Order")
@@ -636,15 +616,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.CartItem", b =>
