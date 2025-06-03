@@ -13,6 +13,7 @@ using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -118,9 +119,19 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
 
                     if (result.Succeeded)
                     {
+
                         _logger.LogInformation("User logged in.");
                         await _signInManager.SignInAsync(user, Input.RememberMe);
-                        return LocalRedirect(returnUrl);
+
+                        var role = await _signInManager.UserManager.GetRolesAsync(user);
+                        if (role.Contains(SD.Role_Admin))
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else
+                        {
+                            return LocalRedirect(returnUrl);
+                        }
                     }
                     if (result.RequiresTwoFactor)
                     {
