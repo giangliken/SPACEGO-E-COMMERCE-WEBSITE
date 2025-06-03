@@ -1,48 +1,71 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿/* Navbar trắng viền đen */
+.navbar {
+    background-color: white !important;
+    border-bottom: 2px solid black !important;
+    padding: 0.5rem 0;
 }
 
-a {
-  color: #0077cc;
+/* Container sát lề */
+.container.px-0 {
+    padding-left: 0;
+    padding-right: 0;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+/* Điều chỉnh menu */
+.nav-link {
+    color: #212529 !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    .nav-link:hover, .nav-link.active {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+
+/* Dropdown menu */
+.dropdown-menu {
+    border: 1px solid black;
+    margin-top: 0;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #212529 !important;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+/* Ô search */
+.form-control.border-dark {
+    border: 1px solid black;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.btn-outline-dark {
+    border-color: black;
+    color: black;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+    .btn-outline-dark:hover {
+        background-color: black;
+        color: white;
+    }
+
+/* Back to Top Button */
+.back-to-top {
+    border: 2px solid white !important;
+    background-color: transparent !important;
+    color: white !important;
+}
+
+    .back-to-top:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+    }
+
+/* Responsive */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        padding: 1rem;
+        background-color: white;
+        border-top: 1px solid black;
+        margin-top: 0.5rem;
+    }
 }
