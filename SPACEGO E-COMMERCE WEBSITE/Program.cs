@@ -14,6 +14,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddRazorPages();
 // Add services to the container.
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.LogoutPath = $"/Identity/Account/AccessDenied";
+
+});
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -25,6 +33,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseRouting();
