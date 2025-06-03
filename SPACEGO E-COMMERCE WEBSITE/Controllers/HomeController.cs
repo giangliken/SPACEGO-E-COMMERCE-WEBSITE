@@ -14,7 +14,6 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles =SD.Role_Admin)]
         public IActionResult Index()
         {
             return View();
