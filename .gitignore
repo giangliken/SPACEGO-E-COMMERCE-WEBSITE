@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SPACEGO E-COMMERCE WEBSITE/bin/Debug/net9.0
+/.vs/SpaceGo.TowkTeam/config
+/.vs/SpaceGo.TowkTeam/CopilotIndices/17.14.719.50355
+/.vs/SpaceGo.TowkTeam/FileContentIndex
+/SPACEGO E-COMMERCE WEBSITE/obj/Debug/net9.0/compressed
+/SPACEGO E-COMMERCE WEBSITE/obj/Debug/net9.0/ref
+/SPACEGO E-COMMERCE WEBSITE/obj/Debug/net9.0/refint
+/SPACEGO E-COMMERCE WEBSITE/obj/Debug/net9.0/scopedcss
+/SPACEGO E-COMMERCE WEBSITE/obj/Debug/net9.0/apphost.exe
+/SPACEGO E-COMMERCE WEBSITE/obj/project.assets.json
+/SPACEGO E-COMMERCE WEBSITE/obj/project.nuget.cache
+/SPACEGO E-COMMERCE WEBSITE/obj/SPACEGO E-COMMERCE WEBSITE.csproj.nuget.dgspec.json
