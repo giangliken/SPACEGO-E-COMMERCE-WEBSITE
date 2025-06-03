@@ -22,6 +22,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 });
 
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(SD.Role_Admin, policy => policy.RequireRole(SD.Role_Admin));
+});
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -43,10 +50,14 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapRazorPages();
+
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Login}/{id?}")
+    pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+
 
 
 app.Run();
