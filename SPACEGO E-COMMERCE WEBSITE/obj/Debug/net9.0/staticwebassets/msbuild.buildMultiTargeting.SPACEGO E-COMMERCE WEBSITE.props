@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SPACEGO E-COMMERCE WEBSITE.props" />
+</Project>

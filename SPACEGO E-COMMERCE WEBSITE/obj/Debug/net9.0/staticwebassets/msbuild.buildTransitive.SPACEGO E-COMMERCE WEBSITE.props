@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\SPACEGO E-COMMERCE WEBSITE.props" />
+</Project>
