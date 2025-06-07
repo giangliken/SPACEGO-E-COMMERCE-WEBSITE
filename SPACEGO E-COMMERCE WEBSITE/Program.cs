@@ -1,10 +1,21 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
+using SPACEGO_E_COMMERCE_WEBSITE.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IBrandRepository,EFBrandRepository>();
+builder.Services.AddScoped<ICartItemRepository, EFCartItemRepository>();
+builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+builder.Services.AddScoped<IDetailCartItemRepository, EFDetailCartItemRepository>();
+builder.Services.AddScoped<IOrderProductRepository, EFOrderProductRepository>();
+builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
+builder.Services.AddScoped<IProductImageRepository, EFProductImageRepository>();
+builder.Services.AddScoped<IProductRepository, EFProductRepository>();
+builder.Services.AddScoped<IReviewRepository, EFReviewRepository>();
 
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
