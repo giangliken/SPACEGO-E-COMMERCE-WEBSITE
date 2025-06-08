@@ -8,14 +8,18 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationUserManager _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationUserManager userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
+            var user = _userManager.GetUserAsync(User).Result;
+            var fullname = user.FullName;
             return View();
         }
 
