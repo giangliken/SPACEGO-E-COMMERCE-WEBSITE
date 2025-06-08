@@ -82,6 +82,16 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
+            [Required(ErrorMessage = "Tên là bắt buộc")]
+            [StringLength(100, ErrorMessage = "Tên đầy đủ phải có ít nhất {2} và tối đa {1} ký tự.", MinimumLength = 2)]
+            [Display(Name = "Tên đầy đủ")]
+            public String FullName { get; set; }
+            [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
+            [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+            [Display(Name = "Số điện thoại")]
+            public string PhoneNumber { get; set; }
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -153,7 +163,10 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.CreatedDate = DateTime.Now;
 
+                user.FullName = Input.FullName;
+                user.PhoneNumber = Input.PhoneNumber;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 

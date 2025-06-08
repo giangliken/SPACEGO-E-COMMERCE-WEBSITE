@@ -86,7 +86,12 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
             [MaxLength(100,ErrorMessage ="Tên không quá 100 ký tự")]
             [DisplayName("Tên")]
             public string FullName { get; set; }
-            
+
+            [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
+            [Phone(ErrorMessage = "Định dạng số điện thoại không hợp lệ")]
+            [Display(Name = "Số điện thoại")]
+            public string? PhoneNumber { get; set; }
+
             [Required(ErrorMessage ="Email là bắt buộc")]
             [EmailAddress(ErrorMessage ="Định dạng Email không hợp lệ")]
             [Display(Name = "Email")]
@@ -142,6 +147,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
                 user.CreatedDate = DateTime.Now;
 
                 user.FullName = Input.FullName;
+                user.PhoneNumber = Input.PhoneNumber;
                 await _userStore.SetUserNameAsync(user, Input.Email.Split('@')[0], CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
