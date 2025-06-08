@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IBrandRepository,EFBrandRepository>();
+builder.Services.AddScoped<IBrandRepository, EFBrandRepository>();
 builder.Services.AddScoped<ICartItemRepository, EFCartItemRepository>();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<IDetailCartItemRepository, EFDetailCartItemRepository>();
@@ -17,30 +18,52 @@ builder.Services.AddScoped<IProductImageRepository, EFProductImageRepository>();
 builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<IReviewRepository, EFReviewRepository>();
 
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+// Add authentication services
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+})
 .AddDefaultTokenProviders()
 .AddDefaultUI()
 .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddTransient<ApplicationUserManager>();
+
 builder.Services.AddRazorPages();
-// Add services to the container.
 
-builder.Services.ConfigureApplicationCookie(options =>
+// Add Google authentication
+builder.Services.AddAuthentication(options =>
 {
-    options.LoginPath = $"/Identity/Account/Login";
-    options.LogoutPath = $"/Identity/Account/Logout";
-    options.LogoutPath = $"/Identity/Account/AccessDenied";
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "Google";
+})
+.AddCookie("Cookies")
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
+    options.SaveTokens = true;
 
+    options.Scope.Add("profile");
+    options.Scope.Add("email");
+    options.ClaimActions.MapJsonKey("picture", "picture");
+    options.ClaimActions.MapJsonKey("locale", "locale");
 });
-
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(SD.Role_Admin, policy => policy.RequireRole(SD.Role_Admin));
 });
 
-
+// Add remaining services
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.LogoutPath = $"/Identity/Account/AccessDenied";
+});
 
 var app = builder.Build();
 
@@ -52,23 +75,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapStaticAssets();
-
 app.MapRazorPages();
-
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
-
-
+  .WithStaticAssets();
 
 app.Run();
