@@ -19,7 +19,11 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         public IActionResult Index()
         {
             var user = _userManager.GetUserAsync(User).Result;
-            var fullname = user.FullName;
+            if (user != null)
+            {
+                var fullname = user.FullName;
+                // code khác
+            }
             return View();
         }
 
