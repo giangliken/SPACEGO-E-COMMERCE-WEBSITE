@@ -65,7 +65,11 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             [StringLength(100, ErrorMessage = "Họ và tên phải có ít nhất {2} ký tự và tối đa {1} ký tự.", MinimumLength = 2)]
             [Display(Name = "Họ và tên")]
             public string FullName { get; set; }
+
+            public string? AvatarUrl { get; set; }
         }
+
+       
 
         private async Task LoadAsync(ApplicationUser user)
         {
@@ -121,7 +125,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             user.FullName = Input.FullName;
             await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Cập nhật thông tin thành công";
             return RedirectToPage();
         }
     }
