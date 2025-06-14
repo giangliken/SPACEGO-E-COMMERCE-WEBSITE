@@ -1,0 +1,62 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Brand
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Nhãn Hiệu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <h2 class="mb-4 text-warning">Chỉnh sửa Nhãn Hiệu</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="BrandId" />
+
+                <div class="mb-3">
+                    <label asp-for="BrandName" class="form-label fw-bold">Tên Nhãn Hàng</label>
+                    <input asp-for="BrandName" class="form-control" placeholder="Nhập tên nhãn hàng..." />
+                    <span asp-validation-for="BrandName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BrandDescription" class="form-label fw-bold">Mô Tả</label>
+                    <textarea asp-for="BrandDescription" class="form-control" rows="3" placeholder="Nhập mô tả..."></textarea>
+                    <span asp-validation-for="BrandDescription" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Hình ảnh đại diện hiện tại</label><br />
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="Hình hiện tại" width="100" style="object-fit: contain;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Không có hình</span>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Chọn ảnh mới (nếu muốn thay)</label>
+                    <input type="file" name="imageUrl" class="form-control" accept="image/*" />
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Trở về
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

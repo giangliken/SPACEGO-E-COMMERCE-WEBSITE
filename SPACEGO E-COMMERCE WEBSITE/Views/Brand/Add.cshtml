@@ -1,0 +1,50 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Brand
+
+@{
+    ViewData["Title"] = "Thêm Nhãn Hiệu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <h2 class="mb-4 text-primary">Thêm Nhãn Hiệu</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Add" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="mb-3">
+                    <label asp-for="BrandName" class="form-label fw-bold">Tên Nhãn Hàng</label>
+                    <input asp-for="BrandName" class="form-control" placeholder="Nhập tên nhãn hàng..." />
+                    <span asp-validation-for="BrandName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BrandDescription" class="form-label fw-bold">Mô Tả</label>
+                    <textarea asp-for="BrandDescription" class="form-control" rows="3" placeholder="Nhập mô tả..."></textarea>
+                    <span asp-validation-for="BrandDescription" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Hình ảnh đại diện</label>
+                    <input type="file" name="imageUrl" class="form-control" />
+                </div>
+
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Trở về
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> Thêm Nhãn Hiệu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
