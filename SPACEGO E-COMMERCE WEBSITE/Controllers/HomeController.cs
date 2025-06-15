@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
+using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
@@ -49,6 +50,28 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var productImages = await _productImageRepositoryproductImage.GetByProductIdAsync(id);
+            var reviews = await _reviewRepositoryreview.GetByProductIdAsync(id);
+
+            var model = new ProductDetailViewModel
+            {
+                Product = product,
+                ProductImages = productImages.ToList(),
+                Reviews = reviews.ToList()
+            };
+
+            return View(model);
+        }
+
 
         public IActionResult Privacy()
         {
