@@ -12,7 +12,7 @@ using SPACEGO_E_COMMERCE_WEBSITE.Models;
 namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250617060128_Them_rang_buoc_du_lieu_cho_table_product")]
+    [Migration("20250617082912_Them_rang_buoc_du_lieu_cho_table_product.")]
     partial class Them_rang_buoc_du_lieu_cho_table_product
     {
         /// <inheritdoc />
