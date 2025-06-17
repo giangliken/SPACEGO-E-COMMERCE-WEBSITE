@@ -41,7 +41,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             var brands = await _brandRepository.GetAllAsync();
             var categories = await _categoryRepository.GetAllAsync();
 
-            var model = new HomeIndexViewModel
+            var model = new Models.HomeIndexViewModel
             {
                 Products = products,
                 Categories = categories,
