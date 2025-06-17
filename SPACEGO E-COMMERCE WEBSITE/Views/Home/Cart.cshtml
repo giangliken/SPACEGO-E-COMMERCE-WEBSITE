@@ -1,0 +1,55 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.CartItem
+
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model == null)
+{
+    <p>@ViewBag.Message</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Về trang chủ</a>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+                <th>Điều chỉnh</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.DetailCartItems)
+            {
+                <tr>
+                    <td>@item.Product?.ProductName</td>
+                    <td>@item.Quanity</td>
+                    <td>@String.Format("{0:N0}", item.Product?.ProductPrice) đ</td>
+                    <td>@String.Format("{0:N0}", item.TotalPriceProduct) đ</td>
+                    <td>
+                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="d-inline">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <input type="hidden" name="actionType" value="increase" />
+                            <button type="submit" class="btn btn-sm btn-success">+</button>
+                        </form>
+                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="d-inline">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <input type="hidden" name="actionType" value="decrease" />
+                            <button type="submit" class="btn btn-sm btn-warning">-</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Tổng cộng: @String.Format("{0:N0}", Model.TotalPrice) đ</h4>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Về trang chủ</a>
+    <a href="@Url.Action("Checkout", "Home")" class="btn btn-success">Thanh toán</a>
+}

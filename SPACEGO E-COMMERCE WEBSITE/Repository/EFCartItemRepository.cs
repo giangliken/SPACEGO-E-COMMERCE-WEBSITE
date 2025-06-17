@@ -29,13 +29,12 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 .FirstOrDefaultAsync(c => c.CartItemId == id);
         }
 
-        public async Task<IEnumerable<CartItem>> GetByUserIdAsync(string userId)
+        public async Task<CartItem> GetActiveCartByUserIdAsync(string userId)
         {
             return await _context.CartItems
                 .Include(c => c.DetailCartItems)
-                .Where(c => c.UserId == userId)
-                .AsNoTracking()
-                .ToListAsync();
+                    .ThenInclude(d => d.Product)
+                .FirstOrDefaultAsync(c => c.UserId == userId );
         }
 
         public async Task AddAsync(CartItem cartItem)
@@ -58,6 +57,43 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 _context.CartItems.Remove(cartItem);
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task AddOrUpdateCartItemAsync(string userId, int productId, int quantity)
+        {
+            var cart = await _context.CartItems
+                .Include(c => c.DetailCartItems)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (cart == null)
+            {
+                cart = new CartItem
+                {
+                    UserId = userId,
+                    DetailCartItems = new List<DetailCartItem>()
+                };
+                _context.CartItems.Add(cart);
+            }
+
+            var detail = cart.DetailCartItems.FirstOrDefault(d => d.ProductId == productId);
+            if (detail != null)
+            {
+                detail.Quanity += quantity;
+                // Cập nhật giá tiền nếu cần
+            }
+            else
+            {
+                detail = new DetailCartItem
+                {
+                    ProductId = productId,
+                    Quanity = quantity
+                };
+                cart.DetailCartItems.Add(detail);
+            }
+
+            // Tính tổng tiền
+            cart.TotalPrice = cart.DetailCartItems.Sum(d => d.Quanity * d.Product.ProductPrice);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
