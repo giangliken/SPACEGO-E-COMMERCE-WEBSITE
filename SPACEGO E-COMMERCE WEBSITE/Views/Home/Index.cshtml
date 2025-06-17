@@ -1,7 +1,40 @@
-﻿@{
+﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Product>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="d-flex justify-content-center">
-    <iframe width="853" height="480" src="https://www.youtube.com/embed/ncHUCwy9Dlo" title="Chút Nhạc EDM Mix Chill Cho Ngày Dài Mỏi Mệt ♫ Top 20 Bản Nhạc EDM Mix Cực Phiêu Gây Nghiện Hay Nhất" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        @foreach (var item in Model)
+        {
+                <div class="col mb-5">
+                    <div class="card gap-3" style="width: 18rem">
+                        <a href="@Url.Action("Details", "Home", new { id = item.ProductId })">
+                            <img src="@item.ImageUrl" class="card-img-top" alt="..."
+                                 style="height: 300px">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="@Url.Action("Details", "Home", new { id = item.ProductId })"
+                                   class="text-decoration-none text-dark">
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                </a>
+                            </h5>
+                            <div class="d-flex">
+                                <span>Price: </span>
+                                <p class="mx-3">@item.ProductPrice.ToString("#,##0") Vnđ</p>
+                            </div>
+                            <a href="@Url.Action("AddToCart", "Home", new { id = item.ProductId })">
+                                <button class="btn btn-outline-dark">
+                                    <i class="bi-cart-fill me-1"></i> Add to Cart
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+        }
+        </div>
+    </div>
+</section>
