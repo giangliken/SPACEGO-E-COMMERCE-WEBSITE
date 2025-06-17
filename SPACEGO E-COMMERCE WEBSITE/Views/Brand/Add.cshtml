@@ -6,44 +6,63 @@
 }
 
 <div class="container">
-    <h2 class="mb-4 text-primary">Thêm Nhãn Hiệu</h2>
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <form asp-action="Add" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="mb-4 text-center text-primary">
+                <i class="fas fa-plus-circle"></i> Thêm Nhãn Hiệu
+            </h2>
+            <div class="card shadow rounded-4">
+                <div class="card-body p-4">
+                    <form asp-action="Add" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                <div class="mb-3">
-                    <label asp-for="BrandName" class="form-label fw-bold">Tên Nhãn Hàng</label>
-                    <input asp-for="BrandName" class="form-control" placeholder="Nhập tên nhãn hàng..." />
-                    <span asp-validation-for="BrandName" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="BrandName" class="form-label fw-semibold">Tên Nhãn Hàng</label>
+                            <input asp-for="BrandName" class="form-control" placeholder="Nhập tên nhãn hàng..." />
+                            <span asp-validation-for="BrandName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="BrandDescription" class="form-label fw-semibold">Mô Tả</label>
+                            <textarea asp-for="BrandDescription" class="form-control" rows="4" placeholder="Nhập mô tả..."></textarea>
+                            <span asp-validation-for="BrandDescription" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Hình ảnh đại diện</label>
+                            <input type="file" name="imageUrl" class="form-control" accept="image/*" onchange="previewImage(event)" />
+                            <div class="mt-3 text-center">
+                                <img id="preview" class="rounded shadow-sm border d-none" style="max-height: 120px; object-fit: contain;" />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Trở về
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus-circle"></i> Thêm Nhãn Hiệu
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="mb-3">
-                    <label asp-for="BrandDescription" class="form-label fw-bold">Mô Tả</label>
-                    <textarea asp-for="BrandDescription" class="form-control" rows="3" placeholder="Nhập mô tả..."></textarea>
-                    <span asp-validation-for="BrandDescription" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Hình ảnh đại diện</label>
-                    <input type="file" name="imageUrl" class="form-control" />
-                </div>
-
-
-                <div class="d-flex justify-content-between mt-4">
-                    <a asp-action="Index" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left"></i> Trở về
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus-circle"></i> Thêm Nhãn Hiệu
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('preview');
+                output.src = reader.result;
+                output.classList.remove('d-none');
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

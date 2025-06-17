@@ -5,12 +5,15 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container">
-    <h2 class="mb-4 text-warning">Chỉnh sửa Nhãn Hiệu</h2>
-    <div class="card shadow-sm">
-        <div class="card-body">
+<div class="container mt-4">
+    <h2 class="mb-4 text-warning text-center">
+        <i class="fas fa-pen-square"></i> Cập nhật Nhãn Hiệu
+    </h2>
+
+    <div class="card shadow rounded-4">
+        <div class="card-body p-4">
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                 <input type="hidden" asp-for="BrandId" />
 
                 <div class="mb-3">
@@ -29,11 +32,11 @@
                     <label class="form-label fw-bold">Hình ảnh đại diện hiện tại</label><br />
                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
                     {
-                        <img src="@Model.ImageUrl" alt="Hình hiện tại" width="100" style="object-fit: contain;" />
+                        <img src="@Model.ImageUrl" alt="Hình hiện tại" class="img-thumbnail rounded" width="150" style="object-fit: contain;" />
                     }
                     else
                     {
-                        <span class="text-muted">Không có hình</span>
+                        <div class="text-muted fst-italic">Không có hình ảnh hiện tại</div>
                     }
                 </div>
 
