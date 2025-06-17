@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 
@@ -11,9 +12,11 @@ using SPACEGO_E_COMMERCE_WEBSITE.Models;
 namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250617060128_Them_rang_buoc_du_lieu_cho_table_product")]
+    partial class Them_rang_buoc_du_lieu_cho_table_product
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
