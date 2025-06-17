@@ -15,10 +15,10 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Brand)
-                .Include(p => p.ImageUrls)
-                .ToListAsync();
+           .Include(p => p.Brand)
+           .Include(p => p.Category)
+           .Include(p => p.ImageUrls)
+           .ToListAsync();
         }
 
         public async Task<Product> GetByIdAsync(int id)
