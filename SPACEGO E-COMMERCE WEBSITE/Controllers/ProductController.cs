@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
 using System.Globalization;
@@ -45,8 +46,11 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            ViewBag.Brands = await _brandRepository.GetAllAsync();
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
+            var brands = await _brandRepository.GetAllAsync();
+            ViewBag.Brands = new SelectList(brands, "BrandId", "BrandName");
+
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
             return View();
         }
 
@@ -54,18 +58,22 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Product product, IFormFile mainImage, List<IFormFile> detailImages)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Lưu ảnh đại diện nếu có
+                ViewBag.Brands = new SelectList(await _brandRepository.GetAllAsync(), "BrandId", "BrandName");
+                ViewBag.Categories = new SelectList(await _categoryRepository.GetAllAsync(), "CategoryId", "CategoryName");
+                return View(product);
+            }
+
+            try
+            {
                 if (mainImage != null && mainImage.Length > 0)
                 {
                     product.ImageUrl = await SaveImage(mainImage, product.ProductName);
                 }
 
-                // Thêm sản phẩm
-                await _productRepository.AddAsync(product); // ProductId sẽ được cập nhật sau khi lưu
+                await _productRepository.AddAsync(product);
 
-                // Lưu ảnh chi tiết
                 if (detailImages != null && detailImages.Count > 0)
                 {
                     foreach (var image in detailImages)
@@ -73,7 +81,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                         var productImage = new ProductImage
                         {
                             Url = await SaveImage(image, product.ProductName),
-                            ProductId = product.ProductId // Lúc này ProductId đã có giá trị đúng
+                            ProductId = product.ProductId
                         };
                         await _productImageRepository.AddAsync(productImage);
                     }
@@ -81,10 +89,13 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewBag.Brands = await _brandRepository.GetAllAsync();
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
-            return View(product);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Lỗi khi thêm sản phẩm: " + ex.Message);
+                ViewBag.Brands = await _brandRepository.GetAllAsync();
+                ViewBag.Categories = await _categoryRepository.GetAllAsync();
+                return View(product);
+            }
         }
 
         [HttpGet]
