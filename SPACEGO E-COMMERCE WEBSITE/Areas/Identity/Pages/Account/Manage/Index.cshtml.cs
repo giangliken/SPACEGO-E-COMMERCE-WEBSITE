@@ -2,14 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
 {
@@ -66,23 +71,28 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Họ và tên")]
             public string FullName { get; set; }
 
-            public string? AvatarUrl { get; set; }
+            [Display(Name = "Ảnh đại diện")]
+            public IFormFile? AvatarImage { get; set; } 
+
+            public string? AvatarUrl { get; set; } 
         }
 
-       
+
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var fullname = user.FullName;
+            var avatarUrl = user.AvatarUrl;
 
             Username = userName;
 
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                FullName = fullname
+                FullName = fullname,
+                AvatarUrl = avatarUrl,
             };
         }
 
@@ -123,10 +133,42 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
                 }
             }
             user.FullName = Input.FullName;
+
+            // Nếu người dùng upload ảnh mới
+            if (Input.AvatarImage != null && Input.AvatarImage.Length > 0)
+            {
+                var avatarUrl = await SaveImage(Input.AvatarImage, user.UserName);
+                user.AvatarUrl = avatarUrl;
+            }
             await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Cập nhật thông tin thành công";
             return RedirectToPage();
         }
+
+        private async Task<string> SaveImage(IFormFile image, string us)
+        {
+            var folderPath = Path.Combine("wwwroot", "assets", "images", "avatar");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // Đặt tên file mới để tránh trùng lặp, ví dụ: userId + đuôi file gốc
+            var extension = Path.GetExtension(image.FileName);
+            var newFileName = $"{us}{extension}";
+            var savePath = Path.Combine(folderPath, newFileName);
+
+            using (var fileStream = new FileStream(savePath, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            // Trả về URL đúng để hiển thị ảnh
+            return $"/assets/images/avatar/{newFileName}";
+        }
+
+
+
     }
 }

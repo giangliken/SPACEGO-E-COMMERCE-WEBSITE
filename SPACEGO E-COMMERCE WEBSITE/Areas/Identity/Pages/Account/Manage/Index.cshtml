@@ -29,8 +29,12 @@
             </div>
             <div class="col-md-6">
                 <div class="d-flex flex-column align-items-center">
-                    <img id="avatar-preview" src="~/images/default-avatar.png" alt="Avatar" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover; border: 2px solid #ccc;" />
-                    <input type="file" name="AvatarImage" class="form-control" accept="image/*" onchange="previewImage(event)" />
+                    <img id="avatar-preview"
+                         src="@(string.IsNullOrEmpty(Model.Input.AvatarUrl) ? Url.Content("~/images/default-avatar.png") : Url.Content(Model.Input.AvatarUrl))"
+                         alt="Avatar"
+                         class="rounded-circle mb-3"
+                         style="width: 150px; height: 150px; object-fit: cover; border: 2px solid #ccc;" />
+                    <input asp-for="Input.AvatarImage" type="file" class="form-control" accept="image/*" onchange="previewImage(event)" />
                     <small class="text-muted mt-2">Chọn ảnh đại diện mới</small>
                 </div>
             </div>
