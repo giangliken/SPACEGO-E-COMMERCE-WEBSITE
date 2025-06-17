@@ -1,0 +1,83 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Product
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var brands = ViewBag.Brands as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Brand>;
+    var categories = ViewBag.Categories as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Category>;
+}
+
+<h2 class="mb-4 text-primary">Thêm sản phẩm mới</h2>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Add" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="mb-3">
+                <label asp-for="ProductName" class="form-label fw-bold"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BrandId" class="form-label fw-bold">Nhãn hàng</label>
+                <select asp-for="BrandId" class="form-select">
+                    <option value="">-- Chọn nhãn hàng --</option>
+                    @foreach (var brand in brands)
+                    {
+                        <option value="@brand.BrandId">@brand.BrandName</option>
+                    }
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label fw-bold">Danh mục</label>
+                <select asp-for="CategoryId" class="form-select">
+                    <option value="">-- Chọn danh mục --</option>
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat.CategoryId">@cat.CategoryName</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ProductDescription" class="form-label fw-bold"></label>
+                <textarea asp-for="ProductDescription" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="ProductDescription" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ProductPrice" class="form-label fw-bold"></label>
+                <input asp-for="ProductPrice" class="form-control" />
+                <span asp-validation-for="ProductPrice" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ProductQuantity" class="form-label fw-bold"></label>
+                <input asp-for="ProductQuantity" class="form-control" />
+                <span asp-validation-for="ProductQuantity" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Ảnh đại diện</label>
+                <input type="file" name="mainImage" class="form-control" accept="image/*" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Ảnh chi tiết (có thể chọn nhiều)</label>
+                <input type="file" name="detailImages" class="form-control" accept="image/*" multiple />
+            </div>
+            <div class="mb-3 form-check">
+                <input asp-for="isAvailable" class="form-check-input" />
+                <label asp-for="isAvailable" class="form-check-label">Còn hàng</label>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Trở về
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Thêm sản phẩm
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

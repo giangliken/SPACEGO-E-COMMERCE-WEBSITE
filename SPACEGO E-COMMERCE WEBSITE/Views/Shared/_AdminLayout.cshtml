@@ -105,6 +105,16 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/Product/index" class="nav-link @(Context.Request.Path.StartsWithSegments("/Product") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fas fa-tag me-2"></i> Sản phẩm
+                    </a>
+                </li>
+                <li>
+                    <a href="/Category/index" class="nav-link @(Context.Request.Path.StartsWithSegments("/Category") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fas fa-tag me-2"></i> Danh mục
+                    </a>
+                </li>
+                <li>
                     <a href="/Admin/Order" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Order") ? "active text-white bg-primary" : "text-white")">
                         <i class="fas fa-table me-2"></i> Orders
                     </a>
