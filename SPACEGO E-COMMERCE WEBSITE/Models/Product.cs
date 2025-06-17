@@ -23,12 +23,12 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         [Required(ErrorMessage ="Mã danh mục là bắt buộc")]
         [DisplayName("Mã Danh Mục")]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         [Required(ErrorMessage ="Mã thương hiệu là bắt buộc")]
         [DisplayName("Mã Thương Hiệu")]
         public int BrandId { get; set; }
-        public Brand Brand { get; set; }
+        public Brand? Brand { get; set; }
         public string? ImageUrl {  get; set; }
         public List<ProductImage>? ImageUrls { get; set; }
         public bool isAvailable  { get; set; }
