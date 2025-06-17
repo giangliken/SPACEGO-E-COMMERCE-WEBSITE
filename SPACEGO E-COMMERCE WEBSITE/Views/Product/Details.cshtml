@@ -1,0 +1,107 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Product
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="mb-4 text-primary text-center">
+                <i class="fas fa-info-circle"></i> Chi tiết sản phẩm
+            </h2>
+            <div class="card shadow rounded-4">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="text-center mb-3">
+                                <img src="@Model.ImageUrl" class="img-fluid border rounded" alt="Ảnh đại diện" style="max-height:320px; object-fit:contain;" />
+                                <div class="mt-3 text-muted"><small>Ảnh đại diện</small></div>
+                            </div>
+                            @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+                            {
+                                <h5 class="mt-3 text-secondary">Ảnh chi tiết:</h5>
+                                <div class="d-flex flex-wrap">
+                                    @foreach (var img in Model.ImageUrls)
+                                    {
+                                        <img src="@img.Url"
+                                             alt="Ảnh chi tiết"
+                                             class="img-thumbnail m-1 detail-thumb"
+                                             style="max-width:90px; max-height:90px; cursor:pointer"
+                                             data-bs-toggle="modal"
+                                             data-bs-target="#detailImageModal"
+                                             data-img="@img.Url" />
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-7">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Tên sản phẩm</dt>
+                                <dd class="col-sm-8 fw-semibold">@Model.ProductName</dd>
+                                <dt class="col-sm-4">Mô tả</dt>
+                                <dd class="col-sm-8">@Model.ProductDescription</dd>
+                                <dt class="col-sm-4">Giá bán</dt>
+                                <dd class="col-sm-8 text-danger fw-bold">@Model.ProductPrice.ToString("N0") ₫</dd>
+                                <dt class="col-sm-4">Số lượng</dt>
+                                <dd class="col-sm-8">@Model.ProductQuantity</dd>
+                                <dt class="col-sm-4">Thương hiệu</dt>
+                                <dd class="col-sm-8">@ViewBag.Brand?.BrandName</dd>
+                                <dt class="col-sm-4">Danh mục</dt>
+                                <dd class="col-sm-8">@ViewBag.Category?.CategoryName</dd>
+                                <dt class="col-sm-4">Tình trạng</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.isAvailable)
+                                    {
+                                        <span class="badge bg-success">Còn hàng</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Hết hàng</span>
+                                    }
+                                </dd>
+                            </dl>
+                            <div class="mt-4 text-end">
+                                <a asp-action="Index" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left"></i> Trở về danh sách
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning ms-2">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xem ảnh chi tiết -->
+<div class="modal fade" id="detailImageModal" tabindex="-1" aria-labelledby="detailImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0 shadow-none">
+            <button type="button" class="btn-close position-absolute end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <img id="detailModalImg" src="" class="img-fluid rounded mx-auto d-block" style="max-height:80vh; background:#fff;" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Khi click ảnh chi tiết, show modal với ảnh lớn
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalImg = document.getElementById('detailModalImg');
+            document.querySelectorAll('.detail-thumb').forEach(function (img) {
+                img.addEventListener('click', function () {
+                    modalImg.src = this.getAttribute('data-img');
+                });
+            });
+            // Khi đóng modal thì clear src cho chắc
+            document.getElementById('detailImageModal').addEventListener('hidden.bs.modal', function () {
+                modalImg.src = '';
+            });
+        });
+    </script>
+}

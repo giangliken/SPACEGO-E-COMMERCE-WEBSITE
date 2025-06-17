@@ -18,13 +18,11 @@
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark text-center">
                     <tr>
+                        <th>Mã sản phẩm</th>
                         <th>Tên sản phẩm</th>
-                        <th>Mô tả</th>
                         <th>Giá</th>
-                        <th>Số lượng</th>
                         <th>Danh mục</th>
                         <th>Thương hiệu</th>
-                        <th>Hình ảnh</th>
                         <th>Tình trạng</th>
                         <th>Hành động</th>
                     </tr>
@@ -33,22 +31,11 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>@item.ProductId</td>
                             <td>@item.ProductName</td>
-                            <td>@item.ProductDescription</td>
                             <td>@String.Format("{0:N0}₫", item.ProductPrice)</td>
-                            <td>@item.ProductQuantity</td>
                             <td>@item.Category?.CategoryName</td>
                             <td>@item.Brand?.BrandName</td>
-                            <td>
-                                @if (!string.IsNullOrEmpty(item.ImageUrl))
-                                {
-                                    <img src="@item.ImageUrl" alt="Ảnh sản phẩm" width="60" height="60" style="object-fit: contain;" />
-                                }
-                                else
-                                {
-                                    <span class="text-muted">Không có hình</span>
-                                }
-                            </td>
                             <td>
                                 @if (item.isAvailable)
                                 {
