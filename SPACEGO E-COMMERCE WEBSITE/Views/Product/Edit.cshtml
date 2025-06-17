@@ -7,108 +7,135 @@
     var categories = ViewBag.Categories as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Category>;
 }
 
-<h2 class="mb-4 text-warning">Chỉnh sửa sản phẩm</h2>
-<div class="card shadow-sm">
-    <div class="card-body">
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
-            <input type="hidden" asp-for="ProductId" />
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-            <div class="mb-3">
-                <label asp-for="ProductName" class="form-label fw-bold"></label>
-                <input asp-for="ProductName" class="form-control" />
-                <span asp-validation-for="ProductName" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="BrandId" class="form-label fw-bold">Nhãn hàng</label>
-                <select asp-for="BrandId" class="form-select">
-                    <option value="">-- Chọn nhãn hàng --</option>
-                    @foreach (var brand in brands)
-                    {
-                        <option value="@brand.BrandId" selected="@(brand.BrandId == Model.BrandId ? "selected" : null)">@brand.BrandName</option>
-                    }
-                </select>
-                <span asp-validation-for="BrandId" class="text-danger"></span>
-            </div>
+<div class="container mt-4">
+    <h2 class="mb-4 text-warning text-center">
+        <i class="fas fa-box"></i> Chỉnh sửa sản phẩm
+    </h2>
 
-            <div class="mb-3">
-                <label asp-for="CategoryId" class="form-label fw-bold">Danh mục</label>
-                <select asp-for="CategoryId" class="form-select">
-                    <option value="">-- Chọn danh mục --</option>
-                    @foreach (var cat in categories)
-                    {
-                        <option value="@cat.CategoryId">@cat.CategoryName</option>
-                    }
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="ProductDescription" class="form-label fw-bold"></label>
-                <textarea asp-for="ProductDescription" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="ProductDescription" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="ProductPrice" class="form-label fw-bold"></label>
-                <input asp-for="ProductPrice" class="form-control" />
-                <span asp-validation-for="ProductPrice" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="ProductQuantity" class="form-label fw-bold"></label>
-                <input asp-for="ProductQuantity" class="form-control" />
-                <span asp-validation-for="ProductQuantity" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Ảnh đại diện hiện tại</label><br />
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="ProductId" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <!-- Tên sản phẩm -->
+                <div class="mb-3">
+                    <label asp-for="ProductName" class="form-label fw-bold">Tên sản phẩm</label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+
+                <!-- Nhãn hàng -->
+                <div class="mb-3">
+                    <label asp-for="BrandId" class="form-label fw-bold">Nhãn hàng</label>
+                    <select asp-for="BrandId" class="form-select">
+                        <option value="">-- Chọn nhãn hàng --</option>
+                        @foreach (var brand in brands)
+                        {
+                            <option value="@brand.BrandId" selected="@(brand.BrandId == Model.BrandId)">
+                                @brand.BrandName
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                </div>
+
+                <!-- Danh mục -->
+                <div class="mb-3">
+                    <label asp-for="CategoryId" class="form-label fw-bold">Danh mục</label>
+                    <select asp-for="CategoryId" class="form-select">
+                        <option value="">-- Chọn danh mục --</option>
+                        @foreach (var cat in categories)
+                        {
+                            <option value="@cat.CategoryId" selected="@(cat.CategoryId == Model.CategoryId)">
+                                @cat.CategoryName
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <!-- Mô tả -->
+                <div class="mb-3">
+                    <label asp-for="ProductDescription" class="form-label fw-bold">Mô tả</label>
+                    <textarea asp-for="ProductDescription" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                </div>
+
+                <!-- Giá -->
+                <div class="mb-3">
+                    <label asp-for="ProductPrice" class="form-label fw-bold">Giá</label>
+                    <input asp-for="ProductPrice" class="form-control" />
+                    <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                </div>
+
+                <!-- Số lượng -->
+                <div class="mb-3">
+                    <label asp-for="ProductQuantity" class="form-label fw-bold">Số lượng</label>
+                    <input asp-for="ProductQuantity" class="form-control" />
+                    <span asp-validation-for="ProductQuantity" class="text-danger"></span>
+                </div>
+
+                <!-- Ảnh đại diện hiện tại -->
                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
                 {
-                    <img src="@Model.ImageUrl" alt="Ảnh đại diện" width="100" style="object-fit: contain;" />
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Ảnh đại diện hiện tại</label><br />
+                        <img src="@Model.ImageUrl" alt="Ảnh đại diện" width="100" class="border rounded" style="object-fit: contain;" />
+                    </div>
                 }
-                else
-                {
-                    <span class="text-muted">Không có hình</span>
-                }
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Chọn ảnh đại diện mới (nếu muốn thay)</label>
-                <input type="file" name="mainImage" class="form-control" accept="image/*" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Thêm ảnh chi tiết mới (có thể chọn nhiều)</label>
-                <input type="file" name="detailImages" class="form-control" accept="image/*" multiple />
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Ảnh chi tiết hiện tại</label>
-                <div class="d-flex flex-wrap gap-2">
-                    @if (Model.ImageUrls != null && Model.ImageUrls.Count > 0)
-                    {
-                        foreach (var img in Model.ImageUrls)
-                        {
-                            <div>
-                                <img src="@img.Url" alt="Ảnh chi tiết" width="80" style="object-fit: contain;" />
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <span class="text-muted">Không có ảnh chi tiết</span>
-                    }
+
+                <!-- Chọn ảnh đại diện mới -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Chọn ảnh đại diện mới (nếu muốn thay)</label>
+                    <input type="file" name="mainImage" class="form-control" accept="image/*" />
                 </div>
-            </div>
-            <div class="mb-3 form-check">
-                <input asp-for="isAvailable" class="form-check-input" />
-                <label asp-for="isAvailable" class="form-check-label">Còn hàng</label>
-            </div>
-            <div class="d-flex justify-content-between mt-4">
-                <a asp-action="Index" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left"></i> Trở về
-                </a>
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Lưu thay đổi
-                </button>
-            </div>
-        </form>
+
+                <!-- Ảnh chi tiết mới -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Thêm ảnh chi tiết mới (có thể chọn nhiều)</label>
+                    <input type="file" name="detailImages" class="form-control" accept="image/*" multiple />
+                </div>
+
+                <!-- Ảnh chi tiết hiện tại -->
+                @if (Model.ImageUrls != null && Model.ImageUrls.Count > 0)
+                {
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Ảnh chi tiết hiện tại</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var img in Model.ImageUrls)
+                            {
+                                <div class="border rounded p-1">
+                                    <img src="@img.Url" alt="Ảnh chi tiết" width="80" style="object-fit: contain;" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Trạng thái còn hàng -->
+                <div class="mb-3 form-check">
+                    <input asp-for="isAvailable" class="form-check-input" />
+                    <label asp-for="isAvailable" class="form-check-label">Còn hàng</label>
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Trở về
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
