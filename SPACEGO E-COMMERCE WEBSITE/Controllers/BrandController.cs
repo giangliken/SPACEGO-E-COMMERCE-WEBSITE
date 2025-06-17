@@ -64,8 +64,8 @@ public class BrandController : Controller
     private async Task<string> SaveImage(IFormFile image, string brandName)
     {
         var extension = Path.GetExtension(image.FileName);
-        var slug = ToSlug(brandName); // chuyển tên thành dạng viết thường không dấu dính liền
-        var newFileName = $"{slug}{extension}";
+        var unique = Guid.NewGuid().ToString("N");
+        var newFileName = $"{unique}{extension}";
 
         var folderPath = Path.Combine("wwwroot", "assets", "images", "brand");
         if (!Directory.Exists(folderPath))
@@ -82,29 +82,6 @@ public class BrandController : Controller
         // Trả về URL để hiển thị ảnh trên web
         return "/assets/images/brand/" + newFileName;
 
-    }
-
-    private string ToSlug(string input)
-    {
-        input = input.ToLowerInvariant();
-        input = RemoveVietnamese(input); // loại bỏ dấu tiếng Việt
-        input = Regex.Replace(input, @"[^a-z0-9]+", ""); // chỉ giữ a-z, 0-9
-        return input;
-    }
-
-    private string RemoveVietnamese(string input)
-    {
-        var normalized = input.Normalize(NormalizationForm.FormD);
-        var sb = new StringBuilder();
-        foreach (var c in normalized)
-        {
-            var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-            if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-            {
-                sb.Append(c);
-            }
-        }
-        return sb.ToString().Normalize(NormalizationForm.FormC);
     }
 
 

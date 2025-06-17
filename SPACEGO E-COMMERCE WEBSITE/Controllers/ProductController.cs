@@ -166,6 +166,25 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return View(product);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+                return NotFound();
+
+            // Lấy danh sách ảnh chi tiết
+            var imageUrls = await _productImageRepository.GetByProductIdAsync(id);
+            product.ImageUrls = imageUrls.ToList();
+
+            // Lấy Brand, Category nếu cần truyền sang ViewBag/ViewData
+            ViewBag.Brand = await _brandRepository.GetByIdAsync(product.BrandId);
+            ViewBag.Category = await _categoryRepository.GetByIdAsync(product.CategoryId);
+
+            return View(product);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -193,8 +212,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private async Task<string> SaveImage(IFormFile image, string productName)
         {
             var extension = Path.GetExtension(image.FileName);
-            var slug = ToSlug(productName);
-            var newFileName = $"{slug}{extension}";
+            var unique = Guid.NewGuid().ToString("N");
+            var newFileName = $"{unique}{extension}";
 
             var folderPath = Path.Combine("wwwroot", "assets", "images", "product");
             if (!Directory.Exists(folderPath))
@@ -211,27 +230,5 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return "/assets/images/product/" + newFileName;
         }
 
-        private string ToSlug(string input)
-        {
-            input = input.ToLowerInvariant();
-            input = RemoveVietnamese(input);
-            input = Regex.Replace(input, @"[^a-z0-9]+", "");
-            return input;
-        }
-
-        private string RemoveVietnamese(string input)
-        {
-            var normalized = input.Normalize(NormalizationForm.FormD);
-            var sb = new StringBuilder();
-            foreach (var c in normalized)
-            {
-                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-                {
-                    sb.Append(c);
-                }
-            }
-            return sb.ToString().Normalize(NormalizationForm.FormC);
-        }
     }
 }
