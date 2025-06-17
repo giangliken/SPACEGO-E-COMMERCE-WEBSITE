@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "Thêm sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    var brands = ViewBag.Brands as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Brand>;
-    var categories = ViewBag.Categories as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Category>;
 }
 
 <div class="container">
@@ -26,27 +24,21 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BrandId" class="form-label fw-semibold">Nhãn hàng</label>
-                                <select asp-for="BrandId" class="form-select">
-                                    <option value="">-- Chọn nhãn hàng --</option>
-                                    @foreach (var brand in brands)
-                                    {
-                                        <option value="@brand.BrandId">@brand.BrandName</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="BrandId" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="CategoryId" class="form-label fw-semibold">Danh mục</label>
-                                <select asp-for="CategoryId" class="form-select">
-                                    <option value="">-- Chọn danh mục --</option>
-                                    @foreach (var cat in categories)
-                                    {
-                                        <option value="@cat.CategoryId">@cat.CategoryName</option>
-                                    }
+                                <label asp-for="CategoryId" class="form-label">Danh mục</label>
+                                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control">
+                                    <option value="">Chọn danh mục</option>
                                 </select>
                                 <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            </div>
+
+     
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="BrandId" class="form-label">Nhãn hiệu</label>
+                                <select asp-for="BrandId" asp-items="ViewBag.Brands" class="form-control">
+                                    <option value="">Chọn nhãn hiệu</option>
+                                </select>
+                                <span asp-validation-for="BrandId" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -95,7 +87,15 @@
                                 <i class="fas fa-plus-circle"></i> Thêm sản phẩm
                             </button>
                         </div>
+                        @foreach (var modelState in ViewData.ModelState.Values)
+                        {
+                            foreach (var error in modelState.Errors)
+                            {
+                                <div class="text-danger">@error.ErrorMessage</div>
+                            }
+                        }
                     </form>
+
                 </div>
             </div>
         </div>
