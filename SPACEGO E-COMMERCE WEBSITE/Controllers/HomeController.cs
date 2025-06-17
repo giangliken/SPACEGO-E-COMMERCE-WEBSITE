@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
-
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
     public class HomeController : Controller
@@ -39,8 +38,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         public async Task<IActionResult> Index()
         {
             var products = await _productRepository.GetAllAsync();
-            //var brands = await _brandRepository.GetAllAsync();
-            //var categories = await _categoryRepository.GetAllAsync();
+            var brands = await _brandRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
 
             var model = new HomeIndexViewModel
             {
