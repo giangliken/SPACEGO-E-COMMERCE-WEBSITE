@@ -16,6 +16,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
                 .HasKey(d => new { d.CartItemId, d.ProductId }); // Cấu hình khóa chính kết hợp
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(d => new { d.OrderId, d.ProductId }); // Cấu hình khóa chính kết hợp
+            
         }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -26,6 +27,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Province> Provinces { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Ward> Wards { get; set; }
 
     }
 }
