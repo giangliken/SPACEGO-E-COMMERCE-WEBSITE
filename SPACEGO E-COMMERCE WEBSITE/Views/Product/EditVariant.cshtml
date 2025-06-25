@@ -1,0 +1,64 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant
+
+@{
+    ViewData["Title"] = "Chỉnh sửa biến thể";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <h2 class="text-primary text-center mt-4">Chỉnh sửa biến thể sản phẩm</h2>
+
+    <div class="card shadow mt-4 rounded-4">
+        <div class="card-body p-4">
+            <form asp-action="EditVariant" method="post">
+                <input type="hidden" asp-for="ProductVariantId" />
+                <input type="hidden" asp-for="ProductId" />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="ColorId" class="form-label fw-semibold">Màu sắc</label>
+                        <select asp-for="ColorId" asp-items="ViewBag.Colors" class="form-select">
+                            <option value="">Chọn màu sắc</option>
+                        </select>
+                        <span asp-validation-for="ColorId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="CapacityId" class="form-label fw-semibold">Dung lượng</label>
+                        <select asp-for="CapacityId" asp-items="ViewBag.Capacities" class="form-select">
+                            <option value="">Chọn dung lượng</option>
+                        </select>
+                        <span asp-validation-for="CapacityId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Price" class="form-label fw-semibold">Giá</label>
+                        <input asp-for="Price" class="form-control" min="1" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Quantity" class="form-label fw-semibold">Số lượng</label>
+                        <input asp-for="Quantity" class="form-control" min="1" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Trở về sản phẩm
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

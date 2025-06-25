@@ -76,6 +76,23 @@
                     <span asp-validation-for="ProductQuantity" class="text-danger"></span>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ProductPrice" class="form-label fw-semibold">Giá bán (VNĐ)</label>
+                        <input asp-for="ProductPrice" class="form-control" placeholder="VD: 1500000" />
+                        <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="col-md-6 mb-3" id="quantityWrapper">
+                        <label asp-for="ProductQuantity" class="form-label fw-semibold">Số lượng</label>
+                        <input asp-for="ProductQuantity" class="form-control" placeholder="VD: 10" />
+                        <span asp-validation-for="ProductQuantity" class="text-danger"></span>
+                    </div>
+
+                </div>
+
                 <!-- Ảnh đại diện hiện tại -->
                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
                 {
@@ -118,7 +135,51 @@
                     <input asp-for="isAvailable" class="form-check-input" />
                     <label asp-for="isAvailable" class="form-check-label">Còn hàng</label>
                 </div>
-
+                @if (ViewBag.Variants != null && ((IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant>)ViewBag.Variants).Any())
+                {
+                    <h4 class="mt-4 mb-2 text-primary">Danh sách biến thể</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Màu sắc</th>
+                                <th>Dung lượng</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                @* Ở trang Edit cho phép sửa/xóa *@
+                                @if (ViewContext.View.Path.Contains("Edit"))
+                                {
+                                    <th>Hành động</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int stt = 1;
+                                foreach (var v in (IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant>)ViewBag.Variants)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>@v.Color?.ColorName</td>
+                                        <td>@v.Capacity?.CapacityName</td>
+                                        <td>@v.Price.ToString("N0")</td>
+                                        <td>@v.Quantity</td>
+                                        @if (ViewContext.View.Path.Contains("Edit"))
+                                        {
+                                            <td>
+                                                <a asp-action="EditVariant" asp-route-id="@v.ProductVariantId" class="btn btn-sm btn-warning">Sửa</a>
+                                                <form asp-action="DeleteVariant" asp-route-id="@v.ProductVariantId" method="post" class="d-inline" onsubmit="return confirm('Xóa biến thể này?');">
+                                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                                </form>
+                                            </td>
+                                        }
+                                    </tr>
+                                    stt++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
                 <!-- Nút hành động -->
                 <div class="d-flex justify-content-between mt-4">
                     <a asp-action="Index" class="btn btn-outline-secondary">
@@ -129,6 +190,7 @@
                     </button>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>

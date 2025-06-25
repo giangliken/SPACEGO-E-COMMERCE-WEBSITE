@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Thêm sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 
 <div class="container">
@@ -47,18 +48,28 @@
                             <textarea asp-for="ProductDescription" class="form-control" rows="4" placeholder="Mô tả chi tiết sản phẩm..."></textarea>
                             <span asp-validation-for="ProductDescription" class="text-danger"></span>
                         </div>
+                        <div class="form-check col-md-6 mb-3">
+                            <input asp-for="HasVariants" class="form-check-input" id="hasVariants" />
+                            <label asp-for="HasVariants" class="form-check-label fw-semibold ms-1">Sản phẩm có nhiều biến thể</label>
+                        </div>
+
+
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="ProductPrice" class="form-label fw-semibold">Giá bán (VNĐ)</label>
-                                <input asp-for="ProductPrice" class="form-control" placeholder="VD: 1500000" />
+                                <input asp-for="ProductPrice" class="form-control price-format" placeholder="VD: 1.500.000" />
                                 <span asp-validation-for="ProductPrice" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6 mb-3">
+
+                            
+
+                            <div class="col-md-6 mb-3" id="quantityWrapper">
                                 <label asp-for="ProductQuantity" class="form-label fw-semibold">Số lượng</label>
                                 <input asp-for="ProductQuantity" class="form-control" placeholder="VD: 10" />
                                 <span asp-validation-for="ProductQuantity" class="text-danger"></span>
                             </div>
+
                         </div>
 
                         <div class="mb-3">
@@ -76,7 +87,7 @@
 
                         <div class="form-check mb-4">
                             <input asp-for="isAvailable" class="form-check-input" />
-                            <label asp-for="isAvailable" class="form-check-label fw-semibold">Còn hàng</label>
+                            <label asp-for="isAvailable" class="form-check-label fw-semibold">Hiển thị với khách hàng</label>
                         </div>
 
                         <div class="d-flex justify-content-between">
@@ -87,15 +98,15 @@
                                 <i class="fas fa-plus-circle"></i> Thêm sản phẩm
                             </button>
                         </div>
-                        @foreach (var modelState in ViewData.ModelState.Values)
-                        {
-                            foreach (var error in modelState.Errors)
-                            {
-                                <div class="text-danger">@error.ErrorMessage</div>
-                            }
-                        }
+                   
                     </form>
-
+                    @foreach (var modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (var error in modelState.Errors)
+                        {
+                            <div class="text-danger">@error.ErrorMessage</div>
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -114,6 +125,45 @@
             reader.readAsDataURL(event.target.files[0]);
         }
     </script>
+    <script>
+        // Format number with dot
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function unformatNumber(formatted) {
+            return formatted.replace(/\./g, '');
+        }
+
+        document.querySelectorAll('.price-format').forEach(input => {
+            input.addEventListener('input', function (e) {
+                const caretPosition = this.selectionStart;
+                const unformatted = unformatNumber(this.value.replace(/\D/g, ''));
+                const formatted = formatNumber(unformatted);
+                this.value = formatted;
+            });
+
+            // Ensure real value is unformatted on submit
+            input.form.addEventListener('submit', function () {
+                input.value = unformatNumber(input.value);
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('hasVariants').addEventListener('change', function () {
+            const quantityInput = document.querySelector('#quantityWrapper input');
+            if (this.checked) {
+                quantityInput.disabled = true;
+                quantityInput.value = ""; // Clear input nếu cần
+            } else {
+                quantityInput.disabled = false;
+            }
+        });
+    </script>
+
+
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

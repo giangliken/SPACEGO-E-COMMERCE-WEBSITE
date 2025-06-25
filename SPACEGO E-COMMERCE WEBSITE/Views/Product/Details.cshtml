@@ -62,6 +62,51 @@
                                     }
                                 </dd>
                             </dl>
+                            @if (ViewBag.Variants != null && ((IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant>)ViewBag.Variants).Any())
+                            {
+                                <h4 class="mt-4 mb-2 text-primary">Danh sách biến thể</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Màu sắc</th>
+                                            <th>Dung lượng</th>
+                                            <th>Giá</th>
+                                            <th>Số lượng</th>
+                                            @* Ở trang Edit cho phép sửa/xóa *@
+                                            @if (ViewContext.View.Path.Contains("Edit"))
+                                            {
+                                                <th>Hành động</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int stt = 1;
+                                            foreach (var v in (IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant>)ViewBag.Variants)
+                                            {
+                                                <tr>
+                                                    <td>@stt</td>
+                                                    <td>@v.Color?.ColorName</td>
+                                                    <td>@v.Capacity?.CapacityName</td>
+                                                    <td>@v.Price.ToString("N0")</td>
+                                                    <td>@v.Quantity</td>
+                                                    @if (ViewContext.View.Path.Contains("Edit"))
+                                                    {
+                                                        <td>
+                                                            <a asp-action="EditVariant" asp-route-id="@v.ProductVariantId" class="btn btn-sm btn-warning">Sửa</a>
+                                                            <form asp-action="DeleteVariant" asp-route-id="@v.ProductVariantId" method="post" class="d-inline" onsubmit="return confirm('Xóa biến thể này?');">
+                                                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                                            </form>
+                                                        </td>
+                                                    }
+                                                </tr>
+                                                stt++;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            }
                             <div class="mt-4 text-end">
                                 <a asp-action="Index" class="btn btn-outline-secondary">
                                     <i class="fas fa-arrow-left"></i> Trở về danh sách
