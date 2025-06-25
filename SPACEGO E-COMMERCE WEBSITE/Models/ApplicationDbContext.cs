@@ -21,6 +21,11 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        //Biến thể sản phẩm
+        public DbSet<Capacity> Capacities { get; set; }
+        //Màu sắc sản phẩm
+        public DbSet<ProductVariant> ProductVariants { get; set; }
+        public DbSet<Color> Colors { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<DetailCartItem> DetailsCartItems { get; set; }
