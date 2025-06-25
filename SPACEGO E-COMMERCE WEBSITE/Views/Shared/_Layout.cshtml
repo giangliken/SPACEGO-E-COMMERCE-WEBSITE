@@ -80,8 +80,11 @@
 
                     <!-- Cart & User -->
                     <div class="d-flex">
-                        <a href="#" class="btn btn-outline-dark me-2 position-relative">
+                        <a asp-controller="Home" asp-action="Cart" class="btn btn-outline-dark me-2 position-relative">
                             <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                @ViewBag.CartCount
+                            </span>
                         </a>
                         <partial name="_LoginPartial" />
                     </div>

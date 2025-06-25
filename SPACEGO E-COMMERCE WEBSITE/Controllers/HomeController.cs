@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
@@ -18,11 +20,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private readonly IReviewRepository _reviewRepositoryreview;
         private readonly ICartItemRepository _cartItemRepositorycartItem;
         private readonly IDetailCartItemRepository _detailCartItemRepositorydetailCartItem;
+        private readonly IOrderProductRepository _orderProductRepository;
+        private readonly IOrderRepository _orderRepository;
 
         public HomeController(IProductRepository productRepository, ICategoryRepository categoryRepository,
                               IBrandRepository brandRepository, IProductImageRepository productImageRepositoryproductImage,
                               IReviewRepository reviewRepositoryreview, ICartItemRepository cartItemRepositorycartItem,
-                              IDetailCartItemRepository detailCartItemRepositorydetailCartItem)
+                              IDetailCartItemRepository detailCartItemRepositorydetailCartItem, IOrderRepository orderRepository,
+                              IOrderProductRepository orderProductRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -31,12 +36,19 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _reviewRepositoryreview = reviewRepositoryreview;
             _cartItemRepositorycartItem = cartItemRepositorycartItem;
             _detailCartItemRepositorydetailCartItem = detailCartItemRepositorydetailCartItem;
+            _orderRepository = orderRepository;
+            _orderProductRepository = orderProductRepository;
 
 
         }
 
+
         public async Task<IActionResult> Index()
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
+            ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
+
             var products = await _productRepository.GetAllAsync();
             var brands = await _brandRepository.GetAllAsync();
             var categories = await _categoryRepository.GetAllAsync();
@@ -53,6 +65,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
+            ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
             {
@@ -80,7 +95,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             }
 
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
-
+            ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
             if (cart == null || cart.DetailCartItems == null || !cart.DetailCartItems.Any())
             {
                 ViewBag.Message = "Giỏ hàng của bạn đang trống.";
@@ -92,6 +107,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
         public async Task<IActionResult> AddToCart(int id)
         {
+
+
+
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null || !product.isAvailable)
             {
@@ -105,6 +123,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             }
 
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
+            ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
             if (cart == null)
             {
                 cart = new CartItem
@@ -159,6 +178,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             }
 
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
+            ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
             if (cart == null)
             {
                 return NotFound();
@@ -196,6 +216,71 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return View("Cart", cart);
         }
 
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
+            ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
+            if (cart == null || cart.DetailCartItems == null || !cart.DetailCartItems.Any())
+            {
+                return RedirectToAction("Cart");
+            }
+
+            ViewBag.Cart = cart;
+            return View(new Order()); // Trả về View có form thông tin người nhận nếu có
+        }
+        [HttpPost]
+        public async Task<IActionResult> Checkout(Order order)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            // Lấy giỏ hàng hiện tại
+            var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
+            ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
+            if (cart == null || cart.DetailCartItems == null || !cart.DetailCartItems.Any())
+            {
+                return RedirectToAction("Cart");
+            }
+
+            // Thiết lập thông tin đơn hàng
+            order.UserId = userId;
+            order.OrderDate = DateTime.Now;
+            order.OrderStatus = false; // Đơn mới đặt
+            order.Total = cart.TotalPrice;
+            order.OrderProducts = new List<OrderProduct>();
+
+            // Tạo danh sách sản phẩm trong đơn hàng
+            foreach (var item in cart.DetailCartItems)
+            {
+                var orderProduct = new OrderProduct
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quanity
+                };
+                order.OrderProducts.Add(orderProduct);
+            }
+
+            // Lưu vào DB
+            await _orderRepository.AddAsync(order);
+
+            // Xoá giỏ hàng sau khi đặt
+            await _cartItemRepositorycartItem.DeleteAsync(cart.CartItemId);
+
+            return RedirectToAction("OrderSuccess");
+        }
+        public IActionResult OrderSuccess()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
