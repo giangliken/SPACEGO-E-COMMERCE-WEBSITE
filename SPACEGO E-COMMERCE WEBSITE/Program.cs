@@ -16,6 +16,7 @@ builder.Services.AddScoped<IOrderProductRepository, EFOrderProductRepository>();
 //builder.Services.AddScoped<IProvinceRepository, EFProvinceRepository>();
 //builder.Services.AddScoped<IDistrictRepository, EFDistrictRepository>();
 //builder.Services.AddScoped<IWardRepository, EFWardRepository>();
+builder.Services.AddScoped<IUserRepository, EFUserRepository>();
 builder.Services.AddScoped<IProductVariantRepository,EFProductVariantRepository>();
 builder.Services.AddScoped<ICapacityRepository, EFCapacityRepository>();
 builder.Services.AddScoped<IColorRepository, EFColorRepository>();
