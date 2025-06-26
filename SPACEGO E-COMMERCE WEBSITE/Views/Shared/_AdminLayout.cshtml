@@ -101,32 +101,37 @@
                 </li>
                 <li>
                     <a href="/Brand/index" class="nav-link @(Context.Request.Path.StartsWithSegments("/Brand") ? "active text-white bg-primary" : "text-white")">
-                        <i class="fas fa-tag me-2"></i> Nhãn hàng
+                        <i class="fa-solid fa-boxes-packing me-2"></i>Nhãn hàng
                     </a>
                 </li>
                 <li>
                     <a href="/Product/index" class="nav-link @(Context.Request.Path.StartsWithSegments("/Product") ? "active text-white bg-primary" : "text-white")">
-                        <i class="fas fa-tag me-2"></i> Sản phẩm
+                        <i class="fa-solid fa-cube me-2"></i>Sản phẩm
+                    </a>
+                </li>
+                <li>
+                    <a href="/Khohang/index" class="nav-link @(Context.Request.Path.StartsWithSegments("/Khohang") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fa-solid fa-warehouse me-2"></i>Kho hàng
+                    </a>
+                </li>
+                <li>
+                    <a href="/Report/index" class="nav-link @(Context.Request.Path.StartsWithSegments("/Report") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fa-solid fa-chart-pie me-2"></i>Thống kê
                     </a>
                 </li>
                 <li>
                     <a href="/Category/index" class="nav-link @(Context.Request.Path.StartsWithSegments("/Category") ? "active text-white bg-primary" : "text-white")">
-                        <i class="fas fa-tag me-2"></i> Danh mục
+                        <i class="fa-solid fa-layer-group me-2"></i>Danh mục
                     </a>
                 </li>
                 <li>
                     <a href="/Admin/Order" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Order") ? "active text-white bg-primary" : "text-white")">
-                        <i class="fas fa-table me-2"></i> Orders
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Product" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Product") ? "active text-white bg-primary" : "text-white")">
-                        <i class="fas fa-th me-2"></i> Products
+                        <i class="fas fa-table me-2"></i> Đơn hàng
                     </a>
                 </li>
                 <li>
                     <a href="/User/Index" class="nav-link @(Context.Request.Path.StartsWithSegments("/User/Index") ? "active text-white bg-primary" : "text-white")">
-                        <i class="fas fa-user-circle me-2"></i> Customers
+                        <i class="fas fa-user-circle me-2"></i> Người dùng
                     </a>
                 </li>
                
