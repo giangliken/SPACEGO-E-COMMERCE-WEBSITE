@@ -61,8 +61,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
 
         public async Task UpdateAsync(ProductVariant variant)
         {
-            _context.ProductVariants.Update(variant);
+            _context.ProductVariants.Update(variant); // or Entry(variant).State = Modified
             await _context.SaveChangesAsync();
         }
+
     }
 }
