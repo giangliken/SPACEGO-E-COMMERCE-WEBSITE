@@ -5,8 +5,10 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container mt-4">
-    <h2 class="text-info mb-3">Chi tiết người dùng</h2>
+<div class="container">
+    <h2 class="text-info mb-3">
+        <i class="fa-solid fa-circle-info me-2"></i>Chi tiết người dùng
+    </h2>
 
     <dl class="row">
         <dt class="col-sm-3">Họ tên</dt>
@@ -31,6 +33,10 @@
         </dd>
     </dl>
 
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+        <i class="fas fa-edit me-2"></i> Sửa
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left me-2"></i>Trở về
+    </a>
 </div>

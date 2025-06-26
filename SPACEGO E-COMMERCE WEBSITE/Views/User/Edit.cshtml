@@ -5,8 +5,11 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container mt-4">
-    <h2 class="text-warning mb-3">Chỉnh sửa người dùng</h2>
+<div class="container">
+    <h2 class="text-warning mb-3">
+        <i class="fas fa-edit me-2"></i>Chỉnh sửa người dùng
+
+    </h2>
 
     <form asp-action="Edit" method="post">
         <input type="hidden" asp-for="Id" />
@@ -29,7 +32,11 @@
             <input asp-for="IsActive" class="form-check-input" />
             <label asp-for="IsActive" class="form-check-label">Hoạt động</label>
         </div>
-        <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
-        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        <button type="submit" class="btn btn-warning">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Lưu thay đổi
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left me-2"></i>Trở về
+        </a>
     </form>
 </div>

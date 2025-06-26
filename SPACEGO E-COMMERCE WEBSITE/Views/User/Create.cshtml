@@ -6,7 +6,9 @@
 }
 
 <div class="container mt-4">
-    <h2 class="text-primary mb-3">Tạo người dùng mới</h2>
+    <h2 class="text-primary mb-3">
+        <i class="fa-solid fa-user-plus me-2"></i>Tạo người dùng mới
+    </h2>
 
     <form asp-action="Create" method="post">
         <div class="mb-3">
@@ -24,11 +26,14 @@
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-        <div class="mb-3 form-check">
-            <input asp-for="IsActive" class="form-check-input" />
-            <label asp-for="IsActive" class="form-check-label">Hoạt động</label>
+        <div class="form-check">
+            <input type="hidden" asp-for="IsActive" value="true" />
         </div>
-        <button type="submit" class="btn btn-success">Tạo</button>
-        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        <button type="submit" class="btn btn-success">
+            <i class="fa-solid fa-plus me-2"></i>Tạo
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left me-2"></i>Quay lại
+        </a>
     </form>
 </div>

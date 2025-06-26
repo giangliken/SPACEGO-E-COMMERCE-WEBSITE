@@ -1,76 +1,100 @@
 ﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser>
 
 @{
-    ViewData["Title"] = "Quản lý người dùng";
+    ViewData["Title"] = "QUẢN LÝ NGƯỜI DÙNG";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container py-4">
-    <h2 class="mb-4 text-primary text-center">
-        <i class="fas fa-user"></i> Quản lý người dùng
-    </h2>
-    <div class="card shadow rounded-4">
-        <div class="card-body p-4">
-            <form asp-action="Index" method="get" class="row g-2 mb-3">
-                <div class="col-md-4">
-                    <input type="text" name="searchString" class="form-control"
-                           placeholder="Tìm tên, SĐT hoặc email..."
-                           value="@Context.Request.Query["searchString"]" />
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i> Tìm
-                    </button>
-                </div>
-                <div class="col-auto">
-                    <a asp-action="Index" class="btn btn-secondary">Xóa lọc</a>
-                </div>
-            </form>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-4 text-primary text-center">QUẢN LÝ NGƯỜI DÙNG</h2>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-user-plus"></i> Thêm người dùng mới
+        </a>
+    </div>
 
+    <form asp-action="Index" method="get" class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input type="text" name="searchString" class="form-control"
+                   placeholder="Tìm tên, SĐT hoặc email..."
+                   value="@Context.Request.Query["searchString"]" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Tìm
+            </button>
+        </div>
+        <div class="col-auto">
+            <a asp-action="Index" class="btn btn-secondary">Xóa lọc</a>
+        </div>
+    </form>
 
-            <a asp-action="Create" class="btn btn-outline-primary mb-3">
-                <i class="fas fa-plus-circle"></i> Tạo mới
-            </a>
-            <table class="table table-bordered table-hover">
-                <thead>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @Html.Raw(TempData["Success"])
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered table-hover align-middle text-center">
+                <thead class="table-dark">
                     <tr>
-                        <th>STT</th>
-                        <th>Tên người dùng</th>
-                        <th>Số điện thoại</th>
-                        <th>Email</th>
-                        <th>Trạng thái</th>
-                        <th>Hành động</th>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên người dùng</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var (user, index) in Model.Select((value, i) => (value, i)))
+                    @if (Model.Any())
+                    {
+                        @foreach (var (user, index) in Model.Select((value, i) => (value, i)))
+                        {
+                            <tr>
+                                <td>@(index + 1)</td>
+                                <td class="text-start">@user.FullName</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@user.Email</td>
+                                <td>
+                                    @if (user.IsActive)
+                                    {
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Không hoạt động</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-warning me-1" title="Chỉnh sửa người dùng">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-sm btn-info me-1" title="Xem chi tiết">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a asp-action="ResetPassword" asp-route-id="@user.Id" class="btn btn-sm btn-secondary me-1" title="Đặt lại mật khẩu">
+                                        <i class="fas fa-key"></i>
+                                    </a>
+                                    <form asp-action="DeleteConfirmed" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này không?');">
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Xóa người dùng">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@(index + 1)</td>
-                            <td>@user.FullName</td>
-                            <td>@user.PhoneNumber</td>
-                            <td>@user.Email</td>
-                            <td>
-                                @if (user.IsActive == true)
-                                {
-                                    <span class="badge bg-success">Hoạt động</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger">Không hoạt động</span>
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i> Sửa
-                                </a>
-                                <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> Chi tiết
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i> Xóa
-                                </a>
-                            </td>
+                            <td colspan="6" class="text-muted">Không có người dùng nào.</td>
                         </tr>
                     }
                 </tbody>

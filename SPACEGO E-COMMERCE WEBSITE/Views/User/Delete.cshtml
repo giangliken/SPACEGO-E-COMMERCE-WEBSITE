@@ -6,14 +6,21 @@
 }
 
 <div class="container mt-4">
-    <h2 class="text-danger mb-3">Xoá người dùng</h2>
+    <h2 class="text-danger mb-3">
+        <i class="fa-solid fa-user-xmark me-2"></i>Xóa người dùng
+    </h2>
 
     <p>Bạn có chắc chắn muốn xoá người dùng <strong>@Model.FullName</strong> không?</p>
+    <p>*Lưu ý: Việc xóa người dùng đồng nghĩa với việc mọi thông tin của người dùng sẽ được xóa khỏi hệ thống báo gồm cả hóa đơn và thông tin khác!</p>
 
     <form asp-action="Delete" method="post">
         <input type="hidden" name="id" value="@Model.Id" />
-        <button type="submit" class="btn btn-danger">Xoá</button>
-        <a asp-action="Index" class="btn btn-secondary">Huỷ</a>
+        <button type="submit" class="btn btn-danger">
+            <i class="fa-solid fa-trash-can-arrow-up me-2"></i>Xóa
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fa-solid fa-xmark me-2"></i>Hủy
+        </a>
     </form>
 
 </div>
