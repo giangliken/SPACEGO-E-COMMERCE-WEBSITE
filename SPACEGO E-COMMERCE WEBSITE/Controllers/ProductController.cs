@@ -175,6 +175,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 return NotFound();
 
             ViewBag.ProductName = product.ProductName;
+            ViewBag.ProductId = product.ProductId;
             ViewBag.Colors = new SelectList(await _colorRepository.GetAllAsync(), "ColorId", "ColorName");
             ViewBag.Capacities = new SelectList(await _capacityRepository.GetAllAsync(), "CapacityId", "CapacityName");
             // Lấy danh sách biến thể hiện tại
@@ -190,15 +191,37 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ProductName = (await _productRepository.GetByIdAsync(variant.ProductId))?.ProductName;
+                ViewBag.ProductId = variant.ProductId;
                 ViewBag.Colors = new SelectList(await _colorRepository.GetAllAsync(), "ColorId", "ColorName");
                 ViewBag.Capacities = new SelectList(await _capacityRepository.GetAllAsync(), "CapacityId", "CapacityName");
+                ViewBag.Variants = await _productVariantRepository.GetByProductIdAsync(variant.ProductId);
                 return View("AddVariants", variant);
             }
 
+            // ❗ Logic kiểm tra trùng
+            var existingVariants = await _productVariantRepository.GetByProductIdAsync(variant.ProductId);
+            bool isDuplicate = existingVariants.Any(v =>
+                v.ColorId == variant.ColorId &&
+                v.CapacityId == variant.CapacityId
+            );
+
+            if (isDuplicate)
+            {
+                TempData["Error"] = "Biến thể với màu và dung lượng này đã tồn tại.";
+                ViewBag.ProductName = (await _productRepository.GetByIdAsync(variant.ProductId))?.ProductName;
+                ViewBag.ProductId = variant.ProductId;
+                ViewBag.Colors = new SelectList(await _colorRepository.GetAllAsync(), "ColorId", "ColorName");
+                ViewBag.Capacities = new SelectList(await _capacityRepository.GetAllAsync(), "CapacityId", "CapacityName");
+                ViewBag.Variants = existingVariants;
+                return View("AddVariants", variant);
+            }
+
+            // Nếu không trùng thì thêm
             await _productVariantRepository.AddAsync(variant);
             TempData["Success"] = "Đã thêm biến thể thành công!";
             return RedirectToAction("AddVariants", new { id = variant.ProductId });
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -207,6 +230,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             if (product == null)
                 return NotFound();
 
+
             // Lấy danh sách biến thể
             var variants = await _productVariantRepository.GetByProductIdAsync(id);
             ViewBag.Variants = variants.ToList();
@@ -214,29 +238,70 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             // Nạp danh sách ảnh chi tiết
             product.ImageUrls = (await _productImageRepository.GetByProductIdAsync(id)).ToList();
 
-            ViewBag.Brands = await _brandRepository.GetAllAsync();
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
+            var brands = await _brandRepository.GetAllAsync();
+            ViewBag.Brands = new SelectList(brands, "BrandId", "BrandName");
+
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
             return View(product);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Product product, IFormFile mainImage)
+        public async Task<IActionResult> Edit(int id, Product product, IFormFile? mainImage, List<IFormFile>? detailImages)
         {
-            if (id != product.ProductId)
-                return NotFound();
-
-            if (ModelState.IsValid)
+            try
             {
                 var existingProduct = await _productRepository.GetByIdAsync(id);
                 if (existingProduct == null)
-                {
                     return NotFound();
+
+                // Parse giá sản phẩm (có format . như 1.500.000)
+                var culture = new CultureInfo("vi-VN");
+                if (decimal.TryParse(Request.Form["ProductPrice"], NumberStyles.Number, culture, out var price))
+                {
+                    product.ProductPrice = price;
+                }
+                else
+                {
+                    ModelState.AddModelError("ProductPrice", "Giá không hợp lệ.");
                 }
 
-                // Xử lý ảnh đại diện mới
+                // Lấy isAvailable từ checkbox
+                var isAvailable = Request.Form["isAvailable"].ToString().Contains("true");
+
+                // Nếu ModelState không hợp lệ → trả lại View
+                if (!ModelState.IsValid)
+                {
+                    product.ProductName = existingProduct.ProductName;
+                    product.ProductDescription = existingProduct.ProductDescription;
+                    product.ProductPrice = existingProduct.ProductPrice;
+                    product.BrandId = existingProduct.BrandId;
+                    product.CategoryId = existingProduct.CategoryId;
+                    product.isAvailable = existingProduct.isAvailable;
+                    product.ImageUrl = existingProduct.ImageUrl;
+                    product.ImageUrls = (await _productImageRepository.GetByProductIdAsync(id)).ToList();
+
+                    ViewBag.Brands = new SelectList(await _brandRepository.GetAllAsync(), "BrandId", "BrandName");
+                    ViewBag.Categories = new SelectList(await _categoryRepository.GetAllAsync(), "CategoryId", "CategoryName");
+                    ViewBag.Variants = (await _productVariantRepository.GetByProductIdAsync(id)).ToList();
+
+                    return View(product);
+                }
+
+                // Cập nhật dữ liệu sản phẩm
+                existingProduct.ProductName = product.ProductName;
+                existingProduct.ProductDescription = product.ProductDescription;
+                existingProduct.ProductPrice = product.ProductPrice;
+                existingProduct.BrandId = product.BrandId;
+                existingProduct.CategoryId = product.CategoryId;
+                existingProduct.isAvailable = isAvailable;
+                existingProduct.ProductQuantity = product.ProductQuantity;
+
+                // Nếu có ảnh mới → cập nhật
                 if (mainImage != null && mainImage.Length > 0)
                 {
+                    // Xoá ảnh cũ
                     if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
                     {
                         var relativePath = existingProduct.ImageUrl.TrimStart('/');
@@ -246,37 +311,50 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                             System.IO.File.Delete(fullPath);
                         }
                     }
-                    product.ImageUrl = await SaveImage(mainImage, product.ProductName);
+
+                    // Lưu ảnh mới
+                    existingProduct.ImageUrl = await SaveImage(mainImage, product.ProductName);
                 }
-                else
+
+                // Lưu ảnh chi tiết mới (nếu có)
+                if (detailImages != null && detailImages.Count > 0)
                 {
-                    product.ImageUrl = existingProduct.ImageUrl;
+                    foreach (var image in detailImages)
+                    {
+                        var productImage = new ProductImage
+                        {
+                            Url = await SaveImage(image, product.ProductName),
+                            ProductId = existingProduct.ProductId  // ✅ đảm bảo không bị 0
+                        };
+                        await _productImageRepository.AddAsync(productImage);
+                    }
                 }
 
-                // Cập nhật các trường còn lại
-                existingProduct.ProductName = product.ProductName;
-                existingProduct.ProductDescription = product.ProductDescription;
-                existingProduct.ProductPrice = product.ProductPrice;
-                existingProduct.ProductQuantity = product.ProductQuantity;
-                existingProduct.CategoryId = product.CategoryId;
-                existingProduct.BrandId = product.BrandId;
-                existingProduct.ImageUrl = product.ImageUrl;
-                existingProduct.isAvailable = product.isAvailable;
-
+                // Lưu vào DB
                 await _productRepository.UpdateAsync(existingProduct);
+
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewBag.Brands = await _brandRepository.GetAllAsync();
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
-            return View(product);
+            catch (Exception ex)
+            {
+                Console.WriteLine("🔥 Lỗi khi cập nhật sản phẩm: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                return StatusCode(500, "Lỗi server: " + ex.Message);
+            }
         }
+
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> EditVariant(int id)
         {
             var variant = await _productVariantRepository.GetByIdAsync(id);
+
             if (variant == null) return NotFound();
+            var product = await _productRepository.GetByIdAsync(variant.ProductId);
+            ViewBag.ProductName = product?.ProductName ?? "Không rõ";
             ViewBag.Colors = new SelectList(await _colorRepository.GetAllAsync(), "ColorId", "ColorName");
             ViewBag.Capacities = new SelectList(await _capacityRepository.GetAllAsync(), "CapacityId", "CapacityName"); return View(variant);
         }
@@ -285,10 +363,47 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditVariant(ProductVariant variant)
         {
-            if (!ModelState.IsValid) return View(variant);
-            await _productVariantRepository.UpdateAsync(variant);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Colors = new SelectList(await _colorRepository.GetAllAsync(), "ColorId", "ColorName");
+                ViewBag.Capacities = new SelectList(await _capacityRepository.GetAllAsync(), "CapacityId", "CapacityName");
+                return View(variant);
+            }
+
+            // Lấy tất cả biến thể của sản phẩm
+            var variants = await _productVariantRepository.GetByProductIdAsync(variant.ProductId);
+
+            // Kiểm tra trùng (ngoại trừ chính nó)
+            bool isDuplicate = variants.Any(v =>
+                v.ProductVariantId != variant.ProductVariantId &&
+                v.ColorId == variant.ColorId &&
+                v.CapacityId == variant.CapacityId
+            );
+
+            if (isDuplicate)
+            {
+                ModelState.AddModelError("", "Biến thể với màu và dung lượng này đã tồn tại.");
+
+                ViewBag.Colors = new SelectList(await _colorRepository.GetAllAsync(), "ColorId", "ColorName");
+                ViewBag.Capacities = new SelectList(await _capacityRepository.GetAllAsync(), "CapacityId", "CapacityName");
+                return View(variant);
+            }
+
+            // ✅ Lấy bản gốc từ database
+            var existingVariant = await _productVariantRepository.GetByIdAsync(variant.ProductVariantId);
+            if (existingVariant == null) return NotFound();
+
+            // ✅ Cập nhật thủ công field (tránh lỗi tracking)
+            existingVariant.ColorId = variant.ColorId;
+            existingVariant.CapacityId = variant.CapacityId;
+            existingVariant.Price = variant.Price;
+            existingVariant.Quantity = variant.Quantity;
+
+            await _productVariantRepository.UpdateAsync(existingVariant);
             return RedirectToAction("Edit", new { id = variant.ProductId });
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -344,6 +459,30 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteImage(int imageId, int productId)
+        {
+            var image = await _productImageRepository.GetByIdAsync(imageId);
+            if (image == null)
+                return NotFound();
+
+            // Xoá file ảnh vật lý khỏi ổ đĩa
+            var relativePath = image.Url.TrimStart('/');
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativePath);
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
+
+            // Xoá ảnh khỏi database
+            await _productImageRepository.DeleteAsync(imageId);
+
+            // Quay lại trang edit
+            return RedirectToAction("Edit", new { id = productId });
+        }
+
+
         // Helper methods
         private async Task<string> SaveImage(IFormFile image, string productName)
         {
@@ -367,4 +506,6 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         }
 
     }
+
+
 }
