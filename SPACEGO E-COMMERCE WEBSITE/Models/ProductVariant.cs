@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Models
 {
@@ -8,8 +9,11 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         public int ProductId { get; set; }
         public Product? Product { get; set; }
 
+        [Required(ErrorMessage = "Vui lòng chọn màu sắc")]
         public int? ColorId { get; set; }
         public Color? Color { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn dung lượng")]
 
         public int? CapacityId { get; set; }
         public Capacity? Capacity { get; set; }
