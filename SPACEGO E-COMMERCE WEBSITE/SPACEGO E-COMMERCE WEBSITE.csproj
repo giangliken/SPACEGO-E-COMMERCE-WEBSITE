@@ -28,6 +28,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="Services\AccountServices\" />
     <Folder Include="wwwroot\assets\images\" />
+    <Folder Include="wwwroot\assets\images\product\" />
   </ItemGroup>
 
 </Project>
