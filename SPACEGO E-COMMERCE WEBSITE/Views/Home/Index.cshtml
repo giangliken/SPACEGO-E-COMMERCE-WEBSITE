@@ -11,7 +11,7 @@
                 <i class="fas fa-store"></i> Sản phẩm nổi bật
             </h2>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                @foreach (var item in Model)
+                @foreach (var item in Model.Where(p => p.isAvailable))
                 {
                     <div class="col mb-5">
                         <div class="card h-100 shadow-sm" style="border-radius: 15px; overflow: hidden; border: 1px solid #e0e0e0;">
@@ -36,12 +36,17 @@
                                 </p>
                             </div>
 
-                            <!-- Nút thêm vào giỏ -->
-                            <div class="card-footer bg-transparent text-center border-top-0">
+                            
+                            <div class="card-footer bg-transparent text-center border-top-0 d-flex flex-row justify-content-center align-items-center">
+                                <!-- Nút thêm vào giỏ -->
                                 <a href="@Url.Action("AddToCart", "Home", new { id = item.ProductId })"
-                                   class="btn btn-outline-primary w-75 rounded-pill">
-                                    <!-- Nút bo tròn -->
-                                    <i class="fas fa-cart-plus me-1"></i> Mua ngay
+                                   class="btn btn-outline-primary rounded-pill flex-fill mx-2 py-2 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-cart-plus"></i> 
+                                </a>
+                                <!-- Nút mua ngay -->
+                                <a href="@Url.Action("Checkout", "Order", new { id = item.ProductId })"
+                                   class="btn btn-primary rounded-pill flex-fill mx-2 py-2 d-flex align-items-center justify-content-center">
+                                    Mua ngay
                                 </a>
                             </div>
                         </div>
