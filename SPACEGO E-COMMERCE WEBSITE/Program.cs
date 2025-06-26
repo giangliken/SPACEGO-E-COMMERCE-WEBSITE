@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
@@ -26,7 +26,6 @@ builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<IReviewRepository, EFReviewRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
-
 // Add authentication services
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -42,8 +41,10 @@ builder.Services.AddRazorPages();
 // Add Google authentication
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "Google";
+    //options.DefaultScheme = "Cookies";
+    //options.DefaultChallengeScheme = "Google";
+    options.DefaultScheme = IdentityConstants.ApplicationScheme; // hoặc "Cookies" nếu bạn dùng cookie
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
 })
 .AddCookie("Cookies")
 .AddGoogle(options =>
@@ -71,7 +72,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";
     options.LogoutPath = $"/Identity/Account/Logout";
-    options.LogoutPath = $"/Identity/Account/AccessDenied";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
 var app = builder.Build();
@@ -86,6 +87,16 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseStatusCodePages(async context =>
+{
+    var response = context.HttpContext.Response;
+
+    if (response.StatusCode == 404)
+    {
+        response.Redirect("/Home/NotFound");
+    }
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
