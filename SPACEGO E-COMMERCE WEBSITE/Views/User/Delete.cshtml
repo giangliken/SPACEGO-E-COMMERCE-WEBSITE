@@ -1,0 +1,19 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Xoá người dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-danger mb-3">Xoá người dùng</h2>
+
+    <p>Bạn có chắc chắn muốn xoá người dùng <strong>@Model.FullName</strong> không?</p>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-danger">Xoá</button>
+        <a asp-action="Index" class="btn btn-secondary">Huỷ</a>
+    </form>
+
+</div>
