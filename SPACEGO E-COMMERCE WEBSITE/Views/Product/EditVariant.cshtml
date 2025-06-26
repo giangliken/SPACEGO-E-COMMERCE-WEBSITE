@@ -7,7 +7,20 @@
 
 <div class="container">
     <h2 class="text-primary text-center mt-4">Chỉnh sửa biến thể sản phẩm</h2>
-
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="bg-light border rounded p-3">
+                <strong>Mã sản phẩm:</strong>
+                <span class="badge bg-secondary">@Model.ProductId</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="bg-light border rounded p-3">
+                <strong>Tên sản phẩm:</strong>
+                <span class="text-primary fw-semibold">@ViewBag.ProductName</span>
+            </div>
+        </div>
+    </div>
     <div class="card shadow mt-4 rounded-4">
         <div class="card-body p-4">
             <form asp-action="EditVariant" method="post">
@@ -32,9 +45,14 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label asp-for="Price" class="form-label fw-semibold">Giá</label>
-                        <input asp-for="Price" class="form-control" min="1" />
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Price" class="form-label fw-semibold">Giá thực tế (VNĐ)</label>
+                        <input name="Price" class="form-control price-format"
+                               placeholder="VD: 1.500.000"
+                               value="@(Model.Price == 0 ? "" : Model.Price.ToString("N0"))" />
+
+
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
@@ -53,6 +71,15 @@
                     </button>
                 </div>
             </form>
+            <div class="mt-3">
+                @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""] != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewData.ModelState[""].Errors.FirstOrDefault()?.ErrorMessage
+                    </div>
+                }
+            </div>
+
         </div>
     </div>
 </div>
@@ -61,4 +88,27 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function unformatNumber(formatted) {
+            return formatted.replace(/\./g, '');
+        }
+
+        document.querySelectorAll('.price-format').forEach(input => {
+            input.addEventListener('input', function () {
+                const selectionStart = this.selectionStart;
+                const unformatted = this.value.replace(/\D/g, '');
+                this.value = formatNumber(unformatted);
+                this.setSelectionRange(selectionStart, selectionStart);
+            });
+
+            input.closest('form').addEventListener('submit', function () {
+                input.value = unformatNumber(input.value);
+            });
+        });
+    </script>
 }

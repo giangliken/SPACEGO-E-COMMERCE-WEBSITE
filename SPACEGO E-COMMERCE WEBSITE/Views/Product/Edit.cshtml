@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "Chỉnh sửa sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    var brands = ViewBag.Brands as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Brand>;
-    var categories = ViewBag.Categories as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Category>;
 }
 
 <div class="container mt-4">
@@ -14,7 +12,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <form asp-action="Edit" asp-route-id="@Model.ProductId" method="post" enctype="multipart/form-data">
                 <input type="hidden" asp-for="ProductId" />
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
@@ -25,34 +23,20 @@
                     <span asp-validation-for="ProductName" class="text-danger"></span>
                 </div>
 
-                <!-- Nhãn hàng -->
-                <div class="mb-3">
-                    <label asp-for="BrandId" class="form-label fw-bold">Nhãn hàng</label>
-                    <select asp-for="BrandId" class="form-select">
-                        <option value="">-- Chọn nhãn hàng --</option>
-                        @foreach (var brand in brands)
-                        {
-                            <option value="@brand.BrandId" selected="@(brand.BrandId == Model.BrandId)">
-                                @brand.BrandName
-                            </option>
-                        }
-                    </select>
-                    <span asp-validation-for="BrandId" class="text-danger"></span>
-                </div>
+                <div class="row">
+                    <!-- Nhãn hàng -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BrandId" class="form-label fw-bold">Nhãn hàng</label>
+                        <select asp-for="BrandId" asp-items="ViewBag.Brands" class="form-select"></select>
+                        <span asp-validation-for="BrandId" class="text-danger"></span>
+                    </div>
 
-                <!-- Danh mục -->
-                <div class="mb-3">
-                    <label asp-for="CategoryId" class="form-label fw-bold">Danh mục</label>
-                    <select asp-for="CategoryId" class="form-select">
-                        <option value="">-- Chọn danh mục --</option>
-                        @foreach (var cat in categories)
-                        {
-                            <option value="@cat.CategoryId" selected="@(cat.CategoryId == Model.CategoryId)">
-                                @cat.CategoryName
-                            </option>
-                        }
-                    </select>
-                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    <!-- Danh mục -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CategoryId" class="form-label fw-bold">Danh mục</label>
+                        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select"></select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
                 </div>
 
                 <!-- Mô tả -->
@@ -61,35 +45,55 @@
                     <textarea asp-for="ProductDescription" class="form-control" rows="3"></textarea>
                     <span asp-validation-for="ProductDescription" class="text-danger"></span>
                 </div>
+                <div class="form-check col-md-6 mb-3">
+                    @if (Model.HasVariants)
+                    {
+                        <input type="checkbox" checked disabled class="form-check-input" />
+                    }
+                    else
+                    {
+                        <input type="checkbox" disabled class="form-check-input" />
+                    }
+                    <input type="hidden" name="HasVariants" value="@(Model.HasVariants.ToString().ToLower())" />
 
-                <!-- Giá -->
-                <div class="mb-3">
-                    <label asp-for="ProductPrice" class="form-label fw-bold">Giá</label>
-                    <input asp-for="ProductPrice" class="form-control" />
-                    <span asp-validation-for="ProductPrice" class="text-danger"></span>
+
+
+
+                    <label asp-for="HasVariants" class="form-check-label fw-semibold ms-1">
+                        Sản phẩm có nhiều biến thể
+                    </label>
                 </div>
 
-                <!-- Số lượng -->
-                <div class="mb-3">
-                    <label asp-for="ProductQuantity" class="form-label fw-bold">Số lượng</label>
-                    <input asp-for="ProductQuantity" class="form-control" />
-                    <span asp-validation-for="ProductQuantity" class="text-danger"></span>
-                </div>
 
                 <div class="row">
+
                     <div class="col-md-6 mb-3">
-                        <label asp-for="ProductPrice" class="form-label fw-semibold">Giá bán (VNĐ)</label>
-                        <input asp-for="ProductPrice" class="form-control" placeholder="VD: 1500000" />
+                        <label asp-for="ProductPrice" class="form-label fw-semibold">Giá tham khảo (VNĐ)</label>
+                        <input name="ProductPrice" class="form-control price-format"
+                               placeholder="VD: 1.500.000"
+                               value="@(Model.ProductPrice == 0 ? "" : Model.ProductPrice.ToString("N0"))" />
+
+
                         <span asp-validation-for="ProductPrice" class="text-danger"></span>
                     </div>
 
-
-
                     <div class="col-md-6 mb-3" id="quantityWrapper">
                         <label asp-for="ProductQuantity" class="form-label fw-semibold">Số lượng</label>
-                        <input asp-for="ProductQuantity" class="form-control" placeholder="VD: 10" />
+
+                        @if (Model.HasVariants)
+                        {
+                            <input type="number" class="form-control" name="ProductQuantity" value="@Model.ProductQuantity" disabled />
+                            <input type="hidden" name="ProductQuantity" value="@Model.ProductQuantity" />
+                        }
+                        else
+                        {
+                            <input asp-for="ProductQuantity" class="form-control" />
+                        }
+
                         <span asp-validation-for="ProductQuantity" class="text-danger"></span>
                     </div>
+
+
 
                 </div>
 
@@ -122,19 +126,35 @@
                         <div class="d-flex flex-wrap gap-2">
                             @foreach (var img in Model.ImageUrls)
                             {
-                                <div class="border rounded p-1">
-                                    <img src="@img.Url" alt="Ảnh chi tiết" width="80" style="object-fit: contain;" />
+                                <div class="border rounded p-1 position-relative">
+                                    <img src="@img.Url" alt="Ảnh chi tiết" width="80" style="object-fit: contain; cursor:pointer;" />
+                                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" onclick="deleteImage(@img.Id, @Model.ProductId)">
+                                        Xóa
+                                    </button>
                                 </div>
                             }
                         </div>
                     </div>
                 }
 
+                <!-- Modal xem ảnh chi tiết -->
+                <div class="modal fade" id="detailImageModal" tabindex="-1" aria-labelledby="detailImageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content bg-transparent border-0 shadow-none">
+                            <button type="button" class="btn-close position-absolute end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <img id="detailModalImg" src="" class="img-fluid rounded mx-auto d-block" style="max-height:80vh; background:#fff;" />
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Trạng thái còn hàng -->
                 <div class="mb-3 form-check">
-                    <input asp-for="isAvailable" class="form-check-input" />
-                    <label asp-for="isAvailable" class="form-check-label">Còn hàng</label>
+                    <input type="checkbox" class="form-check-input" name="isAvailable" @(Model.isAvailable ? "checked" : "") value="true" />
+
+
+                    <label asp-for="isAvailable" class="form-check-label">Cho phép hiển thị</label>
                 </div>
+
                 @if (ViewBag.Variants != null && ((IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant>)ViewBag.Variants).Any())
                 {
                     <h4 class="mt-4 mb-2 text-primary">Danh sách biến thể</h4>
@@ -168,9 +188,14 @@
                                         {
                                             <td>
                                                 <a asp-action="EditVariant" asp-route-id="@v.ProductVariantId" class="btn btn-sm btn-warning">Sửa</a>
-                                                <form asp-action="DeleteVariant" asp-route-id="@v.ProductVariantId" method="post" class="d-inline" onsubmit="return confirm('Xóa biến thể này?');">
-                                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
-                                                </form>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-danger"
+                                                        onclick="deleteVariant(@v.ProductVariantId)">
+                                                    Xóa
+                                                </button>
+
+
+
                                             </td>
                                         }
                                     </tr>
@@ -179,7 +204,21 @@
                             }
                         </tbody>
                     </table>
+                    
+
                 }
+                @if (Model.HasVariants)
+                {
+                    <div class="mt-3 d-flex justify-content-center">
+                        <a asp-controller="Product"
+                           asp-action="AddVariants"
+                           asp-route-id="@Model.ProductId"
+                           class="btn btn-outline-primary">
+                            <i class="fas fa-plus-circle"></i> Thêm biến thể mới
+                        </a>
+                    </div>
+                }
+
                 <!-- Nút hành động -->
                 <div class="d-flex justify-content-between mt-4">
                     <a asp-action="Index" class="btn btn-outline-secondary">
@@ -200,4 +239,104 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        function previewMain(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('mainPreview');
+                output.src = reader.result;
+                output.classList.remove('d-none');
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalImg = document.getElementById('detailModalImg');
+            document.querySelectorAll('.border.rounded.p-1 img').forEach(function (img) {
+                img.addEventListener('click', function () {
+                    modalImg.src = this.src;
+                    var detailImageModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('detailImageModal'));
+                    detailImageModal.show();
+                });
+            });
+        });
+    </script>
+    <script>
+        async function deleteImage(imageId, productId) {
+            if (!confirm("Bạn chắc chắn muốn xoá ảnh chi tiết này?")) return;
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+            const response = await fetch('/Product/DeleteImage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': token
+                },
+                body: `imageId=${imageId}&productId=${productId}`
+            });
+
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert("Lỗi xoá ảnh chi tiết.");
+            }
+        }
+    </script>
+
+    <script>
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function unformatNumber(formatted) {
+            return formatted.replace(/\D/g, '');
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const priceInput = document.querySelector('.price-format');
+
+            // Format khi nhập
+            priceInput?.addEventListener('input', function () {
+                const selectionStart = this.selectionStart;
+                const raw = unformatNumber(this.value);
+                this.value = formatNumber(raw);
+                this.setSelectionRange(selectionStart, selectionStart);
+            });
+
+            // Unformat khi submit form
+            const form = priceInput?.closest('form');
+            form?.addEventListener('submit', function () {
+                if (priceInput) {
+                    priceInput.value = unformatNumber(priceInput.value);
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        async function deleteVariant(variantId) {
+            if (!confirm("Bạn chắc chắn muốn xoá biến thể này?")) return;
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+            const response = await fetch('/Product/DeleteVariant', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': token
+                },
+                body: `id=${variantId}`
+            });
+
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert("Lỗi xoá biến thể.");
+            }
+        }
+    </script>
+
+
 }

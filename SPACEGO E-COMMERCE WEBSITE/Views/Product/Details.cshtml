@@ -38,6 +38,8 @@
                         </div>
                         <div class="col-md-7">
                             <dl class="row mb-0">
+                                <dt class="col-sm-4">Mã sản phẩm</dt>
+                                <dd class="col-sm-8 fw-semibold">@Model.ProductId</dd>
                                 <dt class="col-sm-4">Tên sản phẩm</dt>
                                 <dd class="col-sm-8 fw-semibold">@Model.ProductName</dd>
                                 <dt class="col-sm-4">Mô tả</dt>
@@ -54,11 +56,11 @@
                                 <dd class="col-sm-8">
                                     @if (Model.isAvailable)
                                     {
-                                        <span class="badge bg-success">Còn hàng</span>
+                                        <span class="badge bg-success">Đang hiển thị</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-danger">Hết hàng</span>
+                                        <span class="badge bg-danger">Đang tạm ẩn</span>
                                     }
                                 </dd>
                             </dl>
