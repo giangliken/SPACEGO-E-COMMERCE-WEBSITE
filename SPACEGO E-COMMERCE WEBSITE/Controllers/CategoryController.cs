@@ -24,7 +24,6 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                     .ToList();
             }
 
-            ViewData["CurrentFilter"] = searchString; // Giữ giá trị search khi trả lại view
             return View(category);
         }
 
