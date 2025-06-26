@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
@@ -8,6 +9,8 @@ using IEmailSender = SPACEGO_E_COMMERCE_WEBSITE.Repository.IEmailSender;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
+    [Authorize(SD.Role_Admin)]
+
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;

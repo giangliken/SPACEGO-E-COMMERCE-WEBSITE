@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
@@ -8,6 +9,8 @@ using System.Text.RegularExpressions;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
+    [Authorize(SD.Role_Admin)]
+
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;

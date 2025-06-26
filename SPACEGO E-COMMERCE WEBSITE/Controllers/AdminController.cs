@@ -4,9 +4,10 @@ using SPACEGO_E_COMMERCE_WEBSITE.Models;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
+    [Authorize(SD.Role_Admin)]
+
     public class AdminController : Controller
     {
-        [Authorize(SD.Role_Admin)]
         public IActionResult Index()
         {
             return View();

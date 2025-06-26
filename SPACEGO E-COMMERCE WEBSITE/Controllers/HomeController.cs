@@ -86,6 +86,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
             return View(model);
         }
+
+        [Authorize]
         public async Task<IActionResult> Cart()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -104,6 +106,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
             return View(cart);
         }
+
+        [Authorize]
 
         public async Task<IActionResult> AddToCart(int id)
         {
@@ -286,6 +290,12 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         {
             return View();
         }
+
+        public IActionResult NotFound()
+        {
+            return View("NotFound");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

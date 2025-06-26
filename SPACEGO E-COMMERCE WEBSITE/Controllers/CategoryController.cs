@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
+    [Authorize(SD.Role_Admin)]
+
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
