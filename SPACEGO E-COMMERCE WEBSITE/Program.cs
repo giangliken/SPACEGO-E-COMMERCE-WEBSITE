@@ -67,6 +67,7 @@ builder.Services.AddAuthorization(options =>
 // Add remaining services
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
