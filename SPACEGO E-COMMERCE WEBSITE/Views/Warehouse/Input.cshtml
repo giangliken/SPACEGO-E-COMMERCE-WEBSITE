@@ -1,0 +1,41 @@
+﻿@using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel
+@model WarehouseInputViewModel
+@{
+    ViewData["Title"] = "Nhập hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+@if (TempData["Check"] != null)
+{
+    <div class="alert alert-warning">@TempData["Check"]</div>
+}
+
+
+    <h2 class="text-primary">Nhập hàng</h2>
+    <form asp-action="InputPost" method="post">
+        <input type="hidden" asp-for="VariantId" />
+        <input type="hidden" asp-for="ProductId" />
+        <input type="hidden" name="isVariant" value="@(Model.VariantId.HasValue.ToString().ToLower())" />
+
+
+        <div class="mb-3">
+            <label class="form-label">Sản phẩm</label>
+            <input class="form-control" value="@Model.ProductName (@Model.VariantDisplay)" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tồn kho hiện tại</label>
+            <input class="form-control" value="@Model.CurrentQuantity" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="InputQuantity" class="form-label">Số lượng nhập thêm</label>
+            <input asp-for="InputQuantity" class="form-control" />
+            <span asp-validation-for="InputQuantity" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Xác nhận nhập</button>
+        <a asp-controller="Warehouse" asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>

@@ -1,0 +1,52 @@
+﻿@using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel
+@model WarehouseItemViewModel
+@{
+    ViewData["Title"] = "Chi tiết kho hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary text-center mb-4"><i class="fas fa-box"></i> Chi tiết kho hàng</h2>
+
+    <div class="card shadow-sm p-4">
+        <dl class="row">
+            <dt class="col-sm-3">Mã sản phẩm:</dt>
+            <dd class="col-sm-9">@Model.ProductId</dd>
+
+            <dt class="col-sm-3">Tên sản phẩm:</dt>
+            <dd class="col-sm-9">@Model.ProductName</dd>
+
+            <dt class="col-sm-3">Biến thể:</dt>
+            <dd class="col-sm-9">
+                @if (Model.VariantDisplay == "-")
+                {
+                    <span class="badge bg-info">Không có biến thể</span>
+                }
+                else
+                {
+                    @Model.VariantDisplay
+                }
+            </dd>
+
+            <dt class="col-sm-3">Số lượng:</dt>
+            <dd class="col-sm-9">@Model.Quantity</dd>
+
+            <dt class="col-sm-3">Giá:</dt>
+            <dd class="col-sm-9">@Model.Price.ToString("N0") ₫</dd>
+
+            <dt class="col-sm-3">Trạng thái:</dt>
+            <dd class="col-sm-9">
+                @{
+                    var statusColor = Model.Status switch
+                    {
+                        "Hết hàng" => "danger",
+                        "Sắp hết" => "warning",
+                        _ => "success"
+                    };
+                }
+                <span class="badge bg-@statusColor">@Model.Status</span>
+            </dd>
+        </dl>
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+    </div>
+</div>

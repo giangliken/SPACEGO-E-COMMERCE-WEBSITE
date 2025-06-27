@@ -1,0 +1,175 @@
+﻿@using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel
+@model List<WarehouseItemViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý kho hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var categories = ViewBag.Categories as List<Category>;
+    var brands = ViewBag.Brands as List<Brand>;
+}
+
+<div class="container">
+    @if (TempData["Success"] != null)
+    {
+        <div id="alertBox" class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <script>
+            setTimeout(function () {
+                var alert = document.getElementById("alertBox");
+                if (alert) {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                    setTimeout(() => alert.remove(), 500); // Xoá khỏi DOM sau khi ẩn
+                }
+            }, 5000); // ⏱ 5s
+        </script>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-4 text-primary text-center">QUẢN LÝ TỒN KHO</h2>
+        <a asp-action="ExportToExcel" class="btn btn-success mb-3">
+            <i class="fa-solid fa-file-import me-2"></i>Xuất dữ liệu ra Excel
+        </a>
+    </div>
+    @{
+        var totalQuantity = Model.Sum(x => x.Quantity);
+        var totalPrice = Model.Sum(x => x.Price);
+        var lowStockCount = Model.Count(x => x.Quantity < 10);
+    }
+    
+
+    <div class="row mb-4 justify-content-center">
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center border-0 rounded-4" style="background-color: #f8f9fc;">
+                <div class="card-body">
+                    <h2 class="fw-bold text-primary">@totalQuantity</h2>
+                    <div class="text-secondary">Tổng sản phẩm</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center border-0 rounded-4" style="background-color: #f8f9fc;">
+                <div class="card-body">
+                    <h2 class="fw-bold text-primary">@totalPrice.ToString("N0") ₫</h2>
+                    <div class="text-secondary">Tổng giá trị</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center border-0 rounded-4" style="background-color: #f8f9fc;">
+                <div class="card-body">
+                    <h2 class="fw-bold text-danger">@lowStockCount</h2>
+                    <div class="text-secondary">Sản phẩm sắp hết (&#60; 10)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form asp-action="Index" method="get" class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input type="text" name="searchString" class="form-control"
+                   placeholder="Tìm theo tên hoặc mã sản phẩm..."
+                   value="@Context.Request.Query["searchString"]" />
+        </div>
+        <div class="col-md-3">
+        <select class="form-select" name="categoryId">
+            <option value="">-- Chọn danh mục --</option>
+                @foreach (var category in categories)
+                {
+                    var selected = Context.Request.Query["categoryId"] == category.CategoryId.ToString() ? "selected" : "";
+                    <option value="@category.CategoryId" selected="@selected">@category.CategoryName</option>
+                }
+
+        </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" name="brandId">
+                <option value="">-- Chọn nhãn hiệu --</option>
+                    @foreach (var brand in brands)
+                    {
+                        var selected = Context.Request.Query["brandId"] == brand.BrandId.ToString() ? "selected" : "";
+                        <option value="@brand.BrandId" selected="@selected">@brand.BrandName</option>
+                    }
+
+            </select>
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Tìm
+            </button>
+        </div>
+        <div class="col-auto">
+            <a asp-action="Index" class="btn btn-secondary">Xóa lọc</a>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center">Mã sản phẩm</th>
+                <th class="text-center">Tên sản phẩm</th>
+                <th class="text-center">Biến thể</th>
+                <th class="text-center">Số lượng</th>
+                <th class="text-center">Trạng thái</th>
+                <th class="text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var status = item.Quantity == 0 ? "Hết hàng" : item.Quantity <= 5 ? "Sắp hết" : "Còn hàng";
+                var rowClass = item.Quantity == 0 ? "table-danger" : item.Quantity <= 5 ? "table-warning" : "";
+
+                <tr class="@rowClass">
+                    <td class="text-center">@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td class="text-center">
+                        @if (@item.VariantDisplay == "-")
+                        {
+                            <span class="badge bg-info">Không có biến thể</span>
+                        }
+                        else
+                        {
+                            <span>@item.VariantDisplay</span>
+                        }
+
+                    </td>
+                    <td class ="text-center">@item.Quantity</td>
+                    <td class="text-center">@status</td>
+                    <td class="text-center">
+                        @{
+                            var isVariant = item.VariantId.HasValue;
+                            var inputId = isVariant ? item.VariantId.Value : int.Parse(item.ProductId);
+                        }
+                        <a asp-controller="Warehouse" asp-action="Input"
+                           asp-route-id="@inputId"
+                           asp-route-isVariant="@isVariant"
+                           class="btn btn-sm btn-warning me-1" title="Nhập kho">
+                            <i class="fa-solid fa-file-import"></i>
+                        </a>
+
+
+
+
+                        @{
+                            var itemId = item.VariantId ?? int.Parse(item.ProductId);
+                        }
+                        <a asp-action="Details" asp-route-id="@itemId" class="btn btn-sm btn-info me-1" title="Xem chi tiết">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+                        <a asp-action="ResetPassword" asp-route-id="" class="btn btn-sm btn-secondary me-1" title="Xuất kho">
+                            <i class="fa-solid fa-file-export"></i>
+                        </a>
+
+                    
+
+         
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
