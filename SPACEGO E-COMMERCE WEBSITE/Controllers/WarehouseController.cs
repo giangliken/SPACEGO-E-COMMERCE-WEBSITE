@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using System.Security.Claims;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
@@ -15,13 +16,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IBrandRepository _brandRepository;
         private readonly ICategoryRepository _categoryRepository;
-
-        public WarehouseController(IProductVariantRepository productVariantRepository, IProductRepository productRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository)
+        private readonly IActivityLogService _activityLogService;
+        public WarehouseController(IProductVariantRepository productVariantRepository, IProductRepository productRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository, IActivityLogService activityLogService)
         {
             _productVariantRepository = productVariantRepository;
             _productRepository = productRepository;
             _brandRepository = brandRepository;
             _categoryRepository = categoryRepository;
+            _activityLogService = activityLogService;
         }
         //public async Task<IActionResult> Index()
         //{
@@ -233,6 +235,15 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             }
 
             TempData["Success"] = "Nhập hàng thành công!";
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Import",
+                tableName: model.IsVariant ? "ProductVariant" : "Product",
+                objectId: model.IsVariant ? model.VariantId?.ToString() : model.ProductId.ToString(),
+                description: $"Nhập thêm {model.InputQuantity} đơn vị vào {(model.IsVariant ? "biến thể" : "sản phẩm")}."
+            );
+
             return RedirectToAction("Index");
         }
 
