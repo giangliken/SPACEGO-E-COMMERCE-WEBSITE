@@ -36,17 +36,13 @@
                                 </p>
                             </div>
 
-                            
-                            <div class="card-footer bg-transparent text-center border-top-0 d-flex flex-row justify-content-center align-items-center">
-                                <!-- Nút thêm vào giỏ -->
+
+                            <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
                                 <a href="@Url.Action("AddToCart", "Home", new { id = item.ProductId })"
-                                   class="btn btn-outline-primary rounded-pill flex-fill mx-2 py-2 d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-cart-plus"></i> 
-                                </a>
-                                <!-- Nút mua ngay -->
-                                <a href="@Url.Action("Checkout", "Order", new { id = item.ProductId })"
-                                   class="btn btn-primary rounded-pill flex-fill mx-2 py-2 d-flex align-items-center justify-content-center">
-                                    Mua ngay
+                                   class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
+                                   style="font-weight: 600; font-size: 1rem;">
+                                    <i class="fas fa-cart-plus fa-lg"></i>
+                                    Thêm vào giỏ
                                 </a>
                             </div>
                         </div>

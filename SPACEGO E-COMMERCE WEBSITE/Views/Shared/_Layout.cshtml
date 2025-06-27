@@ -38,55 +38,72 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Menu -->
+                    <!-- Navigation menu with dropdown -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item mx-1">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-laptop me-2"></i> LAPTOP
-                            </a>
-                        </li>
-                        <li class="nav-item mx-1">
-                            <a class="nav-link" href="#">
-                                <i class="fa-solid fa-mobile-alt me-2"></i> ĐIỆN THOẠI
-                            </a>
-                        </li>
-                        <li class="nav-item mx-1">
-                            <a class="nav-link" href="#">
-                                <i class="fa-solid fa-watch me-2"></i> SMARTWATCH
-                            </a>
-                        </li>
+                        <!-- Dropdown menu for categories -->
                         <li class="nav-item dropdown mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                               aria-label="Danh mục sản phẩm">
                                 <i class="fas fa-list me-1"></i> Danh mục
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-laptop me-2"></i> Điện tử</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-tshirt me-2"></i> Thời trang</a></li>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" aria-label="Laptop Category"><i class="fas fa-laptop me-2"></i> Laptop</a></li>
+                                <li><a class="dropdown-item" href="#" aria-label="Mobile Category"><i class="fa-solid fa-mobile-alt me-2"></i> Điện thoại</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-ellipsis-h me-2"></i> Khác</a></li>
+                                <li><a class="dropdown-item" href="#" aria-label="Other Categories"><i class="fas fa-ellipsis-h me-2"></i> Khác</a></li>
                             </ul>
+                        </li>
+                        </li>
+                        <!-- Store Locator -->
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="#" aria-label="Store Locator">
+                                <i class="fas fa-store me-2"></i> Cửa hàng gần bạn
+                            </a>
+                        </li>
+                        <!-- Order Tracking -->
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="#" aria-label="Order Tracking">
+                                <i class="fas fa-box-open me-2"></i> Đơn hàng
+                            </a>
                         </li>
                     </ul>
 
-                    <!-- Search form -->
-                    <form class="d-flex me-3 my-2 my-lg-0" role="search">
-                        <div class="input-group">
-                            <input class="form-control" type="search" placeholder="Tìm sản phẩm..." aria-label="Search">
-                            <button class="btn btn-light" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </form>
+                    <!-- Search form with improved formatting and structure -->
+                    <div class="d-flex align-items-center">
+                        <form class="d-flex me-3 my-2 my-lg-0" role="search" method="get" asp-controller="Home" asp-action="Search" style="height: 38px;">
+                            <!-- Input group for search bar and button -->
+                            <div class="input-group h-100">
+                                <!-- Search input field -->
+                                <input class="form-control"
+                                       type="search"
+                                       name="query"
+                                       placeholder="Tìm sản phẩm..."
+                                       aria-label="Search">
+                                <!-- Search button wrapper -->
+                                <div class="search-btn-wrapper">
+                                    <button class="btn btn-light h-100"
+                                            type="submit"
+                                            style="border: 1px solid black;">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
 
-                    <!-- Cart & User -->
-                    <div class="d-flex">
-                        <a asp-controller="Home" asp-action="Cart" class="btn btn-outline-dark me-2 position-relative">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                @ViewBag.CartCount
-                            </span>
-                        </a>
-                        <partial name="_LoginPartial" />
+                        <!-- Cart & User -->
+                        <div class="d-flex align-items-center" style="height: 38px;">
+                            <a asp-controller="Home" asp-action="Cart" class="btn btn-outline-dark me-2 position-relative h-100 d-flex align-items-center">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    @ViewBag.CartCount
+                                </span>
+                            </a>
+                            <partial name="_LoginPartial" />
+                        </div>
                     </div>
                 </div>
             </div>
