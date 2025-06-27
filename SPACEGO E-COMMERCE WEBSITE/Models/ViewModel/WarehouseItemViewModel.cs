@@ -11,5 +11,7 @@
         public decimal Price { get; set; }
         public string Status { get; set; } // Còn hàng, Sắp hết, Hết hàng
 
+        public decimal TotalPrice => Price * Quantity;
+
     }
 }
