@@ -8,6 +8,7 @@
     <!-- Favicon -->
     <link rel="icon" href="~/assets/images/Logo/Icon_ko_phong.png" type="image/x-icon">
 
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -15,6 +16,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Custom CSS -->
+    <link href="~/css/_Layout.cshtml.css" rel="stylesheet" />
+
     <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/SPACEGO_E_COMMERCE_WEBSITE.styles.css" rel="stylesheet" asp-append-version="true" />
 
@@ -37,65 +40,26 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Menu -->
-                    <!-- Navigation menu with dropdown -->
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <!-- Dropdown menu for categories -->
-                        <li class="nav-item dropdown mx-1">
-                            <a class="nav-link dropdown-toggle"
-                               href="#"
-                               role="button"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false"
-                               aria-label="Danh mục sản phẩm">
-                                <i class="fas fa-list me-1"></i> Danh mục
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" aria-label="Laptop Category"><i class="fas fa-laptop me-2"></i> Laptop</a></li>
-                                <li><a class="dropdown-item" href="#" aria-label="Mobile Category"><i class="fa-solid fa-mobile-alt me-2"></i> Điện thoại</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#" aria-label="Other Categories"><i class="fas fa-ellipsis-h me-2"></i> Khác</a></li>
-                            </ul>
-                        </li>
-                        </li>
-                        <!-- Store Locator -->
-                        <li class="nav-item mx-1">
-                            <a class="nav-link" href="#" aria-label="Store Locator">
-                                <i class="fas fa-store me-2"></i> Cửa hàng gần bạn
-                            </a>
-                        </li>
-                        <!-- Order Tracking -->
-                        <li class="nav-item mx-1">
-                            <a class="nav-link" href="#" aria-label="Order Tracking">
-                                <i class="fas fa-box-open me-2"></i> Đơn hàng
-                            </a>
-                        </li>
-                    </ul>
+                    
 
-                    <!-- Search form with improved formatting and structure -->
-                    <div class="d-flex align-items-center">
-                        <form class="d-flex me-3 my-2 my-lg-0" role="search" method="get" asp-controller="Home" asp-action="Search" style="height: 38px;">
-                            <!-- Input group for search bar and button -->
-                            <div class="input-group h-100">
-                                <!-- Search input field -->
+                    <!-- Search form căn giữa và kéo dài -->
+                    <div class="d-flex align-items-center flex-grow-1">
+                        <form class="d-flex mx-auto w-100" role="search" style="max-width:600px;" method="get" asp-controller="Home" asp-action="Search">
+                            <div class="input-group">
                                 <input class="form-control"
                                        type="search"
                                        name="query"
                                        placeholder="Tìm sản phẩm..."
                                        aria-label="Search">
-                                <!-- Search button wrapper -->
-                                <div class="search-btn-wrapper">
-                                    <button class="btn btn-light h-100"
-                                            type="submit"
-                                            style="border: 1px solid black;">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
+                                <button class="btn btn-light"
+                                        type="submit"
+                                        style="border: 1px solid black;">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
                         </form>
-
-                        <!-- Cart & User -->
-                        <div class="d-flex align-items-center" style="height: 38px;">
+                        <!-- Cart & User giữ nguyên -->
+                        <div class="d-flex align-items-center ms-3" style="height: 38px;">
                             <a asp-controller="Home" asp-action="Cart" class="btn btn-outline-dark me-2 position-relative h-100 d-flex align-items-center">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -108,6 +72,37 @@
                 </div>
             </div>
         </nav>
+        <nav class="bg-light border-top shadow-sm">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between">
+                    <!-- DANH MỤC -->
+                    <div class="dropdown">
+                        <button class="btn btn-teal dropdown-toggle" type="button" id="categoryMenu" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <i class="fas fa-bars me-2"></i> DANH MỤC
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="categoryMenu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-laptop me-2"></i> Laptop</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-mobile-alt me-2"></i> Điện thoại</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-ellipsis-h me-2"></i> Khác</a></li>
+                        </ul>
+                    </div>
+                    <!-- Menu chính căn giữa -->
+                    <ul class="nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index" style="color: black;">TRANG CHỦ</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="#" style="color: black;">GIỚI THIỆU</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" style="color: black;">HỖ TRỢ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" style="color: black;">BÀI VIẾT</a></li>
+                    </ul>
+                    <!-- Nếu muốn thêm gì bên phải, thêm vào đây -->
+                    <div style="width: 120px;"></div>
+                </div>
+            </div>
+        </nav>
+
     </header>
 
     <!-- Main content -->
