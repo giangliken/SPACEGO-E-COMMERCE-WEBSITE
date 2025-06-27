@@ -36,7 +36,7 @@
     </div>
     @{
         var totalQuantity = Model.Sum(x => x.Quantity);
-        var totalPrice = Model.Sum(x => x.Price);
+        var totalPrice = Model.Sum(x => x.TotalPrice);
         var lowStockCount = Model.Count(x => x.Quantity < 10);
     }
     
