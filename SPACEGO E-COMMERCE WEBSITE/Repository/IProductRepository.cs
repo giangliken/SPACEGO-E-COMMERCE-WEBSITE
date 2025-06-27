@@ -9,5 +9,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
         Task AddAsync(Product product);
         Task UpdateAsync(Product product);
         Task DeleteAsync(int id);
+        Task<Product> GetProductWithDetailsAsync(int id); // ✅ Đúng chỗ
+
     }
 }

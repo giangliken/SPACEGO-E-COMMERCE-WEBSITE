@@ -51,5 +51,16 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<Product> GetProductWithDetailsAsync(int id)
+        {
+            return await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Category)
+                .Include(p => p.ImageUrls)
+                .Include(p => p.Variants).ThenInclude(v => v.Color)
+                .Include(p => p.Variants).ThenInclude(v => v.Capacity)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
+        }
+
     }
 }

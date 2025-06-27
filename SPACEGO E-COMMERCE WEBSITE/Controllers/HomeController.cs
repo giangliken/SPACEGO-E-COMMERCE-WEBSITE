@@ -77,24 +77,19 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
             ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
-            var product = await _productRepository.GetByIdAsync(id);
+
+            var product = await _productRepository.GetProductWithDetailsAsync(id); // dùng hàm mới đã thêm ở repo
             if (product == null)
             {
                 return NotFound();
             }
 
-            var productImages = await _productImageRepositoryproductImage.GetByProductIdAsync(id);
             var reviews = await _reviewRepositoryreview.GetByProductIdAsync(id);
+            ViewBag.Reviews = reviews;
 
-            var model = new ProductDetailViewModel
-            {
-                Product = product,
-                ProductImages = productImages.ToList(),
-                Reviews = reviews.ToList()
-            };
-
-            return View(model);
+            return View(product); // ✅ View nhận đúng @model Product
         }
+
 
         [Authorize]
         public async Task<IActionResult> Cart()
