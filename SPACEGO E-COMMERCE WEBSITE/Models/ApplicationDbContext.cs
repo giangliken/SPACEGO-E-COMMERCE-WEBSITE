@@ -36,6 +36,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         public DbSet<District> Districts { get; set; }
         public DbSet<Ward> Wards { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        //bảng lưu trữ hoạt động người dùng
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
 
     }
 }
