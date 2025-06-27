@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ActivityLog>
+
+<h2 class="mb-4 text-primary">
+    <i class="fas fa-clipboard-list me-2"></i> Nhật ký hoạt động
+</h2>
+
+<div class="table-responsive shadow rounded">
+    <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">⏰ Thời gian</th>
+                <th scope="col">👤 Người dùng</th>
+                <th scope="col">📁 Phạm vi</th>
+                <th scope="col">⚙️ Hành động</th>
+                <th scope="col">📝 Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in Model)
+            {
+                var (rowClass, icon) = log.ActionType switch
+                {
+                    "Import" => ("table-success", "fa-upload"),
+                    "Update" => ("table-warning", "fa-pen-to-square"),
+                    "Delete" => ("table-danger", "fa-trash"),
+                    _ => ("", "fa-info-circle")
+                };
+
+                <tr class="@rowClass">
+                    <td>@log.Timestamp.ToLocalTime().ToString("HH:mm dd/MM/yyyy")</td>
+                    <td>@log.UserName</td>
+                    <td>@log.TableName</td>
+                    <td>
+                        <i class="fas @icon me-1"></i> @log.ActionType
+                    </td>
+                    <td class="text-start">@log.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
