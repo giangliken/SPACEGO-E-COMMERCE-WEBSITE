@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +28,9 @@ builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<IReviewRepository, EFReviewRepository>();
 builder.Services.AddScoped<IActivityLogService, EFActivityLogService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-
+builder.Services.AddScoped<IProvinceRepository, EFProvinceRepository>();
+builder.Services.AddScoped<IDistrictRepository, EFDistrictRepository>();
+builder.Services.AddScoped<IWardRepository, EFWardRepository>();
 // Add authentication services
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -66,9 +70,13 @@ builder.Services.AddAuthorization(options =>
 });
 
 // Add remaining services
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .AddNewtonsoftJson();
+
 builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
