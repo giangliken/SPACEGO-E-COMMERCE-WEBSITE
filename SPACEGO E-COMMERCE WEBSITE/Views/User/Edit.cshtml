@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Chỉnh sửa người dùng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var roles = new[] { SD.Role_Admin, SD.Role_Customer, SD.Role_Employee };
+
 }
 
 <div class="container">
@@ -28,9 +30,28 @@
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Quyền hạn</label>
+            <select name="role" class="form-control">
+                <option value="">-- Chọn quyền hạn --</option>
+                @foreach (var role in roles)
+                {
+                    @if (ViewBag.CurrentRoles != null && ViewBag.CurrentRoles.Contains(role))
+                    {
+                        <option value="@role" selected>@role</option>
+                    }
+                    else
+                    {
+                        <option value="@role">@role</option>
+                    }
+                }
+            </select>
+        </div>
+
+
         <div class="mb-3 form-check">
             <input asp-for="IsActive" class="form-check-input" />
-            <label asp-for="IsActive" class="form-check-label">Hoạt động</label>
+            <label asp-for="IsActive" class="form-check-label">Tạm khóa</label>
         </div>
         <button type="submit" class="btn btn-warning">
             <i class="fa-solid fa-floppy-disk me-2"></i>Lưu thay đổi

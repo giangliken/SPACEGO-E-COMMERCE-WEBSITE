@@ -155,6 +155,46 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.ActivityLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ObjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ActivityLogs");
+                });
+
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -180,6 +220,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -193,7 +234,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Property<bool?>("Gender")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsActive")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -217,6 +258,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -269,6 +311,23 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.ToTable("Brands");
                 });
 
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Capacity", b =>
+                {
+                    b.Property<int>("CapacityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CapacityId"));
+
+                    b.Property<string>("CapacityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CapacityId");
+
+                    b.ToTable("Capacities");
+                });
+
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.CartItem", b =>
                 {
                     b.Property<int>("CartItemId")
@@ -312,6 +371,23 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Color", b =>
+                {
+                    b.Property<int>("ColorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ColorId"));
+
+                    b.Property<string>("ColorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ColorId");
+
+                    b.ToTable("Colors");
+                });
+
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.DetailCartItem", b =>
                 {
                     b.Property<int>("CartItemId")
@@ -333,6 +409,28 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.ToTable("DetailsCartItems");
                 });
 
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.District", b =>
+                {
+                    b.Property<int>("DistrictID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DistrictID"));
+
+                    b.Property<string>("DistrictName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProvinceID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DistrictID");
+
+                    b.HasIndex("ProvinceID");
+
+                    b.ToTable("Districts");
+                });
+
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -341,19 +439,41 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
+                    b.Property<string>("AddressDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DistrictID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("OrderStatus")
-                        .HasColumnType("bit");
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShippingAddress")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("ShippingFee")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -362,9 +482,19 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("WardID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("OrderId");
 
+                    b.HasIndex("DistrictID");
+
+                    b.HasIndex("ProvinceId");
+
                     b.HasIndex("UserId");
+
+                    b.HasIndex("WardID");
 
                     b.ToTable("Orders");
                 });
@@ -401,6 +531,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HasVariants")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -415,7 +548,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductQuantity")
+                    b.Property<int?>("ProductQuantity")
                         .HasColumnType("int");
 
                     b.Property<bool>("isAvailable")
@@ -452,6 +585,57 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.ToTable("ProductImages");
                 });
 
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant", b =>
+                {
+                    b.Property<int>("ProductVariantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductVariantId"));
+
+                    b.Property<int>("CapacityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ColorId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductVariantId");
+
+                    b.HasIndex("CapacityId");
+
+                    b.HasIndex("ColorId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductVariants");
+                });
+
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Province", b =>
+                {
+                    b.Property<int>("ProvinceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProvinceId"));
+
+                    b.Property<string>("ProvinceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProvinceId");
+
+                    b.ToTable("Provinces");
+                });
+
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Review", b =>
                 {
                     b.Property<int>("ReviewId")
@@ -484,6 +668,25 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Ward", b =>
+                {
+                    b.Property<string>("WardID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DistrictID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WardName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("WardID");
+
+                    b.HasIndex("DistrictID");
+
+                    b.ToTable("Wards");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -567,15 +770,50 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Order", b =>
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.District", b =>
                 {
-                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser", "User")
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Province", "Province")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ProvinceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Order", b =>
+                {
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Province", "Province")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Ward", "Ward")
+                        .WithMany()
+                        .HasForeignKey("WardID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("District");
+
+                    b.Navigation("Province");
+
                     b.Navigation("User");
+
+                    b.Navigation("Ward");
                 });
 
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.OrderProduct", b =>
@@ -627,6 +865,33 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.ProductVariant", b =>
+                {
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Capacity", "Capacity")
+                        .WithMany()
+                        .HasForeignKey("CapacityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Color", "Color")
+                        .WithMany()
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Product", "Product")
+                        .WithMany("Variants")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Capacity");
+
+                    b.Navigation("Color");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Review", b =>
                 {
                     b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.Product", "Product")
@@ -646,6 +911,17 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Ward", b =>
+                {
+                    b.HasOne("SPACEGO_E_COMMERCE_WEBSITE.Models.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("District");
+                });
+
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.CartItem", b =>
                 {
                     b.Navigation("DetailCartItems");
@@ -659,6 +935,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Migrations
             modelBuilder.Entity("SPACEGO_E_COMMERCE_WEBSITE.Models.Product", b =>
                 {
                     b.Navigation("ImageUrls");
+
+                    b.Navigation("Variants");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,14 +1,66 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\TAN TAI\\OneDrive\\Desktop\\SPACEGO-LAPTRINHWEB\\SPACEGO-E-COMMERCE-WEBSITE\\",
+  "WorkspaceRootPath": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|c:\\users\\tan tai\\onedrive\\desktop\\spacego-laptrinhweb\\spacego-e-commerce-website\\spacego e-commerce website\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|c:\\users\\tan tai\\onedrive\\desktop\\spacego-laptrinhweb\\spacego-e-commerce-website\\spacego e-commerce website\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\models\\orderproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\models\\orderproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\views\\user\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\user\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\views\\user\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\user\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\controllers\\warehousecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\controllers\\warehousecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\views\\user\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\user\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\views\\warehouse\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\warehouse\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|d:\\tai lieu hoc tap\\lap trinh web\\do an\\spacego-e-commerce-website\\spacego-e-commerce-website\\spacego e-commerce website\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06B16A1B-320C-49F1-B48A-0B6FA7D10594}|SPACEGO E-COMMERCE WEBSITE\\SPACEGO E-COMMERCE WEBSITE.csproj|solutionrelative:spacego e-commerce website\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,40 +70,205 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\TAN TAI\\OneDrive\\Desktop\\SPACEGO-LAPTRINHWEB\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\TAN TAI\\OneDrive\\Desktop\\SPACEGO-LAPTRINHWEB\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-03T08:03:19.794Z",
+              "DocumentIndex": 0,
+              "Title": "Order.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Models\\Order.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Order.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Models\\Order.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAA0wCsAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T19:04:09.232Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\TAN TAI\\OneDrive\\Desktop\\SPACEGO-LAPTRINHWEB\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\TAN TAI\\OneDrive\\Desktop\\SPACEGO-LAPTRINHWEB\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAAeAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "OrderProduct.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\OrderProduct.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Models\\OrderProduct.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\OrderProduct.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Models\\OrderProduct.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T08:03:11.4Z",
+              "WhenOpened": "2025-06-27T19:04:01.666Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_LoginPartial.cshtml",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_LoginPartial.cshtml",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_LoginPartial.cshtml",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAUwBwAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-27T18:51:37.306Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-27T18:51:26.446Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Index.cshtml",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Index.cshtml",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Index.cshtml",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Index.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-27T18:11:48.61Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Program.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Program.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Program.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Program.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAswFEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T17:58:40.041Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Edit.cshtml",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Edit.cshtml",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Edit.cshtml",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Edit.cshtml",
+              "ViewState": "AgIAACYAAAAAAAAAAAAQwDUAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-27T17:46:10.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Create.cshtml",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Create.cshtml",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Create.cshtml",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\User\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-27T17:23:18.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Controllers\\UserController.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAOYAAAAAAAAAAAAQwPgAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T17:21:37.406Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Post.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Post.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Models\\Post.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Post.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Models\\Post.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T17:13:53.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Brand.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Brand.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Models\\Brand.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Brand.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Models\\Brand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T17:11:29.581Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Comment.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Models\\Comment.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Models\\Comment.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Models\\Comment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T17:10:07.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Warehouse\\Index.cshtml",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\Warehouse\\Index.cshtml",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Warehouse\\Index.cshtml",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\Warehouse\\Index.cshtml",
+              "ViewState": "AgIAAFUAAAAAAAAAAAAUwF8AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-27T16:49:40.813Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "WarehouseController.cs",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Controllers\\WarehouseController.cs",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Controllers\\WarehouseController.cs",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Controllers\\WarehouseController.cs",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Controllers\\WarehouseController.cs",
+              "ViewState": "AgIAAB0BAAAAAAAAAAAAADIBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T16:48:54.98Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "D:\\Tai Lieu Hoc Tap\\Lap Trinh Web\\Do An\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO-E-COMMERCE-WEBSITE\\SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "SPACEGO E-COMMERCE WEBSITE\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAHQAAAAAAAAAAAAQwIUAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-27T16:16:52.954Z",
               "EditorCaption": ""
             }
           ]

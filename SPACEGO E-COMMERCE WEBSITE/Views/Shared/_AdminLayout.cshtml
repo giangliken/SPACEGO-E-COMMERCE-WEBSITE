@@ -28,7 +28,7 @@
             background-color: #343a40;
         }
 
-            .sidebar .nav-link {
+          .sidebar .nav-link {
                 color: #fff;
             }
 
@@ -77,9 +77,9 @@
             .nav-link:hover {
                 background-color: #495057;
             }
-    </style>
 
     </style>
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -130,6 +130,31 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/Admin/Order" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Order") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fa-solid fa-truck-fast me-2"></i>Tra cứu vận đơn
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Order" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Order") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fa-solid fa-ticket me-2"></i>Mã giảm giá
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Order" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Order") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fa-solid fa-newspaper me-2"></i>Bài viết
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Order" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Order") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fa-solid fa-comment"></i>Bình luận
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Order" class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Order") ? "active text-white bg-primary" : "text-white")">
+                        <i class="fa-brands fa-rocketchat me-2"></i>CSKH
+                    </a>
+                </li>
+                <li>
                     <a href="/User/Index" class="nav-link @(Context.Request.Path.StartsWithSegments("/User/Index") ? "active text-white bg-primary" : "text-white")">
                         <i class="fas fa-user-circle me-2"></i> Người dùng
                     </a>
@@ -139,8 +164,6 @@
                         <i class="fas fa-clipboard-list me-2"></i>Nhật ký hệ thống
                     </a>
                 </li>
-
-               
             </ul>
 
         </div>

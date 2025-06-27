@@ -16,7 +16,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
         // Thêm người dùng mới
         Task AddUserAsync(ApplicationUser user);
         // Thêm người dùng với mật khẩu mặc định
-        Task CreateUserWithDefaultPasswordAsync(ApplicationUser user);
+        Task<bool> CreateUserWithDefaultPasswordAsync(ApplicationUser user);
 
         // Cập nhật thông tin người dùng
         Task UpdateUserAsync(ApplicationUser user);

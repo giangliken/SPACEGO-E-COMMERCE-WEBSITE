@@ -36,7 +36,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task CreateUserWithDefaultPasswordAsync(ApplicationUser user)
+        public async Task<bool> CreateUserWithDefaultPasswordAsync(ApplicationUser user)
         {
             user.UserName = user.Email.Split('@')[0];
             user.CreatedDate = DateTime.Now;
@@ -45,11 +45,12 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
             var result = await _userManager.CreateAsync(user, "Abc@123");
             if (!result.Succeeded)
             {
-                throw new Exception("Lỗi tạo user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+                return false;
             }
 
             // Gán role nếu cần
-            await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+            //await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+            return true;
         }
 
         public async Task UpdateUserAsync(ApplicationUser user)

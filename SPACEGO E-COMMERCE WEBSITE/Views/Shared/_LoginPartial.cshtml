@@ -17,11 +17,15 @@
                         <i class="fas fa-address-card"></i> Thông tin cá nhân
                     </a>
                 </li>
+                @if (User.IsInRole("Customer"))
+                {
+                    <li>
+                        <a class="dropdown-item" asp-area="Identity" asp-page="">
+                            <i class="fas fa-box-open"></i> Đơn hàng đã đặt
+                        </a>
+                    </li>
+                }
                 <li>
-                    <a class="dropdown-item" asp-area="Identity" asp-page="">
-                        <i class="fas fa-box-open"></i> Đơn hàng đã đặt
-                    </a>
-                </li>
                 <li>
                     <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
                         <i class="fas fa-user-lock"></i> Đổi mật khẩu

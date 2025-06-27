@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SPACEGO E-COMMERCE WEBSITE")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac43f7a0c0441fe0aa2de7ecdb791b6c91c32b76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01d40ffa7fdca1196a3ae375622b8445400e61dc")]
 [assembly: System.Reflection.AssemblyProductAttribute("SPACEGO E-COMMERCE WEBSITE")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SPACEGO E-COMMERCE WEBSITE")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

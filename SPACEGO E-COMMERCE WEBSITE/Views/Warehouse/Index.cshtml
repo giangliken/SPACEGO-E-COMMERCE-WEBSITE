@@ -74,26 +74,38 @@
                    value="@Context.Request.Query["searchString"]" />
         </div>
         <div class="col-md-3">
-        <select class="form-select" name="categoryId">
-            <option value="">-- Chọn danh mục --</option>
+            <select class="form-select" name="categoryId">
+                <option value="">-- Chọn danh mục --</option>
                 @foreach (var category in categories)
                 {
-                    var selected = Context.Request.Query["categoryId"] == category.CategoryId.ToString() ? "selected" : "";
-                    <option value="@category.CategoryId" selected="@selected">@category.CategoryName</option>
+                    if (Context.Request.Query["categoryId"] == category.CategoryId.ToString())
+                    {
+                        <option value="@category.CategoryId" selected>@category.CategoryName</option>
+                    }
+                    else
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
                 }
+            </select>
 
-        </select>
         </div>
         <div class="col-md-3">
             <select class="form-select" name="brandId">
                 <option value="">-- Chọn nhãn hiệu --</option>
-                    @foreach (var brand in brands)
+                @foreach (var brand in brands)
+                {
+                    if (Context.Request.Query["brandId"] == brand.BrandId.ToString())
                     {
-                        var selected = Context.Request.Query["brandId"] == brand.BrandId.ToString() ? "selected" : "";
-                        <option value="@brand.BrandId" selected="@selected">@brand.BrandName</option>
+                        <option value="@brand.BrandId" selected>@brand.BrandName</option>
                     }
-
+                    else
+                    {
+                        <option value="@brand.BrandId">@brand.BrandName</option>
+                    }
+                }
             </select>
+
         </div>
 
         <div class="col-auto">

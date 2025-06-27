@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser>
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.ApplicationUser>
+@inject UserManager<ApplicationUser> _userManager
 
 @{
     ViewData["Title"] = "QUẢN LÝ NGƯỜI DÙNG";
@@ -6,12 +8,20 @@
 }
 
 <div class="container">
+
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-4 text-primary text-center">QUẢN LÝ NGƯỜI DÙNG</h2>
-        <a asp-action="Create" class="btn btn-success">
-            <i class="fas fa-user-plus"></i> Thêm người dùng mới
-        </a>
+        <h2 class="mb-0 text-primary">QUẢN LÝ NGƯỜI DÙNG</h2>
+
+        <div class="btn-group">
+            <a asp-action="Create" class="btn btn-success me-2">
+                <i class="fas fa-user-plus"></i> Thêm người dùng mới
+            </a>
+            <a asp-action="ExportToExcel" class="btn btn-primary">
+                <i class="fas fa-file-excel"></i> Xuất Excel
+            </a>
+        </div>
     </div>
+
 
     <form asp-action="Index" method="get" class="row g-2 mb-3">
         <div class="col-md-4">
@@ -48,6 +58,7 @@
                         <th scope="col">Số điện thoại</th>
                         <th scope="col">Email</th>
                         <th scope="col">Trạng thái</th>
+                        <th scope="col">Quyền hạn</th>
                         <th scope="col">Hành động</th>
                     </tr>
                 </thead>
@@ -62,13 +73,27 @@
                                 <td>@user.PhoneNumber</td>
                                 <td>@user.Email</td>
                                 <td>
-                                    @if (user.IsActive)
+                                    @if (!user.IsActive)
                                     {
                                         <span class="badge bg-success">Hoạt động</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-danger">Không hoạt động</span>
+                                        <span class="badge bg-danger">Tạm khóa</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (await _userManager.IsInRoleAsync(user, SD.Role_Admin))
+                                    {
+                                        <span class="badge bg-primary">Quản trị viên</span>
+                                    }
+                                    else if (await _userManager.IsInRoleAsync(user, SD.Role_Customer))
+                                    {
+                                        <span class="badge bg-info">Khách hàng</span>
+                                    }
+                                    else if (await _userManager.IsInRoleAsync(user, SD.Role_Employee))
+                                    {
+                                        <span class="badge bg-warning">Nhân viên</span>
                                     }
                                 </td>
                                 <td>

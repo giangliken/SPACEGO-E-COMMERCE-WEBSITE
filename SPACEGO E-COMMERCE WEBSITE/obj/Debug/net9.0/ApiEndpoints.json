@@ -1,1 +1,76 @@
-[]
+[
+  {
+    "ContainingType": "SPACEGO_E_COMMERCE_WEBSITE.Controllers.LocationController",
+    "Method": "GetAvailableServices",
+    "RelativePath": "api/Location/available-services",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "body",
+        "Type": "Newtonsoft.Json.Linq.JObject",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPACEGO_E_COMMERCE_WEBSITE.Controllers.LocationController",
+    "Method": "GetDistricts",
+    "RelativePath": "api/Location/districts/{provinceId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "provinceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPACEGO_E_COMMERCE_WEBSITE.Controllers.LocationController",
+    "Method": "GetProvinces",
+    "RelativePath": "api/Location/provinces",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPACEGO_E_COMMERCE_WEBSITE.Controllers.LocationController",
+    "Method": "GetShippingFee",
+    "RelativePath": "api/Location/shipping-fee",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "body",
+        "Type": "Newtonsoft.Json.Linq.JObject",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPACEGO_E_COMMERCE_WEBSITE.Controllers.LocationController",
+    "Method": "GetWards",
+    "RelativePath": "api/Location/wards/{districtId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "districtId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
