@@ -1,18 +1,235 @@
 ﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Order
 
 <h2>Thanh Toán</h2>
-<form asp-action="Checkout" method="post">
-    <div class="form-group">
-        <label asp-for="ShippingAddress"></label>
-        <input asp-for="ShippingAddress" class="form-control" />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<form asp-action="Checkout" method="post" class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="FullName" class="form-label">Họ và tên</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="PaymentMethod"></label>
-        <select asp-for="PaymentMethod" class="form-control">
+    <div class="col-md-6">
+        <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="PaymentMethod" class="form-label">Phương thức thanh toán</label>
+        <select asp-for="PaymentMethod" class="form-select">
+            <option value="">-- Chọn phương thức --</option>
             <option>Tiền mặt</option>
             <option>Chuyển khoản</option>
             <option>Ví điện tử</option>
         </select>
+        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Xác nhận đặt hàng</button>
+
+    <div class="col-md-12">
+        <label class="form-label">Phí vận chuyển</label>
+        <div id="shippingFeeDisplay" style="font-weight: bold;">0 đ</div>
+    </div>
+    <input type="hidden" name="ShippingFee" id="shippingFeeInput" value="0" />
+    <div class="row">
+        <!-- Cột 1: Tỉnh -->
+        <div class="col-md-4">
+            <label for="provinceSelect" class="form-label">Tỉnh/Thành phố</label>
+            <select asp-for="ProvinceId" id="provinceSelect" name="ProvinceId" class="form-select">
+            </select>
+            <span asp-validation-for="ProvinceId" class="text-danger"></span>
+        </div>
+
+        <!-- Cột 2: Huyện -->
+        <div class="col-md-4">
+            <label for="districtSelect" class="form-label">Quận/Huyện</label>
+            <select asp-for="DistrictID" id="districtSelect" name="DistrictID" class="form-select">
+            </select>
+            <span asp-validation-for="DistrictID" class="text-danger"></span>
+        </div>
+
+        <!-- Cột 3: Xã -->
+        <div class="col-md-4">
+            <label for="wardSelect" class="form-label">Xã/Phường/Thị Trấn</label>
+            <select asp-for="WardID" id="wardSelect" name="WardID" class="form-select">
+            </select>
+            <span asp-validation-for="WardID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <label asp-for="AddressDetail" class="form-label">Địa chỉ chi tiết</label>
+        <textarea asp-for="AddressDetail" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="AddressDetail" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Xác nhận đặt hàng</button>
+    </div>
+
 </form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+
+                function loadProvinces() {
+            $.get('/api/location/provinces', function (res) {
+                if (res && res.data) {
+                    const data = res.data;
+                    $('#provinceSelect').empty().append('<option value="">--Chọn Tỉnh/Thành phố--</option>');
+                    $.each(data, function (i, item) {
+                        $('#provinceSelect').append(`<option value="${item.ProvinceID}">${item.ProvinceName}</option>`);
+                    });
+                } else {
+                    console.error('Invalid response format:', res);
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('API call failed:', textStatus, errorThrown);
+            });
+
+        }
+
+        function loadDistricts(provinceId) {
+            $.get(`/api/location/districts/${provinceId}`, function (res) {
+                if (res && res.data) {
+                    const data = res.data;
+                    $('#districtSelect').empty().append('<option value="">--Chọn Quận/Huyện--</option>');
+                    $.each(data, function (i, item) {
+                        $('#districtSelect').append(`<option value="${item.DistrictID}">${item.DistrictName}</option>`);
+                    });
+                    $('#wardSelect').empty().append('<option value="">--Chọn Xã/Phường--</option>');
+                } else {
+                    console.error('Invalid response format:', res);
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('API call failed:', textStatus, errorThrown);
+            });
+        }
+
+        function loadWards(districtID) {
+            $.get(`/api/location/wards/${districtID}`, function (res) {
+                let result = res;
+                if (typeof res === "string") {
+                    try {
+                        result = JSON.parse(res);
+                    } catch (e) {
+                        console.error("Lỗi parse JSON:", e);
+                        $('#wardSelect').html('<option value="">--Không load được--</option>');
+                        return;
+                    }
+                }
+
+                if (result && result.data) {
+                    $('#wardSelect').empty().append('<option value="">--Chọn Xã/Phường--</option>');
+                    $.each(result.data, function (i, item) {
+                        $('#wardSelect').append(`<option value="${item.WardCode}">${item.WardName}</option>`);
+                    });
+                } else {
+                    console.error('Không có dữ liệu xã/phường:', result);
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('API call failed:', textStatus, errorThrown);
+            });
+        }
+
+        // gọi sau khi khai báo tất cả hàm trên
+                $(document).ready(function () {
+            console.log("jQuery is ready");
+            loadProvinces();
+
+            $('#provinceSelect').on('change', function () {
+                const provinceId = $(this).val();
+                console.log('Selected provinceId:', provinceId);
+                if (provinceId && provinceId !== "") {
+                    loadDistricts(provinceId);
+                } else {
+                    $('#districtSelect').empty().append('<option value="">--Chọn huyện--</option>');
+                    $('#wardSelect').empty().append('<option value="">--Chọn xã--</option>');
+                }
+            });
+
+            $('#districtSelect').on('change', function () {
+                const districtID = $(this).val();
+                if (districtID && districtID !== "") {
+                    loadWards(districtID);
+                } else {
+                    $('#wardSelect').empty().append('<option value="">--Chọn xã--</option>');
+                }
+            });
+
+            // ✅ TÍNH PHÍ VẬN CHUYỂN KHI CHỌN XONG XÃ/PHƯỜNG
+                    $('#wardSelect').on('change', function () {
+            const toWardCode = $(this).val();
+            const toDistrictId = $('#districtSelect').val();
+
+            if (toWardCode && toDistrictId) {
+                // 1. Gọi available-services để lấy service_id
+                $.ajax({
+                    url: '/api/location/available-services',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        from_district: 1792,
+                        to_district: parseInt(toDistrictId),
+                        shop_id: 192592
+                    }),
+                    success: function (serviceRes) {
+                        let services = serviceRes.data;
+                        if (!services || services.length === 0) {
+                            $('#shippingFeeDisplay').text("Không tìm thấy dịch vụ");
+                            return;
+                        }
+
+                        const service_id = services[0].service_id;
+
+                        // 2. Gọi shipping-fee với service_id vừa nhận
+                        $.ajax({
+                            url: '/api/location/shipping-fee',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                from_district_id: 1792,
+                                from_ward_code: "630305",
+                                service_id: service_id,
+                                to_district_id: parseInt(toDistrictId),
+                                to_ward_code: toWardCode,
+                                height: 50,
+                                length: 20,
+                                weight: 200,
+                                width: 20,
+                                insurance_value: 10000,
+                                cod_failed_amount: 2000,
+                                coupon: null,
+                                items: @Html.Raw(ViewBag.ShippingItemsJson ?? "[]")
+                            }),
+                            success: function (res) {
+                                let result = typeof res === "string" ? JSON.parse(res) : res;
+                                if (result?.data?.total) {
+                                    const fee = result.data.total;
+                                    $('#shippingFeeDisplay').text(fee.toLocaleString('vi-VN') + ' đ');
+                                    $('#shippingFeeInput').val(fee);
+                                } else {
+                                    $('#shippingFeeDisplay').text("Không xác định");
+                                }
+                            },
+                            error: function () {
+                                $('#shippingFeeDisplay').text("Lỗi khi tính phí");
+                            }
+                        });
+                    },
+                    error: function () {
+                        $('#shippingFeeDisplay').text("Lỗi khi lấy dịch vụ");
+                    }
+                });
+            } else {
+                $('#shippingFeeDisplay').text("0 đ");
+            }
+        });
+        });
+    </script>
+}
