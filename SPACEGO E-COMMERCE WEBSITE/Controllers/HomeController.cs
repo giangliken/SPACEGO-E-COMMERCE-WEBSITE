@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
@@ -22,12 +25,16 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private readonly IDetailCartItemRepository _detailCartItemRepositorydetailCartItem;
         private readonly IOrderProductRepository _orderProductRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly IProvinceRepository _provinceRepository;
+        private readonly IDistrictRepository _districtRepository;
+        private readonly IWardRepository _wardRepository;
 
         public HomeController(IProductRepository productRepository, ICategoryRepository categoryRepository,
                               IBrandRepository brandRepository, IProductImageRepository productImageRepositoryproductImage,
                               IReviewRepository reviewRepositoryreview, ICartItemRepository cartItemRepositorycartItem,
                               IDetailCartItemRepository detailCartItemRepositorydetailCartItem, IOrderRepository orderRepository,
-                              IOrderProductRepository orderProductRepository)
+                              IOrderProductRepository orderProductRepository, IProvinceRepository provinceRepository,
+                              IDistrictRepository districtRepository, IWardRepository wardRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -38,7 +45,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _detailCartItemRepositorydetailCartItem = detailCartItemRepositorydetailCartItem;
             _orderRepository = orderRepository;
             _orderProductRepository = orderProductRepository;
-
+            _provinceRepository = provinceRepository;
+            _districtRepository = districtRepository;
+            _wardRepository = wardRepository;
 
         }
 
@@ -220,63 +229,99 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return View("Cart", cart);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Checkout()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized();
-            }
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
             ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
-            if (cart == null || cart.DetailCartItems == null || !cart.DetailCartItems.Any())
-            {
-                return RedirectToAction("Cart");
-            }
+            if (cart == null || !cart.DetailCartItems.Any()) return RedirectToAction("Cart");
+
+            // Load địa chỉ mặc định (nếu cần)
+            ViewBag.Provinces = new SelectList(await _provinceRepository.GetAllAsync(), "ProvinceId", "ProvinceName");
+            ViewBag.Districts = new SelectList(await _districtRepository.GetAllAsync(), "DistrictID", "DistrictName");
+            ViewBag.Wards = new SelectList(await _wardRepository.GetAllAsync(), "WardID", "WardName");
+
+            // ✅ Tạo danh sách items cho phí vận chuyển
+            var shippingItems = cart.DetailCartItems
+    .Where(item => item.Product != null) // 👈 thêm dòng này cho an toàn
+    .Select(item => new {
+        name = item.Product.ProductName,
+        quantity = item.Quanity,
+        height = 10,
+        weight = 100,
+        length = 10,
+        width = 10
+    }).ToList();
+
+            ViewBag.ShippingItemsJson = JsonConvert.SerializeObject(shippingItems);
 
             ViewBag.Cart = cart;
-            return View(new Order()); // Trả về View có form thông tin người nhận nếu có
+            return View(new Order());
         }
+
         [HttpPost]
         public async Task<IActionResult> Checkout(Order order)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized();
-            }
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            // Lấy giỏ hàng hiện tại
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
             ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
-            if (cart == null || cart.DetailCartItems == null || !cart.DetailCartItems.Any())
-            {
-                return RedirectToAction("Cart");
-            }
+            if (cart == null || !cart.DetailCartItems.Any()) return RedirectToAction("Cart");
 
-            // Thiết lập thông tin đơn hàng
+            // ⚠️ Generate lại ShippingItemsJson trong cả hai trường hợp
+            var shippingItems = cart.DetailCartItems.Select(item => new
+            {
+                name = item.Product.ProductName,
+                quantity = item.Quanity,
+                height = 10,
+                weight = 100,
+                length = 10,
+                width = 10
+            }).ToList();
+            ViewBag.ShippingItemsJson = JsonConvert.SerializeObject(shippingItems);
+
             order.UserId = userId;
-            order.OrderDate = DateTime.Now;
-            order.OrderStatus = false; // Đơn mới đặt
-            order.Total = cart.TotalPrice;
-            order.OrderProducts = new List<OrderProduct>();
-
-            // Tạo danh sách sản phẩm trong đơn hàng
-            foreach (var item in cart.DetailCartItems)
+            if (!ModelState.IsValid)
             {
-                var orderProduct = new OrderProduct
+                foreach (var entry in ModelState)
                 {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quanity
-                };
-                order.OrderProducts.Add(orderProduct);
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        Console.WriteLine($"Field: {entry.Key} ❌ Error: {error.ErrorMessage}");
+                    }
+                }
+
+                ViewBag.Cart = cart;
+                ViewBag.ShippingItemsJson = JsonConvert.SerializeObject(shippingItems);
+
+                ViewBag.Provinces = new SelectList(await _provinceRepository.GetAllAsync(), "ProvinceId", "ProvinceName", order.ProvinceId);
+                var districts = order.ProvinceId > 0 ? await _districtRepository.GetByProvinceIdAsync(order.ProvinceId) : new List<District>();
+                ViewBag.Districts = new SelectList(districts, "DistrictID", "DistrictName", order.DistrictID);
+                var wards = order.DistrictID > 0 ? await _wardRepository.GetByDistrictIdAsync(order.DistrictID) : new List<Ward>();
+                ViewBag.Wards = new SelectList(wards, "WardID", "WardName", order.WardID);
+
+                return View(order);
             }
 
-            // Lưu vào DB
-            await _orderRepository.AddAsync(order);
+            // ✅ Đặt hàng hợp lệ
 
-            // Xoá giỏ hàng sau khi đặt
+            order.OrderDate = DateTime.Now;
+            order.OrderStatus = "Chờ xác nhận";
+
+            decimal shippingFee = order.ShippingFee ?? 0;
+            order.Total = (cart.TotalPrice ?? 0) + shippingFee;
+
+            order.OrderProducts = cart.DetailCartItems.Select(item => new OrderProduct
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quanity
+            }).ToList();
+
+            await _orderRepository.AddAsync(order);
             await _cartItemRepositorycartItem.DeleteAsync(cart.CartItemId);
 
             return RedirectToAction("OrderSuccess");
