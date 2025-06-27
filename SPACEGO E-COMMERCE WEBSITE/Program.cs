@@ -24,6 +24,7 @@ builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 builder.Services.AddScoped<IProductImageRepository, EFProductImageRepository>();
 builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<IReviewRepository, EFReviewRepository>();
+builder.Services.AddScoped<IActivityLogService, EFActivityLogService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 // Add authentication services
