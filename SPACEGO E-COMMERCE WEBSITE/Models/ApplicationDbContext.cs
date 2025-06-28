@@ -17,24 +17,6 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(d => new { d.OrderId, d.ProductId }); // Cấu hình khóa chính kết hợp
                                                               // ⚠️ Ngăn cascade delete gây lỗi
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Province)
-                .WithMany()
-                .HasForeignKey(o => o.ProvinceId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.District)
-                .WithMany()
-                .HasForeignKey(o => o.DistrictID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Nếu dùng Ward:
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Ward)
-                .WithMany()
-                .HasForeignKey(o => o.WardID)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
