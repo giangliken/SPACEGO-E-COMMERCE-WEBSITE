@@ -18,6 +18,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
            .Include(p => p.Brand)
            .Include(p => p.Category)
            .Include(p => p.ImageUrls)
+           .Include(p => p.Variants )
            .ToListAsync();
         }
 

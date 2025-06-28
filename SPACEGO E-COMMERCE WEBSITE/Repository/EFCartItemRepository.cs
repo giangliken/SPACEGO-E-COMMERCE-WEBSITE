@@ -32,10 +32,18 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
         public async Task<CartItem> GetActiveCartByUserIdAsync(string userId)
         {
             return await _context.CartItems
-                .Include(c => c.DetailCartItems)
-                    .ThenInclude(d => d.Product)
-                .FirstOrDefaultAsync(c => c.UserId == userId );
+            .Include(c => c.DetailCartItems)
+                .ThenInclude(d => d.Product)
+            .Include(c => c.DetailCartItems)
+                .ThenInclude(d => d.ProductVariant)
+                    .ThenInclude(v => v.Color) // 👈 PHẢI CÓ
+            .Include(c => c.DetailCartItems)
+                .ThenInclude(d => d.ProductVariant)
+                    .ThenInclude(v => v.Capacity) // 👈 PHẢI CÓ
+            .FirstOrDefaultAsync(c => c.UserId == userId);
+
         }
+
 
         public async Task AddAsync(CartItem cartItem)
         {
