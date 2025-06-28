@@ -106,11 +106,11 @@
                                     <a asp-action="ResetPassword" asp-route-id="@user.Id" class="btn btn-sm btn-secondary me-1" title="Đặt lại mật khẩu">
                                         <i class="fas fa-key"></i>
                                     </a>
-                                    <form asp-action="DeleteConfirmed" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này không?');">
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Xóa người dùng">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
+                                    <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger" title="Xóa người dùng">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+
+
                                 </td>
 
                             </tr>
