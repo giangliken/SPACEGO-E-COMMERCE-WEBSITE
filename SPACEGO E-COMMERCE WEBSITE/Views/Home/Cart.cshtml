@@ -25,6 +25,7 @@
                 <thead class="table-primary">
                     <tr>
                         <th class="p-3">Sản phẩm</th>
+                        <th class="p-3">Biến thể</th>
                         <th class="p-3">Số lượng</th>
                         <th class="p-3">Đơn giá</th>
                         <th class="p-3">Thành tiền</th>
@@ -36,9 +37,22 @@
                     {
                         <tr>
                             <td class="align-middle">@item.Product?.ProductName</td>
+                            <td class="align-middle">
+                                @if (item.ProductVariant != null)
+                                {
+                                    @((item.ProductVariant?.Color?.ColorName ?? "Không rõ") + " - " + (item.ProductVariant?.Capacity?.CapacityName ?? "Không rõ"))
+
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">-</span>
+                                }
+                            </td>
+
+
                             <td class="align-middle">@item.Quanity</td>
                             <td class="align-middle">@String.Format("{0:N0}", item.Product?.ProductPrice) đ</td>
-                            <td class="align-middle text-success fw-bold">@String.Format("{0:N0}", item.TotalPriceProduct) đ</td>
+                            <td class="align-middle text-success fw-bold">@String.Format("{0:N0}", item.Price) đ</td>
                             <td class="align-middle">
                                 <div class="btn-group" role="group">
                                     <form asp-action="UpdateQuantity" asp-controller="Home" method="post">

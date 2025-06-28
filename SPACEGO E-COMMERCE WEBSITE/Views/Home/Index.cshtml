@@ -38,13 +38,29 @@
 
 
                             <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
-                                <a href="@Url.Action("AddToCart", "Home", new { id = item.ProductId })"
-                                   class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
-                                   style="font-weight: 600; font-size: 1rem;">
-                                    <i class="fas fa-cart-plus fa-lg"></i>
-                                    Thêm vào giỏ
-                                </a>
+                                @if (item.Variants != null && item.Variants.Any())
+                                {
+                                    <!-- Có biến thể → chuyển qua trang chi tiết -->
+                                    <a href="@Url.Action("Details", "Home", new { id = item.ProductId })"
+                                       class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
+                                       style="font-weight: 600; font-size: 1rem;">
+                                        <i class="fas fa-cart-plus fa-lg"></i> Chọn phiên bản
+                                    </a>
+                                }
+                                else
+                                {
+                                    <!-- Không có biến thể → gởi POST form -->
+                                    <form asp-action="AddToCart" asp-controller="Home" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.ProductId" />
+                                        <button type="submit"
+                                                class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
+                                                style="font-weight: 600; font-size: 1rem;">
+                                            <i class="fas fa-cart-plus fa-lg"></i> Thêm vào giỏ
+                                        </button>
+                                    </form>
+                                }
                             </div>
+
                         </div>
                     </div>
                 }
