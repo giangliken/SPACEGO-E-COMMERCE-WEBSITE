@@ -40,7 +40,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
         {
             user.UserName = user.Email.Split('@')[0];
             user.CreatedDate = DateTime.Now;
-            user.IsActive = true;
+            user.IsActive = false;
 
             var result = await _userManager.CreateAsync(user, "Abc@123");
             if (!result.Succeeded)
