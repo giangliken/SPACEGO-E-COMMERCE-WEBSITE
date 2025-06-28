@@ -168,5 +168,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             return $"/assets/images/avatar/{newFileName}";
         }
 
+
+
     }
 }
