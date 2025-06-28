@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="Services\AccountServices\" />
     <Folder Include="wwwroot\assets\images\" />
+    <Folder Include="wwwroot\assets\images\brand\" />
     <Folder Include="wwwroot\assets\images\product\" />
   </ItemGroup>
 
