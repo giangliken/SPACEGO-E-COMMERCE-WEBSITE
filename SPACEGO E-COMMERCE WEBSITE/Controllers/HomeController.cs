@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Security.Claims;
-using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +7,10 @@ using Newtonsoft.Json;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using System.Diagnostics;
+using System.Security.Claims;
+using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
     public class HomeController : Controller
@@ -279,35 +280,33 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             }).ToList();
             ViewBag.ShippingItemsJson = JsonConvert.SerializeObject(shippingItems);
 
-            order.UserId = userId;
             if (!ModelState.IsValid)
             {
+                var errors = new List<string>();
+
                 foreach (var entry in ModelState)
                 {
                     foreach (var error in entry.Value.Errors)
                     {
-                        Console.WriteLine($"Field: {entry.Key} ❌ Error: {error.ErrorMessage}");
+                        errors.Add($"Field: {entry.Key} ❌ Error: {error.ErrorMessage}");
                     }
                 }
 
+                ViewBag.Errors = errors;
                 ViewBag.Cart = cart;
                 ViewBag.ShippingItemsJson = JsonConvert.SerializeObject(shippingItems);
 
-                ViewBag.Provinces = new SelectList(await _provinceRepository.GetAllAsync(), "ProvinceId", "ProvinceName", order.ProvinceId);
-                var districts = order.ProvinceId > 0 ? await _districtRepository.GetByProvinceIdAsync(order.ProvinceId) : new List<District>();
-                ViewBag.Districts = new SelectList(districts, "DistrictID", "DistrictName", order.DistrictID);
-                var wards = order.DistrictID > 0 ? await _wardRepository.GetByDistrictIdAsync(order.DistrictID) : new List<Ward>();
-                ViewBag.Wards = new SelectList(wards, "WardID", "WardName", order.WardID);
 
                 return View(order);
             }
 
             // ✅ Đặt hàng hợp lệ
+            order.UserId = userId;
 
             order.OrderDate = DateTime.Now;
             order.OrderStatus = "Chờ xác nhận";
 
-            decimal shippingFee = order.ShippingFee ?? 0;
+            decimal shippingFee = order.ShippingFee;
             order.Total = (cart.TotalPrice ?? 0) + shippingFee;
 
             order.OrderProducts = cart.DetailCartItems.Select(item => new OrderProduct
