@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Hồ sơ cá nhân";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
@@ -13,17 +13,17 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-floating mb-3">
-                    <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                    <label asp-for="Username" class="form-label"></label>
+                    <input asp-for="Username" class="form-control" placeholder="Vui lòng chọn tên người dùng." disabled />
+                    <label asp-for="Username" class="form-label">Tên người dùng</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.FullName" class="form-control" placeholder="Vui lòng nhập họ tên" />
-                    <label asp-for="Input.FullName" class="form-label"></label>
+                    <label asp-for="Input.FullName" class="form-label">Họ và tên</label>
                     <span asp-validation-for="Input.FullName" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
-                    <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Vui lòng nhập số điện thoại." />
+                    <label asp-for="Input.PhoneNumber" class="form-label">Số điện thoại</label>
                     <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="d-flex flex-column align-items-center">
                     <img id="avatar-preview"
                          src="@(string.IsNullOrEmpty(Model.Input.AvatarUrl) ? Url.Content("~/images/default-avatar.png") : Url.Content(Model.Input.AvatarUrl))"
-                         alt="Avatar"
+                         alt="Ảnh đại diện"
                          class="rounded-circle mb-3"
                          style="width: 150px; height: 150px; object-fit: cover; border: 2px solid #ccc;" />
                     <input asp-for="Input.AvatarImage" type="file" class="form-control" accept="image/*" onchange="previewImage(event)" />
@@ -41,7 +41,6 @@
         </div>
         <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary mt-3">Lưu</button>
     </form>
-
 </div>
 
 @section Scripts {
