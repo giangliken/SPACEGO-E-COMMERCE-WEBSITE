@@ -10,7 +10,7 @@ using IEmailSender = SPACEGO_E_COMMERCE_WEBSITE.Repository.IEmailSender;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
-    [Authorize(SD.Role_Admin)]
+    //[Authorize(SD.Role_Admin)]
 
     public class UserController : Controller
     {
