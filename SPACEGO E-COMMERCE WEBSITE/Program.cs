@@ -31,6 +31,7 @@ builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IProvinceRepository, EFProvinceRepository>();
 builder.Services.AddScoped<IDistrictRepository, EFDistrictRepository>();
 builder.Services.AddScoped<IWardRepository, EFWardRepository>();
+builder.Services.AddScoped<ICommentRepository, EFCommentRepository>();
 // Add authentication services
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
