@@ -1,6 +1,19 @@
 ﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Order
 
 <h2>Thanh Toán</h2>
+@if (ViewBag.Errors != null)
+{
+    <div class="alert alert-danger">
+        <strong>⚠️ Có lỗi trong form:</strong>
+        <ul>
+            @foreach (var error in (List<string>)ViewBag.Errors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 <form asp-action="Checkout" method="post" class="row g-3">
     <div class="col-md-6">
@@ -38,25 +51,25 @@
         <!-- Cột 1: Tỉnh -->
         <div class="col-md-4">
             <label for="provinceSelect" class="form-label">Tỉnh/Thành phố</label>
-            <select asp-for="ProvinceId" id="provinceSelect" name="ProvinceId" class="form-select">
+            <select asp-for="ProvinceName" id="provinceSelect" name="ProvinceName" class="form-select">
             </select>
-            <span asp-validation-for="ProvinceId" class="text-danger"></span>
+            <span asp-validation-for="ProvinceName" class="text-danger"></span>
         </div>
 
         <!-- Cột 2: Huyện -->
         <div class="col-md-4">
             <label for="districtSelect" class="form-label">Quận/Huyện</label>
-            <select asp-for="DistrictID" id="districtSelect" name="DistrictID" class="form-select">
+            <select asp-for="DistrictName" id="districtSelect" name="DistrictName" class="form-select">
             </select>
-            <span asp-validation-for="DistrictID" class="text-danger"></span>
+            <span asp-validation-for="DistrictName" class="text-danger"></span>
         </div>
 
         <!-- Cột 3: Xã -->
         <div class="col-md-4">
             <label for="wardSelect" class="form-label">Xã/Phường/Thị Trấn</label>
-            <select asp-for="WardID" id="wardSelect" name="WardID" class="form-select">
+            <select asp-for="WardName" id="wardSelect" name="WardName" class="form-select">
             </select>
-            <span asp-validation-for="WardID" class="text-danger"></span>
+            <span asp-validation-for="WardName" class="text-danger"></span>
         </div>
     </div>
 
@@ -83,8 +96,8 @@
                     const data = res.data;
                     $('#provinceSelect').empty().append('<option value="">--Chọn Tỉnh/Thành phố--</option>');
                     $.each(data, function (i, item) {
-                        $('#provinceSelect').append(`<option value="${item.ProvinceID}">${item.ProvinceName}</option>`);
-                    });
+        $('#provinceSelect').append(`<option value="${item.ProvinceID}">${item.ProvinceName}</option>`);
+                            });
                 } else {
                     console.error('Invalid response format:', res);
                 }
@@ -100,8 +113,8 @@
                     const data = res.data;
                     $('#districtSelect').empty().append('<option value="">--Chọn Quận/Huyện--</option>');
                     $.each(data, function (i, item) {
-                        $('#districtSelect').append(`<option value="${item.DistrictID}">${item.DistrictName}</option>`);
-                    });
+        $('#districtSelect').append(`<option value="${item.DistrictID}">${item.DistrictName}</option>`);
+                            });
                     $('#wardSelect').empty().append('<option value="">--Chọn Xã/Phường--</option>');
                 } else {
                     console.error('Invalid response format:', res);
@@ -127,8 +140,8 @@
                 if (result && result.data) {
                     $('#wardSelect').empty().append('<option value="">--Chọn Xã/Phường--</option>');
                     $.each(result.data, function (i, item) {
-                        $('#wardSelect').append(`<option value="${item.WardCode}">${item.WardName}</option>`);
-                    });
+        $('#wardSelect').append(`<option value="${item.WardCode}">${item.WardName}</option>`);
+                            });
                 } else {
                     console.error('Không có dữ liệu xã/phường:', result);
                 }
