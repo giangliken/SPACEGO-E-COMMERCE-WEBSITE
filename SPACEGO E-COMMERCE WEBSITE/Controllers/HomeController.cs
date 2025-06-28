@@ -29,13 +29,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private readonly IProvinceRepository _provinceRepository;
         private readonly IDistrictRepository _districtRepository;
         private readonly IWardRepository _wardRepository;
+        private readonly ICommentRepository _commentRepository;
 
         public HomeController(IProductRepository productRepository, ICategoryRepository categoryRepository,
                               IBrandRepository brandRepository, IProductImageRepository productImageRepositoryproductImage,
                               IReviewRepository reviewRepositoryreview, ICartItemRepository cartItemRepositorycartItem,
                               IDetailCartItemRepository detailCartItemRepositorydetailCartItem, IOrderRepository orderRepository,
                               IOrderProductRepository orderProductRepository, IProvinceRepository provinceRepository,
-                              IDistrictRepository districtRepository, IWardRepository wardRepository)
+                              IDistrictRepository districtRepository, IWardRepository wardRepository, ICommentRepository commentRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -49,7 +50,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _provinceRepository = provinceRepository;
             _districtRepository = districtRepository;
             _wardRepository = wardRepository;
-
+            _commentRepository = commentRepository;
         }
 
 
@@ -76,6 +77,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            bool daMua = false;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                // Giả sử bạn truyền productId là kiểu int
+                daMua = await _orderRepository.HasUserPurchasedProductAsync(userId, id);
+            }
+
+            ViewBag.DaMua = daMua;
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
             ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
 
@@ -85,8 +94,27 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var reviews = await _reviewRepositoryreview.GetByProductIdAsync(id);
-            ViewBag.Reviews = reviews;
+            var comments = await _commentRepository.GetByProductIdAsync(id);
+            ViewBag.Comments = comments;
+
+            //Tính trung bình sao đánh giá sản phẩm
+            double average = 0;
+            if (comments.Any())
+            {
+                average = comments.Average(c => c.Rating);
+            }
+
+            //Đếm số khách hàng hài lòng
+            double count = 0;
+            if (comments.Any())
+            {
+                count = comments.Count(c => c.Rating >= 3);
+            }
+
+            ViewBag.Count = count;
+
+
+            ViewBag.AverageRating = Math.Round(average, 1);
 
             return View(product); // ✅ View nhận đúng @model Product
         }
