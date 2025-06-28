@@ -17,7 +17,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(d => new { d.OrderId, d.ProductId }); // Cấu hình khóa chính kết hợp
                                                               // ⚠️ Ngăn cascade delete gây lỗi
-
+            modelBuilder.Entity<DetailCartItem>()
+            .HasKey(x => x.Id);
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
                 .WithMany()
