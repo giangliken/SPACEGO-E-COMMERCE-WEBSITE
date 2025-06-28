@@ -1,0 +1,30 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Comment
+
+@{
+    ViewData["Title"] = "Chỉnh sửa bình luận";
+}
+
+<h3>Chỉnh sửa đánh giá sản phẩm</h3>
+
+<form asp-action="EditComment" method="post">
+    <input type="hidden" asp-for="ProductId" />
+    <input type="hidden" asp-for="CommentId" />
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="mb-3">
+        <label asp-for="Rating" class="form-label">Số sao</label>
+        <select asp-for="Rating" class="form-select">
+            @for (int i = 5; i >= 1; i--)
+            {
+                <option value="@i">@i sao</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Content" class="form-label">Nội dung</label>
+        <textarea asp-for="Content" class="form-control" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+</form>

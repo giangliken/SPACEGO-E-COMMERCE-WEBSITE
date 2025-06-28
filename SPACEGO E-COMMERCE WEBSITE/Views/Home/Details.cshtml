@@ -102,7 +102,7 @@
                     </div>
                 </div>
 
-                @if (User.Identity.IsAuthenticated && (ViewBag.DaMua == true))
+                @if (User.Identity.IsAuthenticated && (ViewBag.DaMua == true && ViewBag.DaBinhLuan == false))
                 {
                     <div class="border rounded-3 p-4 bg-light shadow-sm mt-4">
                         <h5 class="text-primary mb-3">Viết đánh giá của bạn</h5>
@@ -110,8 +110,8 @@
                             <input type="hidden" name="ProductId" value="@Model.ProductId" />
 
                             <div class="mb-3">
-                                <label class="form-label">Đánh giá sao</label>
-                                <select name="Rating" class="form-select" required>
+                                <label for="Rating" class="form-label">Đánh giá sao</label>
+                                <select name="Rating" id="Rating" class="form-select" required>
                                     <option value="">-- Chọn số sao --</option>
                                     @for (int i = 5; i >= 1; i--)
                                     {
@@ -127,6 +127,13 @@
 
                             <button type="submit" class="btn btn-success"><i class="fa-solid fa-paper-plane me-1"></i> Gửi đánh giá</button>
                         </form>
+                    </div>
+                }
+                else if (ViewBag.DaBinhLuan == true)
+                {
+                    <div class="alert alert-info mt-4">
+                        Bạn đã đánh giá sản phẩm này.
+                        <a href="@Url.Action("EditComment", "Home", new { productId = Model.ProductId })" class="btn btn-sm btn-primary ms-2">Chỉnh sửa đánh giá</a>
                     </div>
                 }
                 else if (!User.Identity.IsAuthenticated)
