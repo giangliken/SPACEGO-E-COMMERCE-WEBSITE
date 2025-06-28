@@ -36,6 +36,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<DetailCartItem> DetailsCartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Province> Provinces { get; set; }
