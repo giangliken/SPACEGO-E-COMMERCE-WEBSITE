@@ -61,5 +61,18 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<bool> HasUserPurchasedProductAsync(string userId, int productId)
+        {
+            if (string.IsNullOrEmpty(userId))
+                return false;
+
+            return await _context.OrderProducts
+                .Include(op => op.Order)
+                .AnyAsync(op => op.ProductId == productId
+                             && op.Order.UserId == userId
+                             && op.Order.OrderStatus == "Hoàn tất"); // <-- dùng đúng property
+        }
+
     }
 }

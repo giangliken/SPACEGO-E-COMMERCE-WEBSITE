@@ -10,5 +10,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
         Task AddAsync(Order order);
         Task UpdateAsync(Order order);
         Task DeleteAsync(int orderId);
+        Task<bool> HasUserPurchasedProductAsync(string userId, int productId);
+
     }
 }
