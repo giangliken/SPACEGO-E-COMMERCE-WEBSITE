@@ -46,5 +46,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         //bảng lưu trữ hoạt động người dùng
         public DbSet<ActivityLog> ActivityLogs { get; set; }
 
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostCategory> PostCategories { get; set; }
+
     }
 }

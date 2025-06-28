@@ -1,0 +1,35 @@
+﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Post>
+
+@{
+    ViewData["Title"] = "Bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // sửa nếu bạn dùng layout khác
+}
+
+<section class="container py-4">
+    <h2 class="text-primary mb-4">Danh sách bài viết</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Chưa có bài viết nào.</div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var post in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-truncate">@post.Title</h5>
+                            <p class="card-text">
+                                @Html.Raw(post.Content.Length > 100 ? post.Content.Substring(0, 100) + "..." : post.Content)
+                            </p>
+                            <p class="text-muted mt-auto"><small>Ngày đăng: @post.CreatedAt.ToString("dd/MM/yyyy")</small></p>
+                            <a asp-action="Details" asp-route-id="@post.PostId" class="btn btn-sm btn-outline-primary mt-2">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>

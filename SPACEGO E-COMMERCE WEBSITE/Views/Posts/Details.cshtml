@@ -1,0 +1,12 @@
+﻿<!-- Details.cshtml -->
+@model SPACEGO_E_COMMERCE_WEBSITE.Models.Post
+@{
+    ViewData["Title"] = "Chi tiết bài viết";
+
+}
+<h2>@Model.Title</h2>
+<p><strong>Ngày đăng:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy")</p>
+<p><strong>Người đăng:</strong> @Model.User?.FullName</p>
+<p><strong>Nội dung:</strong></p>
+<p>@Html.Raw(Model.Content)</p>
+<a asp-action="Index" class="btn btn-secondary">Quay lại</a>
