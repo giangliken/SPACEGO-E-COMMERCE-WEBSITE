@@ -78,13 +78,17 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             bool daMua = false;
+            bool daBinhLuan = false;
             if (!string.IsNullOrEmpty(userId))
             {
                 // Giả sử bạn truyền productId là kiểu int
                 daMua = await _orderRepository.HasUserPurchasedProductAsync(userId, id);
+                daBinhLuan = await _commentRepository.HasUserCommentedAsync(userId, id);
             }
 
             ViewBag.DaMua = daMua;
+            ViewBag.DaBinhLuan = daBinhLuan;
+
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
             ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
 
@@ -119,7 +123,53 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return View(product); // ✅ View nhận đúng @model Product
         }
 
+        //SubmitComment
+        public IActionResult SubmitComment()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitComment(Comment comment)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
 
+            comment.UserId = userId;
+            await _commentRepository.AddAsync(comment);
+            // Quay lại trang sản phẩm với id
+            return RedirectToAction("Details", "Home", new { id = comment.ProductId });
+        }
+        [Authorize]
+        public async Task<IActionResult> EditComment(int productId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var comment = await _commentRepository.GetByUserAndProductAsync(userId, productId);
+
+            if (comment == null)
+                return NotFound();
+
+            return View(comment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditComment(Comment comment)
+        {
+            if (!ModelState.IsValid)
+                return View(comment);
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (comment.UserId != userId)
+                return Forbid();
+
+            await _commentRepository.UpdateAsync(comment);
+            return RedirectToAction("Details", new { id = comment.ProductId });
+        }
+        //SubmitComment
         [Authorize]
         public async Task<IActionResult> Cart()
         {
