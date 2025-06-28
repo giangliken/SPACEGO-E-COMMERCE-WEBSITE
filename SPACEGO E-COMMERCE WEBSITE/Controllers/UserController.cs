@@ -208,6 +208,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             await _userRepository.DeleteUserAsync(id);
+            TempData["Success"] = "Xóa người dùng thành công!";
             return RedirectToAction(nameof(Index));
         }
 
