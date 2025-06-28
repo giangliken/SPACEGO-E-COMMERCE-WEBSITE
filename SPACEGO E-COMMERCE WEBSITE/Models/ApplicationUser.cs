@@ -24,7 +24,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         public DateTime CreatedDate { get; set; }
         public string? AvatarUrl { get; set; }
         public decimal? LoyaltyPoints { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = false;
 
     }
 }
