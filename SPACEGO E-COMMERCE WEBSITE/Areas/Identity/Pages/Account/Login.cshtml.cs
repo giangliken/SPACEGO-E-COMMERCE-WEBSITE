@@ -120,7 +120,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
                     if (result.Succeeded)
                     {
 
-                        _logger.LogInformation("Người dùng đã đăng nhập.");
+                        _logger.LogInformation("User logged in.");
                         await _signInManager.SignInAsync(user, Input.RememberMe);
 
                         var role = await _signInManager.UserManager.GetRolesAsync(user);
@@ -139,13 +139,13 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
                     }
                     if (result.IsLockedOut)
                     {
-                        _logger.LogWarning("Tài khoản người dùng bị khóa.");
+                        _logger.LogWarning("User account locked out.");
                         return RedirectToPage("./Lockout");
                     }
                 }
 
                 // Nếu sai email hoặc sai mật khẩu
-                ModelState.AddModelError(string.Empty, "Nỗ lực đăng nhập không hợp lệ.");
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
 
             // Nếu ModelState không hợp lệ

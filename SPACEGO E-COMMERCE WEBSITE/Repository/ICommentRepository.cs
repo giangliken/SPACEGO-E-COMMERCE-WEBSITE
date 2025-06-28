@@ -15,6 +15,5 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
 
         Task<IEnumerable<Comment>> GetByProductIdAsync(int productId);
         Task<bool> HasUserCommentedAsync(string userId, int productId);
-        Task<Comment?> GetByUserAndProductAsync(string userId, int productId);
     }
 }

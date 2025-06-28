@@ -85,10 +85,5 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<Comment?> GetByUserAndProductAsync(string userId, int productId)
-        {
-            return await _context.Comments
-                .FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == productId);
-        }
     }
 }
