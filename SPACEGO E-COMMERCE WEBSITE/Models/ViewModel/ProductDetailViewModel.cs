@@ -4,6 +4,6 @@
     {
         public Product Product { get; set; }
         public List<ProductImage> ProductImages { get; set; }
-        public List<Review> Reviews { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
