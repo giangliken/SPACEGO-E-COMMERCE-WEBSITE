@@ -84,26 +84,85 @@
         <!-- ĐÁNH GIÁ -->
         <div class="row mt-5">
             <div class="col-12">
-                <h3 class="text-secondary border-bottom pb-2 mb-3">Đánh giá sản phẩm</h3>
+                <h4 class="text-secondary border-bottom pb-2 mb-3">Đánh giá @Model.ProductName</h4>
+                @{
+                    double trungBinhSao = ViewBag.AverageRating != null ? (double)ViewBag.AverageRating : 0;
+                    double demKhachHangVuaLong = ViewBag.Count != null ? (double)ViewBag.Count : 0;
+                    
+                }
+                <div class="row">  
+                   <h3>
+                        <div class="col-6 mb-3 ">
+                            <i class="fa-solid fa-star text-warning me-2 "></i><strong>@trungBinhSao / 5</strong> <br />
 
-                @if (ViewBag.Reviews == null || ((List<SPACEGO_E_COMMERCE_WEBSITE.Models.Review>)ViewBag.Reviews).Count == 0)
+                        </div>
+                   </h3>
+                    <div class="col-6 mb-3 ">
+                        <i>@demKhachHangVuaLong khách hàng vừa lòng</i>
+                    </div>
+                </div>
+
+                @if (User.Identity.IsAuthenticated && (ViewBag.DaMua == true))
+                {
+                    <div class="border rounded-3 p-4 bg-light shadow-sm mt-4">
+                        <h5 class="text-primary mb-3">Viết đánh giá của bạn</h5>
+                        <form asp-action="SubmitComment" asp-controller="Home" method="post">
+                            <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+                            <div class="mb-3">
+                                <label class="form-label">Đánh giá sao</label>
+                                <select name="Rating" class="form-select" required>
+                                    <option value="">-- Chọn số sao --</option>
+                                    @for (int i = 5; i >= 1; i--)
+                                    {
+                                        <option value="@i">@i sao</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Nội dung</label>
+                                <textarea name="Content" class="form-control" rows="3" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-paper-plane me-1"></i> Gửi đánh giá</button>
+                        </form>
+                    </div>
+                }
+                else if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="alert alert-warning mt-4">Bạn cần <a href="/Identity/Account/Login">đăng nhập</a> để đánh giá sản phẩm.</div>
+                }
+                else
+                {
+                    <div class="alert alert-info mt-4">Chỉ khách hàng đã mua sản phẩm này mới có thể đánh giá.</div>
+                }
+
+                @if (ViewBag.Comments == null || ((List<SPACEGO_E_COMMERCE_WEBSITE.Models.Comment>)ViewBag.Comments).Count == 0)
                 {
                     <div class="alert alert-info">Chưa có đánh giá nào cho sản phẩm này.</div>
                 }
                 else
                 {
-                    var reviews = (List<SPACEGO_E_COMMERCE_WEBSITE.Models.Review>)ViewBag.Reviews;
+                    var reviews = (List<SPACEGO_E_COMMERCE_WEBSITE.Models.Comment>)ViewBag.Comments;
                     foreach (var review in reviews)
                     {
                         <div class="border rounded-3 p-3 mb-3 bg-white shadow-sm">
-                            <div class="d-flex justify-content-between">
-                                <strong class="text-primary">@review.UserId</strong>
-                                <span class="badge bg-warning text-dark">@review.Rating/5 <i class="fas fa-star"></i></span>
+                            <div class="d-flex align-items-center gap-3 flex-wrap">
+                                <strong class="text-primary">@review.User.FullName</strong>
+                                <strong class="text-primary">
+                                    <i class="fa-solid fa-circle-check me-1"></i>Đã mua hàng
+                                </strong>
+                                <span class="badge bg-warning text-dark">
+                                    @review.Rating/5 <i class="fas fa-star"></i>
+                                </span>
                             </div>
-                            <p class="mt-2 mb-0">@review.Comment</p>
+
+                            <p class="mt-2 mb-0">@review.Content</p>
                         </div>
                     }
                 }
+
             </div>
         </div>
     </div>
