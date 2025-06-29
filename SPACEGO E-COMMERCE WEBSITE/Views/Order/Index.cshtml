@@ -2,61 +2,68 @@
 
 @{
     ViewData["Title"] = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Danh sách đơn hàng</h2>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary mb-0">
+            <i class="fas fa-clipboard-list"></i> Danh sách đơn hàng
+        </h2>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Mã đơn hàng
-            </th>
-            <th>
-                Tổng tiền
-            </th>
-            <th>
-                Phí vận chuyển
-            </th>
-            <th>
-                Ngày đặt hàng
-            </th>
-            <th>
-                Phương thức thanh toán
-            </th>
-            <th>
-                Trạng thái đơn hàng
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ShippingFee)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentMethod)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderStatus)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.OrderId">Chi tiết</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OrderId">Xóa</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th><i class="fas fa-receipt"></i><br>Mã đơn hàng</th>
+                        <th><i class="fas fa-money-bill-wave"></i><br>Tổng tiền</th>
+                        <th><i class="fas fa-shipping-fast"></i><br>Phí vận chuyển</th>
+                        <th><i class="fas fa-calendar-alt"></i><br>Ngày đặt</th>
+                        <th><i class="fas fa-credit-card"></i><br>Thanh toán</th>
+                        <th><i class="fas fa-info-circle"></i><br>Trạng thái</th>
+                        <th><i class="fas fa-cogs"></i><br>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-muted">Không có đơn hàng nào.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.OrderId</td>
+                                <td>@String.Format("{0:N0}₫", item.Total)</td>
+                                <td>@String.Format("{0:N0}₫", item.ShippingFee)</td>
+                                <td>
+                                    @(item.OrderDate != null
+                                        ? item.OrderDate.Value.ToString("dd/MM/yyyy HH:mm")
+                                        : "")
+                                </td>
+                                <td>@item.PaymentMethod</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@item.OrderStatus</span>
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.OrderId" class="btn btn-sm btn-info me-1">
+                                        <i class="fas fa-eye"></i> Chi tiết
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.OrderId" class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này không?');">
+                                        <i class="fas fa-trash-alt"></i> Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

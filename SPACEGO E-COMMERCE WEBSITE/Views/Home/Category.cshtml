@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Product>
+@{
+    ViewData["Title"] = "Danh mục: " + ViewBag.CategoryName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = ViewBag.Categories as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Category>;
+}
+
+
+
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">
+        Không có sản phẩm nào trong danh mục này.
+    </div>
+}
+else
+{
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        @foreach (var item in Model)
+        {
+            <partial name="_ProductCard" model="item" />
+        }
+    </div>
+}

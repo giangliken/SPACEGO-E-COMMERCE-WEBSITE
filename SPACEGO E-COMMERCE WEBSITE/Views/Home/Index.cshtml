@@ -1,7 +1,12 @@
 ﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Product>
+
 @{
-    ViewData["Title"] = "Trang chủ";
+    ViewData["Title"] = ViewData["Title"] ?? "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var query = ViewBag.Query as string;
+    var topProducts = ViewBag.TopProducts as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Product>;
+    var productsByBrand = ViewBag.ProductsByBrand as Dictionary<string, List<SPACEGO_E_COMMERCE_WEBSITE.Models.Product>>;
+
 }
 
 <section class="py-4">
@@ -11,11 +16,10 @@
                 <i class="fas fa-store"></i> Sản phẩm nổi bật
             </h2>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                @foreach (var item in Model.Where(p => p.isAvailable))
+                @foreach (var item in topProducts)
                 {
                     <div class="col mb-5">
                         <div class="card h-100 shadow-sm" style="border-radius: 15px; overflow: hidden; border: 1px solid #e0e0e0;">
-                            <!-- Ảnh sản phẩm -->
                             <a href="@Url.Action("Details", "Home", new { id = item.ProductId })" class="text-center">
                                 <img src="@item.ImageUrl"
                                      class="card-img-top img-fluid"
@@ -23,7 +27,6 @@
                                      style="height: 250px; object-fit: cover;" />
                             </a>
 
-                            <!-- Nội dung -->
                             <div class="card-body text-center">
                                 <h6 class="card-title mb-2">
                                     <a href="@Url.Action("Details", "Home", new { id = item.ProductId })"
@@ -36,11 +39,9 @@
                                 </p>
                             </div>
 
-
                             <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
                                 @if (item.Variants != null && item.Variants.Any())
                                 {
-                                    <!-- Có biến thể → chuyển qua trang chi tiết -->
                                     <a href="@Url.Action("Details", "Home", new { id = item.ProductId })"
                                        class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
                                        style="font-weight: 600; font-size: 1rem;">
@@ -49,7 +50,6 @@
                                 }
                                 else
                                 {
-                                    <!-- Không có biến thể → gởi POST form -->
                                     <form asp-action="AddToCart" asp-controller="Home" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@item.ProductId" />
                                         <button type="submit"
@@ -60,7 +60,6 @@
                                     </form>
                                 }
                             </div>
-
                         </div>
                     </div>
                 }
@@ -68,3 +67,72 @@
         </div>
     </div>
 </section>
+@if (productsByBrand != null && productsByBrand.Any())
+{
+    <section class="py-4">
+        <div class="container px-4 px-lg-5">
+            <h2 class="text-primary text-center mb-4">
+                <i class="fas fa-tags"></i> Sản phẩm theo thương hiệu
+            </h2>
+
+            @foreach (var brandGroup in productsByBrand)
+            {
+                <div class="mb-5">
+                    <h4 class="text-dark fw-bold mb-3">
+                        <i class="fas fa-industry me-2 text-secondary"></i>@brandGroup.Key
+                    </h4>
+
+                    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
+                        @foreach (var item in brandGroup.Value)
+                        {
+                            <div class="col mb-4">
+                                <div class="card h-100 shadow-sm" style="border-radius: 15px; overflow: hidden; border: 1px solid #e0e0e0;">
+                                    <a href="@Url.Action("Details", "Home", new { id = item.ProductId })" class="text-center">
+                                        <img src="@item.ImageUrl"
+                                             class="card-img-top img-fluid"
+                                             alt="Ảnh sản phẩm"
+                                             style="height: 250px; object-fit: cover;" />
+                                    </a>
+
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title mb-2">
+                                            <a href="@Url.Action("Details", "Home", new { id = item.ProductId })"
+                                               class="text-decoration-none text-dark fw-semibold">
+                                                @item.ProductName
+                                            </a>
+                                        </h6>
+                                        <p class="text-danger fw-bold mb-2">
+                                            @item.ProductPrice.ToString("#,##0") ₫
+                                        </p>
+                                    </div>
+
+                                    <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
+                                        @if (item.Variants != null && item.Variants.Any())
+                                        {
+                                            <a href="@Url.Action("Details", "Home", new { id = item.ProductId })"
+                                               class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
+                                               style="font-weight: 600; font-size: 1rem;">
+                                                <i class="fas fa-cart-plus fa-lg"></i> Chọn phiên bản
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="AddToCart" asp-controller="Home" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@item.ProductId" />
+                                                <button type="submit"
+                                                        class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
+                                                        style="font-weight: 600; font-size: 1rem;">
+                                                    <i class="fas fa-cart-plus fa-lg"></i> Thêm vào giỏ
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}

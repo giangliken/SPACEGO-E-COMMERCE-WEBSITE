@@ -69,6 +69,9 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             var brands = await _brandRepository.GetAllAsync();
             var categories = await _categoryRepository.GetAllAsync();
 
+
+            ViewBag.TopProducts = await _productRepository.GetTopSellingProductsAsync(8);
+            ViewBag.ProductsByBrand = await _productRepository.GetProductsGroupedByBrandAsync();
             var model = new HomeIndexViewModel
             {
                 Products = products,
@@ -76,10 +79,42 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 Brands = brands
             };
 
-            return View(products);
+            ViewBag.Categories = categories;
+            return View(products); 
         }
+        public async Task<IActionResult> Category(int id)
+        {
+            var products = await _productRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
 
+            var filtered = products.Where(p => p.CategoryId == id && p.isAvailable).ToList();
 
+            ViewBag.CategoryName = categories.FirstOrDefault(c => c.CategoryId == id)?.CategoryName ?? "Không rõ";
+            ViewBag.Categories = categories;
+
+            return View(filtered);
+        }
+        public async Task<IActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var allProducts = await _productRepository.GetAllAsync();
+            var matchedProducts = allProducts
+                .Where(p => p.ProductName.Contains(query, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var categories = await _categoryRepository.GetAllAsync();
+            var brands = await _brandRepository.GetAllAsync();
+
+            ViewBag.Categories = categories;
+            ViewBag.Query = query;
+            ViewData["Title"] = $"Kết quả tìm kiếm: {query}";
+
+            return View("Index", matchedProducts); // tái sử dụng Index.cshtml
+        }
         public async Task<IActionResult> Details(int id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -478,7 +513,10 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         }
 
 
-
+        public IActionResult About()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

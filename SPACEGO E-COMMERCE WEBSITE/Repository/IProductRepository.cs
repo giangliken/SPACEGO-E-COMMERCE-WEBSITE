@@ -11,5 +11,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
         Task DeleteAsync(int id);
         Task<Product> GetProductWithDetailsAsync(int id); // ✅ Đúng chỗ
 
+        Task<IEnumerable<Product>> GetTopSellingProductsAsync(int count);
+        Task<Dictionary<string, List<Product>>> GetProductsGroupedByBrandAsync();
     }
 }
