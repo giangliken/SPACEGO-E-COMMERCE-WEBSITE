@@ -410,12 +410,13 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             order.UserId = userId;
             order.OrderDate = DateTime.Now;
             order.OrderStatus = "Chờ xác nhận";
-            order.Total = selectedItems.Sum(d => d.Price);
-
+            order.Total = selectedItems.Sum(d => d.Price)+order.ShippingFee;
             order.OrderProducts = selectedItems.Select(d => new OrderProduct
             {
                 ProductId = d.ProductId,
-                Quantity = d.Quanity
+                Quantity = d.Quanity,
+                ProductVariantId = d.ProductVariantId,
+
             }).ToList();
 
             await _orderRepository.AddAsync(order);
@@ -442,6 +443,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         {
             return View("NotFound");
         }
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
