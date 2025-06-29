@@ -20,7 +20,7 @@
                 @if (User.IsInRole("Customer"))
                 {
                     <li>
-                        <a class="dropdown-item" asp-area="Identity" asp-page="">
+                        <a class="dropdown-item" asp-controller="Order" asp-action="MyOrders">
                             <i class="fas fa-box-open"></i> Đơn hàng đã đặt
                         </a>
                     </li>

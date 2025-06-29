@@ -1,0 +1,44 @@
+﻿@model List<SPACEGO_E_COMMERCE_WEBSITE.Models.Order>
+@{
+    ViewData["Title"] = "Đơn hàng đã đặt";
+}
+
+<h2 class="mb-4">Đơn hàng của bạn</h2>
+
+@if (!Model.Any())
+{
+    <p>Bạn chưa có đơn hàng nào.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Mã đơn</th>
+                <th>Ngày đặt</th>
+                <th>Tổng</th>
+                <th>Trạng thái</th>
+                <th>Chi tiết</th> <!-- ✅ Cột mới -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var o in Model)
+            {
+                <tr>
+                    <td>#@o.OrderId</td>
+                    <td>@o.OrderDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@String.Format("{0:N0} đ", o.Total)</td>
+                    <td>@(o.OrderStatus ?? "Chờ xử lý")</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary"
+                           asp-controller="Order"
+                           asp-action="Details"
+                           asp-route-id="@o.OrderId">
+                            Xem
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

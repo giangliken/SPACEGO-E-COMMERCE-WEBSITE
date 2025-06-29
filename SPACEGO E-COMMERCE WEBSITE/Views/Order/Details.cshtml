@@ -1,0 +1,41 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Order
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng #" + Model.OrderId;
+}
+
+<h2>Chi tiết đơn hàng #@Model.OrderId</h2>
+<p><strong>Ngày đặt:</strong> @Model.OrderDate?.ToString("dd/MM/yyyy")</p>
+<p><strong>Trạng thái:</strong> @(Model.OrderStatus ?? "Chờ xử lý")</p>
+<p><strong>Khách hàng:</strong> @Model.FullName - @Model.PhoneNumber</p>
+<p><strong>Địa chỉ giao hàng:</strong> @Model.AddressDetail, @Model.WardName, @Model.DistrictName, @Model.ProvinceName</p>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th class="text-center">SL</th>
+            <th class="text-end">Đơn giá</th>
+            <th class="text-end">Tổng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderProducts)
+        {
+            var productName = item.ProductVariant?.Product?.ProductName ?? item.Product?.ProductName ?? "Không rõ";
+            var unitPrice = item.ProductVariant?.Price ?? item.Product?.ProductPrice ?? 0;
+            var total = unitPrice * item.Quantity;
+
+            <tr>
+                <td>@productName</td>
+                <td class="text-center">@item.Quantity</td>
+                <td class="text-end">@String.Format("{0:N0} đ", unitPrice)</td>
+                <td class="text-end">@String.Format("{0:N0} đ", total)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <p><strong>Phí vận chuyển:</strong> @String.Format("{0:N0} đ", Model.ShippingFee)</p>
+    <p><strong>Tổng cộng:</strong> <span class="text-primary fw-bold">@String.Format("{0:N0} đ", Model.Total )</span></p>
+</div>

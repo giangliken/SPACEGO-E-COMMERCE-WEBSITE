@@ -73,6 +73,17 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                              && op.Order.UserId == userId
                              && op.Order.OrderStatus == "Hoàn tất"); // <-- dùng đúng property
         }
-
+        public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
+        {
+            return await _context.Orders
+                .Where(o => o.UserId == userId)
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.ProductVariant)
+                        .ThenInclude(pv => pv.Product)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+        }
     }
 }
