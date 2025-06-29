@@ -75,17 +75,22 @@
                     <div class="row mb-3 mt-3">
                         <div class="col-md-4">
                             <label for="provinceSelect" class="form-label">Tỉnh/Thành phố</label>
-                            <select asp-for="ProvinceName" id="provinceSelect" name="ProvinceName" class="form-select"></select>
+                            <select asp-for="ProvinceId" id="provinceSelect" class="form-select"></select>
+                            <input type="hidden" asp-for="ProvinceName" id="ProvinceName" />
                             <span asp-validation-for="ProvinceName" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
                             <label for="districtSelect" class="form-label">Quận/Huyện</label>
-                            <select asp-for="DistrictName" id="districtSelect" name="DistrictName" class="form-select"></select>
+                            <select asp-for="DistrictId" id="districtSelect" class="form-select"></select>
+                            <input type="hidden" asp-for="DistrictName" id="DistrictName" />
+
                             <span asp-validation-for="DistrictName" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
                             <label for="wardSelect" class="form-label">Xã/Phường/Thị Trấn</label>
-                            <select asp-for="WardName" id="wardSelect" name="WardName" class="form-select"></select>
+                            <select asp-for="WardCode" id="wardSelect" class="form-select"></select>
+                            <input type="hidden" asp-for="WardName" id="WardName" />
+
                             <span asp-validation-for="WardName" class="text-danger"></span>
                         </div>
                     </div>
@@ -347,6 +352,13 @@
                 $('#shippingFeeDisplay').text("0 đ");
             }
         });
+                       $('form').on('submit', function () {
+            $('#ProvinceName').val($('#provinceSelect option:selected').text());
+            $('#DistrictName').val($('#districtSelect option:selected').text());
+            $('#WardName').val($('#wardSelect option:selected').text());
+        });
+
+
         });
     </script>
 }
