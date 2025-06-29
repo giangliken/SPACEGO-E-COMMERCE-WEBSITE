@@ -1,5 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿// Được cấp phép cho .NET Foundation theo một hoặc nhiều thỏa thuận.
+// .NET Foundation cấp phép tệp này theo giấy phép MIT.
 #nullable disable
 
 using Microsoft.AspNetCore.Identity;
@@ -29,52 +29,28 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu hiện tại.")]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Mật khẩu hiện tại")]
             public string OldPassword { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu mới.")]
+            [StringLength(100, ErrorMessage = "{0} phải dài ít nhất {2} và không vượt quá {1} ký tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Mật khẩu mới")]
             public string NewPassword { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Xác nhận mật khẩu mới")]
+            [Compare("NewPassword", ErrorMessage = "Mật khẩu mới và xác nhận mật khẩu không khớp.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -83,7 +59,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
@@ -105,7 +81,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
@@ -119,8 +95,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            _logger.LogInformation("Người dùng đã thay đổi mật khẩu thành công.");
+            StatusMessage = "Mật khẩu của bạn đã được thay đổi.";
 
             return RedirectToPage();
         }

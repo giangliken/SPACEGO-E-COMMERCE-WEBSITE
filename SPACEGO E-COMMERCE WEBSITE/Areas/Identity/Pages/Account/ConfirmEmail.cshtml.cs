@@ -40,12 +40,12 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                return NotFound($"Không thể tải người dùng với ID '{userId}'.");
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            StatusMessage = result.Succeeded ? "Cảm ơn bạn đã xác nhận email." : "Có lỗi khi xác nhận email của bạn.";
             return Page();
         }
     }

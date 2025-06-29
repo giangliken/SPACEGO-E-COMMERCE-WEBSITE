@@ -32,45 +32,21 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             _emailSender = emailSender;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Email { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public bool IsEmailConfirmed { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [EmailAddress]
-            [Display(Name = "New email")]
+            [Required(ErrorMessage = "Vui lòng nhập email mới.")]
+            [EmailAddress(ErrorMessage = "Email không hợp lệ.")]
+            [Display(Name = "Email mới")]
             public string NewEmail { get; set; }
         }
 
@@ -92,7 +68,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng có ID '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -104,7 +80,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng có ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -126,14 +102,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Xác nhận thay đổi email",
+                    $"Vui lòng xác nhận thay đổi email của bạn bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Đã gửi liên kết xác nhận thay đổi email. Vui lòng kiểm tra hộp thư.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Email của bạn không thay đổi.";
             return RedirectToPage();
         }
 
@@ -142,7 +118,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng có ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -162,10 +138,10 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Xác nhận email của bạn",
+                $"Vui lòng xác nhận email của bạn bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Đã gửi email xác nhận. Vui lòng kiểm tra hộp thư.";
             return RedirectToPage();
         }
     }
