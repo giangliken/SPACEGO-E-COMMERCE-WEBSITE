@@ -1,12 +1,13 @@
-﻿<!-- Delete.cshtml -->
-@model SPACEGO_E_COMMERCE_WEBSITE.Models.Post
-@{
-    ViewData["Title"] = "Xóa bài viết";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
-<h2>Xác nhận xóa</h2>
-<h4>Bạn có chắc muốn xóa bài viết: @Model.Title?</h4>
-<form asp-action="DeleteConfirmed" method="post">
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Post
+
+<h3>Bạn có chắc muốn xóa bài viết này không?</h3>
+
+<div>
+    <h4>@Model.Title</h4>
+    <p>@Model.Content</p>
+</div>
+
+<form asp-action="Delete" method="post">
     <input type="hidden" asp-for="PostId" />
     <button type="submit" class="btn btn-danger">Xóa</button>
     <a asp-action="Index" class="btn btn-secondary">Hủy</a>

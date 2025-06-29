@@ -40,6 +40,9 @@
                                 <td>
                                     @switch (o.OrderStatus?.ToLower())
                                     {
+                                        case "hoàn tất":
+                                            <span class="badge bg-success">Hoàn tất</span>
+                                            ; break;
                                         case "đã giao":
                                             <span class="badge bg-success">Đã giao</span>
                                             ; break;
@@ -50,7 +53,7 @@
                                             <span class="badge bg-warning text-dark">Đang xử lý</span>
                                             ; break;
                                         default:
-                                            <span class="badge bg-secondary">Chờ xử lý</span>
+                                            <span class="badge bg-secondary">Chờ Xác nhận</span>
                                             ; break;
                                     }
                                 </td>

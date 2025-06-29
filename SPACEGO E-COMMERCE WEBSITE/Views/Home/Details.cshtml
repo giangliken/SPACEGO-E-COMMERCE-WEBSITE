@@ -1,44 +1,47 @@
 ﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Product
-
 @{
     ViewData["Title"] = "Chi tiết sản phẩm";
+    double trungBinhSao = ViewBag.AverageRating != null ? (double)ViewBag.AverageRating : 0;
+    int soNguoiDanhGia = ViewBag.Count != null ? (int)ViewBag.Count : 0;
+    bool daMua = ViewBag.DaMua == true;
+    bool daBinhLuan = ViewBag.DaBinhLuan == true;
+    var comments = ViewBag.Comments as List<SPACEGO_E_COMMERCE_WEBSITE.Models.Comment>;
 }
+
 <section class="py-5">
     <div class="container">
         <div class="row g-4">
-            <!-- ẢNH SẢN PHẨM -->
+            <!-- Hình ảnh -->
             <div class="col-md-6">
                 <div class="border rounded p-3 bg-white shadow-sm">
                     <img src="@Model.ImageUrl" class="img-fluid rounded mb-3" alt="@Model.ProductName" />
-
                     <div class="d-flex flex-wrap gap-2">
-                        @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+                        @if (Model.ImageUrls != null)
                         {
                             foreach (var img in Model.ImageUrls)
                             {
                                 <img src="@img.Url" class="img-thumbnail detail-thumb"
                                      style="width:100px; height:100px; object-fit:cover; cursor:pointer"
-                                     data-bs-toggle="modal" data-bs-target="#imageModal" data-img="@img.Url"
-                                     alt="Ảnh phụ" />
+                                     data-bs-toggle="modal" data-bs-target="#imageModal" data-img="@img.Url" />
                             }
                         }
                     </div>
                 </div>
             </div>
 
-            <!-- THÔNG TIN SẢN PHẨM -->
+            <!-- Thông tin -->
             <div class="col-md-6">
                 <div class="bg-light rounded p-4 shadow-sm h-100">
                     <h2 class="fw-bold text-primary">@Model.ProductName</h2>
+
                     @if (Model.Variants != null && Model.Variants.Any())
                     {
-                        <!-- Dòng giá sẽ thay đổi khi chọn biến thể -->
                         <p id="dynamicPrice" class="h4 text-danger mt-2">
                             Giá tham khảo: @Model.ProductPrice.ToString("N0").Replace(",", ".") <span class="text-muted">₫</span>
                         </p>
 
                         <div class="mb-3">
-                            <select id="variantSelect" class="form-select mb-3 mt-3">
+                            <select id="variantSelect" class="form-select mt-3 mb-2">
                                 <option value="">-- Chọn phiên bản --</option>
                                 @foreach (var v in Model.Variants)
                                 {
@@ -51,25 +54,14 @@
                                     </option>
                                 }
                             </select>
+                            <div id="variantStock" class="text-muted"></div>
                         </div>
-
-                        <!-- Hiện kho -->
-                        <div id="variantStock" class="text-muted mb-3"></div>
                     }
                     else
                     {
-                        <p class="h4 text-danger mt-2">
-                            @Model.ProductPrice.ToString("N0").Replace(",", ".") <span class="text-muted">₫</span>
-                        </p>
-                    }
-
-
-
-                    @if ((Model.Variants == null || !Model.Variants.Any()) && Model.ProductQuantity.HasValue)
-                    {
+                        <p class="h4 text-danger mt-2">@Model.ProductPrice.ToString("N0").Replace(",", ".") ₫</p>
                         <p class="text-muted">Kho: <strong>@Model.ProductQuantity</strong> sản phẩm</p>
                     }
-
 
                     @if (Model.Brand != null)
                     {
@@ -80,52 +72,43 @@
                     {
                         <p><strong>Danh mục:</strong> @Model.Category.CategoryName</p>
                     }
-                    <hr />
 
+                    <hr />
                     <p>@Model.ProductDescription</p>
 
                     <form asp-action="AddToCart" asp-controller="Home" method="post">
                         <input type="hidden" name="id" value="@Model.ProductId" />
-                        <input type="hidden" name="variantId" id="variantId" /> <!-- ✅ moved here -->
-
+                        <input type="hidden" name="variantId" id="variantId" />
                         <button type="submit" id="addToCartBtn" class="btn btn-success btn-lg rounded-pill mt-3">
                             <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
                         </button>
-
                     </form>
-
                 </div>
             </div>
         </div>
 
-        <!-- ĐÁNH GIÁ -->
+        <!-- Đánh giá -->
         <div class="row mt-5">
             <div class="col-12">
                 <h4 class="text-secondary border-bottom pb-2 mb-3">Đánh giá @Model.ProductName</h4>
-                @{
-                    double trungBinhSao = ViewBag.AverageRating != null ? (double)ViewBag.AverageRating : 0;
-                    double demKhachHangVuaLong = ViewBag.Count != null ? (double)ViewBag.Count : 0;
-                    
-                }
-                <div class="row">  
-                   <h3>
-                        <div class="col-6 mb-3 ">
-                            <i class="fa-solid fa-star text-warning me-2 "></i><strong>@trungBinhSao / 5</strong> <br />
 
-                        </div>
-                   </h3>
-                    <div class="col-6 mb-3 ">
-                        <i>@demKhachHangVuaLong khách hàng vừa lòng</i>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h5><i class="fa-solid fa-star text-warning me-1"></i> <strong>@trungBinhSao.ToString("0.0") / 5</strong></h5>
+                        <p class="text-muted">@soNguoiDanhGia người đã đánh giá</p>
                     </div>
                 </div>
 
-                @if (User.Identity.IsAuthenticated && (ViewBag.DaMua == true))
+                @if (!User.Identity.IsAuthenticated)
                 {
-                    <div class="border rounded-3 p-4 bg-light shadow-sm mt-4">
+                    <div class="alert alert-warning">Bạn cần <a href="/Identity/Account/Login">đăng nhập</a> để đánh giá sản phẩm.</div>
+                }
+                else if (daMua && !daBinhLuan)
+                {
+                    <div class="border rounded-3 p-4 bg-light shadow-sm">
                         <h5 class="text-primary mb-3">Viết đánh giá của bạn</h5>
                         <form asp-action="SubmitComment" asp-controller="Home" method="post">
                             <input type="hidden" name="ProductId" value="@Model.ProductId" />
-
                             <div class="mb-3">
                                 <label class="form-label">Đánh giá sao</label>
                                 <select name="Rating" class="form-select" required>
@@ -136,56 +119,56 @@
                                     }
                                 </select>
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label">Nội dung</label>
                                 <textarea name="Content" class="form-control" rows="3" required></textarea>
                             </div>
-
-                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-paper-plane me-1"></i> Gửi đánh giá</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa-solid fa-paper-plane me-1"></i> Gửi đánh giá
+                            </button>
                         </form>
                     </div>
                 }
-                else if (!User.Identity.IsAuthenticated)
+                else if (daBinhLuan)
                 {
-                    <div class="alert alert-warning mt-4">Bạn cần <a href="/Identity/Account/Login">đăng nhập</a> để đánh giá sản phẩm.</div>
+                    <div class="alert alert-info">
+                        Bạn đã đánh giá sản phẩm này.
+                        <a href="@Url.Action("EditComment", "Home", new { productId = Model.ProductId })" class="btn btn-sm btn-primary ms-2">Chỉnh sửa đánh giá</a>
+                    </div>
                 }
                 else
                 {
-                    <div class="alert alert-info mt-4">Chỉ khách hàng đã mua sản phẩm này mới có thể đánh giá.</div>
+                    <div class="alert alert-info">Chỉ khách hàng đã mua sản phẩm này mới có thể đánh giá.</div>
                 }
 
-                @if (ViewBag.Comments == null || ((List<SPACEGO_E_COMMERCE_WEBSITE.Models.Comment>)ViewBag.Comments).Count == 0)
+                <hr />
+
+                @if (comments == null || !comments.Any())
                 {
                     <div class="alert alert-info">Chưa có đánh giá nào cho sản phẩm này.</div>
                 }
                 else
                 {
-                    var reviews = (List<SPACEGO_E_COMMERCE_WEBSITE.Models.Comment>)ViewBag.Comments;
-                    foreach (var review in reviews)
+                    foreach (var review in comments)
                     {
                         <div class="border rounded-3 p-3 mb-3 bg-white shadow-sm">
                             <div class="d-flex align-items-center gap-3 flex-wrap">
-                                <strong class="text-primary">@review.User.FullName</strong>
-                                <strong class="text-primary">
-                                    <i class="fa-solid fa-circle-check me-1"></i>Đã mua hàng
+                                <strong class="text-primary">@review.User?.FullName</strong>
+                                <strong class="text-success">
+                                    <i class="fa-solid fa-circle-check me-1"></i> Đã mua hàng
                                 </strong>
-                                <span class="badge bg-warning text-dark">
-                                    @review.Rating/5 <i class="fas fa-star"></i>
-                                </span>
+                                <span class="badge bg-warning text-dark">@review.Rating / 5 <i class="fas fa-star"></i></span>
                             </div>
-
                             <p class="mt-2 mb-0">@review.Content</p>
                         </div>
                     }
                 }
-
             </div>
         </div>
     </div>
 </section>
 
-<!-- Modal xem ảnh lớn -->
+<!-- Modal xem ảnh -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content bg-transparent border-0 shadow-none">
@@ -208,27 +191,22 @@
                 modalImg.src = '';
             });
         });
-    </script>
-    <script>
+
         document.addEventListener("DOMContentLoaded", function () {
             const variantSelect = document.getElementById("variantSelect");
             const dynamicPrice = document.getElementById("dynamicPrice");
             const variantStock = document.getElementById("variantStock");
             const variantIdInput = document.getElementById("variantId");
 
-            variantSelect.addEventListener("change", function () {
+            variantSelect?.addEventListener("change", function () {
                 const selectedOption = this.options[this.selectedIndex];
-
                 if (selectedOption.value !== "") {
                     const price = selectedOption.getAttribute("data-price");
                     const qty = selectedOption.getAttribute("data-quantity");
-
                     dynamicPrice.innerHTML = Number(price).toLocaleString('vi-VN') + ' <span class="text-muted">₫</span>';
                     variantStock.innerText = "Kho: " + qty + " sản phẩm";
-
                     variantIdInput.value = selectedOption.value;
                 } else {
-                    // Reset về giá tham khảo
                     dynamicPrice.innerHTML = "Giá tham khảo: @Model.ProductPrice.ToString("N0").Replace(",", ".") <span class='text-muted'>₫</span>";
                     variantStock.innerText = "";
                     variantIdInput.value = "";
@@ -236,7 +214,4 @@
             });
         });
     </script>
-
-
-
 }
