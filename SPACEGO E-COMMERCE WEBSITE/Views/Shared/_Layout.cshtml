@@ -75,19 +75,7 @@
         <nav class="bg-light border-top shadow-sm">
             <div class="container">
                 <div class="d-flex align-items-center justify-content-between">
-                    <!-- DANH MỤC -->
-                    <div class="dropdown">
-                        <button class="btn btn-teal dropdown-toggle" type="button" id="categoryMenu" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            <i class="fas fa-bars me-2"></i> DANH MỤC
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="categoryMenu">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-laptop me-2"></i> Laptop</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-mobile-alt me-2"></i> Điện thoại</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-ellipsis-h me-2"></i> Khác</a></li>
-                        </ul>
-                    </div>
+                   
                     <!-- Menu chính căn giữa -->
                     <ul class="nav mx-auto">
                         <li class="nav-item">
@@ -102,6 +90,11 @@
                     <!-- Nếu muốn thêm gì bên phải, thêm vào đây -->
                     <div style="width: 120px;"></div>
                 </div>
+                <!-- DANH MỤC -->
+                @{
+                    var categories = ViewBag.Categories as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Category>;
+                }
+                <partial name="_CategoryPartial" model="categories" />
             </div>
         </nav>
 

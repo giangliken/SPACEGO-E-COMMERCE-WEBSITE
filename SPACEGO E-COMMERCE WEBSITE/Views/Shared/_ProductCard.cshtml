@@ -1,0 +1,46 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Product
+
+<div class="col mb-5">
+    <div class="card h-100 shadow-sm" style="border-radius: 15px; overflow: hidden; border: 1px solid #e0e0e0;">
+        <a href="@Url.Action("Details", "Home", new { id = Model.ProductId })" class="text-center">
+            <img src="@Model.ImageUrl"
+                 class="card-img-top img-fluid"
+                 alt="Ảnh sản phẩm"
+                 style="height: 250px; object-fit: cover;" />
+        </a>
+
+        <div class="card-body text-center">
+            <h6 class="card-title mb-2">
+                <a href="@Url.Action("Details", "Home", new { id = Model.ProductId })"
+                   class="text-decoration-none text-dark fw-semibold">
+                    @Model.ProductName
+                </a>
+            </h6>
+            <p class="text-danger fw-bold mb-2">
+                @Model.ProductPrice.ToString("#,##0") ₫
+            </p>
+        </div>
+
+        <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
+            @if (Model.Variants != null && Model.Variants.Any())
+            {
+                <a href="@Url.Action("Details", "Home", new { id = Model.ProductId })"
+                   class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
+                   style="font-weight: 600; font-size: 1rem;">
+                    <i class="fas fa-cart-plus fa-lg"></i> Chọn phiên bản
+                </a>
+            }
+            else
+            {
+                <form asp-action="AddToCart" asp-controller="Home" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@Model.ProductId" />
+                    <button type="submit"
+                            class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
+                            style="font-weight: 600; font-size: 1rem;">
+                        <i class="fas fa-cart-plus fa-lg"></i> Thêm vào giỏ
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+</div>

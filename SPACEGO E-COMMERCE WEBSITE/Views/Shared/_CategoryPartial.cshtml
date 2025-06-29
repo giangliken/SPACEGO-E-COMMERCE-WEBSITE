@@ -1,0 +1,24 @@
+﻿@model IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Category>
+
+@if (Model != null && Model.Any())
+{
+    <div class="dropdown">
+        <button class="btn btn-outline-primary dropdown-toggle rounded-pill px-4 py-2 shadow-sm"
+                type="button"
+                id="dropdownCategory"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+            <i class="fas fa-list-ul me-2"></i> Danh mục sản phẩm
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownCategory">
+            @foreach (var cat in Model)
+            {
+                <li>
+                    <a class="dropdown-item" asp-controller="Home" asp-action="Category" asp-route-id="@cat.CategoryId">
+                        <i class="fas fa-tag me-2"></i> @cat.CategoryName
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}

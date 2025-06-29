@@ -63,5 +63,30 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 .FirstOrDefaultAsync(p => p.ProductId == id);
         }
 
+        //top 8 san pham
+        public async Task<IEnumerable<Product>> GetTopSellingProductsAsync(int count)
+        {
+            var topProductIds = await _context.OrderProducts
+                .GroupBy(op => op.ProductId)
+                .OrderByDescending(g => g.Count())
+                .Take(count)
+                .Select(g => g.Key)
+                .ToListAsync();
+
+            return await _context.Products
+                .Include(p => p.Brand)
+                .Where(p => topProductIds.Contains(p.ProductId) && p.isAvailable)
+                .ToListAsync();
+        }
+        //san pham theo nhan hang
+        public async Task<Dictionary<string, List<Product>>> GetProductsGroupedByBrandAsync()
+        {
+            return await _context.Products
+                .Include(p => p.Brand)
+                .Where(p => p.isAvailable)
+                .GroupBy(p => p.Brand.BrandName)
+                .ToDictionaryAsync(g => g.Key, g => g.ToList());
+        }
+
     }
 }
