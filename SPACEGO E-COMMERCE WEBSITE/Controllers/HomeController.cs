@@ -17,7 +17,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
-        //private readonly ApplicationUserManager _userManager;
+        private readonly ApplicationUserManager _userManager;
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IBrandRepository _brandRepository;
@@ -38,7 +38,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                               IReviewRepository reviewRepositoryreview, ICartItemRepository cartItemRepositorycartItem,
                               IDetailCartItemRepository detailCartItemRepositorydetailCartItem, IOrderRepository orderRepository,
                               IOrderProductRepository orderProductRepository, IProvinceRepository provinceRepository,
-                              IDistrictRepository districtRepository, IWardRepository wardRepository, ICommentRepository commentRepository, IProductVariantRepository productVariantRepository)
+                              IDistrictRepository districtRepository, IWardRepository wardRepository, ICommentRepository commentRepository, IProductVariantRepository productVariantRepository, ApplicationUserManager userManager)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -54,6 +54,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _wardRepository = wardRepository;
             _commentRepository = commentRepository;
             _productVariantRepository = productVariantRepository;
+            _userManager = userManager;
         }
 
 
@@ -348,7 +349,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             }
 
             ViewBag.SelectedItemIds = SelectedItemIds;
-
+            ViewBag.SelectedItems = selectedItems;
             ViewBag.Provinces = new SelectList(await _provinceRepository.GetAllAsync(), "ProvinceId", "ProvinceName");
             ViewBag.Districts = new SelectList(await _districtRepository.GetAllAsync(), "DistrictID", "DistrictName");
             ViewBag.Wards = new SelectList(await _wardRepository.GetAllAsync(), "WardID", "WardName");
@@ -362,10 +363,15 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 length = 10,
                 width = 10
             }).ToList();
+            var currentUser = _userManager.GetUserAsync(User).Result;
+            // Trong controller
+            ViewBag.FullName = currentUser?.FullName;
+            ViewBag.Email = currentUser?.Email;
+            ViewBag.PhoneNumber = currentUser?.PhoneNumber;
 
             ViewBag.ShippingItemsJson = JsonConvert.SerializeObject(shippingItems);
             ViewBag.Cart = cart;
-
+            TempData["AVCD00"] = "Test";
             return View(new Order());
         }
 
@@ -425,12 +431,13 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             cart.TotalPrice = cart.DetailCartItems.Sum(x => x.Price);
             await _cartItemRepositorycartItem.UpdateAsync(cart);
 
-            return RedirectToAction("OrderSuccess");
+            return RedirectToAction("OrderSuccess", new { orderCode = order.OrderId });
         }
 
 
-        public IActionResult OrderSuccess()
+        public IActionResult OrderSuccess(int orderCode)
         {
+            ViewBag.OrderCode = orderCode;
             return View();
         }
 
