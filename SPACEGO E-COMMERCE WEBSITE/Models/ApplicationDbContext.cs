@@ -19,6 +19,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
                                                               // ⚠️ Ngăn cascade delete gây lỗi
             modelBuilder.Entity<DetailCartItem>()
             .HasKey(x => x.Id);
+            modelBuilder.Entity<OrderProduct>()
+            .HasKey(x => x.Id);
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
                 .WithMany()
