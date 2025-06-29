@@ -50,6 +50,18 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 .FirstOrDefaultAsync(v => v.ProductVariantId == id);
         }
 
+        public async Task<ProductVariant?> LayBienTheTheoID(int? id)
+        {
+            if (!id.HasValue) return null;
+
+            return await _context.ProductVariants
+                .Include(v => v.Color)
+                .Include(v => v.Capacity)
+                .Include(v => v.Product)
+                .FirstOrDefaultAsync(v => v.ProductVariantId == id.Value);
+        }
+
+
         public async Task<IEnumerable<ProductVariant>> GetByProductIdAsync(int productId)
         {
             return await _context.ProductVariants

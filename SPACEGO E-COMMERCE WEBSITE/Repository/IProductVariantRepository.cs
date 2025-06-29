@@ -8,6 +8,7 @@
     {
         Task<IEnumerable<ProductVariant>> GetAllAsync();
         Task<ProductVariant?> GetByIdAsync(int id);
+        Task<ProductVariant?> LayBienTheTheoID(int? id);
         Task AddAsync(ProductVariant variant);
         Task UpdateAsync(ProductVariant variant);
         Task DeleteAsync(int id);
