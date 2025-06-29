@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
 
-[Authorize(Roles = "Customer")]
+
 public class OrderController : Controller
 {
     private readonly IOrderRepository _orderRepository;
@@ -16,18 +16,20 @@ public class OrderController : Controller
         _orderRepository = orderRepository;
         _userManager = userManager;
     }
+    [Authorize(SD.Role_Admin)]
     public async Task<IActionResult> Index()
     {
         var orders = await _orderRepository.GetAllAsync();
         return View(orders);
     }
+    [Authorize(Roles = "Customer")]
     public async Task<IActionResult> MyOrders()
     {
         var user = await _userManager.GetUserAsync(User);
         var orders = await _orderRepository.GetOrdersByUserIdAsync(user.Id);
         return View(orders);
     }
-
+    [Authorize(Roles = "Customer")]
     public async Task<IActionResult> Details(int id)
     {
         var order = await _orderRepository.GetByIdAsync(id);
