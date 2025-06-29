@@ -1,6 +1,13 @@
 ﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Order
 
 <h2>Thanh Toán</h2>
+@if (TempData["Test"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Test"]
+    </div>
+}
+
 @if (ViewBag.Errors != null)
 {
     <div class="alert alert-danger">
@@ -78,6 +85,10 @@
         <textarea asp-for="AddressDetail" class="form-control" rows="2"></textarea>
         <span asp-validation-for="AddressDetail" class="text-danger"></span>
     </div>
+    @foreach (var id in (List<int>)ViewBag.SelectedItemIds)
+    {
+        <input type="hidden" name="SelectedItemIds" value="@id" />
+    }
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Xác nhận đặt hàng</button>
