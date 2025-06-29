@@ -177,6 +177,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Areas.Identity.Pages.Account
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("Người dùng đã tạo tài khoản bằng nhà cung cấp {Name}.", info.LoginProvider);
+                        await _userManager.AddToRoleAsync(user, SD.Role_Customer);
 
                         var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
