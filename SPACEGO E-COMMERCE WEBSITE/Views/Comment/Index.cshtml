@@ -2,63 +2,81 @@
 
 @{
     ViewData["Title"] = "Quản lý bình luận";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="mb-4">Quản lý bình luận</h2>
-<div class="mb-3">
-    <a asp-action="Index" class="btn btn-outline-primary me-2">Tất cả bình luận</a>
-    <a asp-action="Pending" class="btn btn-outline-warning">Bình luận chờ duyệt</a>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-4 text-primary text-center">
+            <i class="fas fa-comments"></i> Quản lý bình luận
+        </h2>
+    </div>
+
+    <div class="mb-3">
+        <a asp-action="Index" class="btn btn-outline-primary me-2">
+            <i class="fas fa-list"></i> Tất cả bình luận
+        </a>
+        <a asp-action="Pending" class="btn btn-outline-warning">
+            <i class="fas fa-hourglass-half"></i> Bình luận chờ duyệt
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th><i class="fas fa-calendar-alt"></i><br>Ngày viết</th>
+                        <th><i class="fas fa-user"></i><br>Người dùng</th>
+                        <th><i class="fas fa-barcode"></i><br>Mã SP</th>
+                        <th><i class="fas fa-comment-dots"></i><br>Nội dung</th>
+                        <th><i class="fas fa-star text-warning"></i><br>Đánh giá</th>
+                        <th><i class="fas fa-check-circle"></i><br>Trạng thái</th>
+                        <th><i class="fas fa-cogs"></i><br>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-muted">Không có bình luận nào.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var c in Model)
+                        {
+                            <tr>
+                                <td>@c.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@c.User?.FullName (@c.User?.Email)</td>
+                                <td>@c.ProductId</td>
+                                <td class="text-start">@c.Content</td>
+                                <td>@c.Rating/5 ⭐</td>
+                                <td>
+                                    @if (c.isActive)
+                                    {
+                                        <span class="badge bg-success"><i class="fas fa-check"></i> Đã duyệt</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Chờ duyệt</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Toggle" asp-route-id="@c.CommentId" class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas @(c.isActive ? "fa-eye-slash" : "fa-check")"></i>
+                                        @(c.isActive ? "Ẩn" : "Duyệt")
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@c.CommentId" class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Bạn có chắc muốn xóa bình luận này không?');">
+                                        <i class="fas fa-trash-alt"></i> Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Ngày viết bình luận</th>
-            <th>Người dùng</th>
-            <th>Mã sản phẩm</th>
-            <th>Nội dung</th>
-            <th>Xếp hạng</th>
-            <th>Trạng thái</th>
-            <th class="text-center">Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (!Model.Any())
-        {
-            <tr>
-                <td colspan="7" class="text-center text-muted">Không có bình luận nào.</td>
-            </tr>
-        }
-        else
-        {
-            foreach (var c in Model)
-            {
-                <tr>
-                    <td>@c.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td>@c.User?.FullName (@c.User?.Email)</td>
-                    <td>@c.ProductId</td>
-                    <td>@c.Content</td>
-                    <td>@c.Rating/5 ⭐</td>
-                    <td>
-                        @if (c.isActive)
-                        {
-                            <span class="badge bg-success">Đã duyệt</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
-                        }
-                    </td>
-                    <td class="text-center">
-                        <a asp-action="Toggle" asp-route-id="@c.CommentId" class="btn btn-sm btn-outline-primary me-1">
-                            @(c.isActive ? "Ẩn" : "Duyệt")
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@c.CommentId" class="btn btn-sm btn-outline-danger"
-                           onclick="return confirm('Bạn có chắc muốn xóa bình luận này không?');">
-                            Xóa
-                        </a>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
