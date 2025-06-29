@@ -16,7 +16,11 @@ public class OrderController : Controller
         _orderRepository = orderRepository;
         _userManager = userManager;
     }
-
+    public async Task<IActionResult> Index()
+    {
+        var orders = await _orderRepository.GetAllAsync();
+        return View(orders);
+    }
     public async Task<IActionResult> MyOrders()
     {
         var user = await _userManager.GetUserAsync(User);
