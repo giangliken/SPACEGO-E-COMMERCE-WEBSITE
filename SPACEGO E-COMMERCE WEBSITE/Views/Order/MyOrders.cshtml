@@ -1,44 +1,72 @@
 ﻿@model List<SPACEGO_E_COMMERCE_WEBSITE.Models.Order>
+
 @{
     ViewData["Title"] = "Đơn hàng đã đặt";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Hoặc layout riêng nếu có
 }
 
-<h2 class="mb-4">Đơn hàng của bạn</h2>
+<div class="container py-4">
+    <h2 class="text-primary mb-4">
+        <i class="fas fa-box"></i> Đơn hàng của bạn
+    </h2>
 
-@if (!Model.Any())
-{
-    <p>Bạn chưa có đơn hàng nào.</p>
-}
-else
-{
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Mã đơn</th>
-                <th>Ngày đặt</th>
-                <th>Tổng</th>
-                <th>Trạng thái</th>
-                <th>Chi tiết</th> <!-- ✅ Cột mới -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var o in Model)
-            {
-                <tr>
-                    <td>#@o.OrderId</td>
-                    <td>@o.OrderDate?.ToString("dd/MM/yyyy")</td>
-                    <td>@String.Format("{0:N0} đ", o.Total)</td>
-                    <td>@(o.OrderStatus ?? "Chờ xử lý")</td>
-                    <td>
-                        <a class="btn btn-sm btn-outline-primary"
-                           asp-controller="Order"
-                           asp-action="Details"
-                           asp-route-id="@o.OrderId">
-                            Xem
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Bạn chưa có đơn hàng nào.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th><i class="fas fa-hashtag"></i><br>Mã đơn</th>
+                            <th><i class="fas fa-calendar-day"></i><br>Ngày đặt</th>
+                            <th><i class="fas fa-money-bill-wave"></i><br>Tổng</th>
+                            <th><i class="fas fa-truck"></i><br>Trạng thái</th>
+                            <th><i class="fas fa-eye"></i><br>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @foreach (var o in Model)
+                        {
+                            <tr>
+                                <td>#@o.OrderId</td>
+                                <td>@o.OrderDate?.ToString("dd/MM/yyyy")</td>
+                                <td>@String.Format("{0:N0} đ", o.Total)</td>
+                                <td>
+                                    @switch (o.OrderStatus?.ToLower())
+                                    {
+                                        case "đã giao":
+                                            <span class="badge bg-success">Đã giao</span>
+                                            ; break;
+                                        case "đã hủy":
+                                            <span class="badge bg-danger">Đã hủy</span>
+                                            ; break;
+                                        case "đang xử lý":
+                                            <span class="badge bg-warning text-dark">Đang xử lý</span>
+                                            ; break;
+                                        default:
+                                            <span class="badge bg-secondary">Chờ xử lý</span>
+                                            ; break;
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary"
+                                       asp-controller="Order"
+                                       asp-action="Details"
+                                       asp-route-id="@o.OrderId">
+                                        <i class="fas fa-eye"></i> Xem
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
