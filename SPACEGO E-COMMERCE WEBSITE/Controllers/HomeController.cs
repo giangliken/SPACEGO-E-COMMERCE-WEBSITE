@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.VariantTypes;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.VariantTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -75,7 +76,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 Brands = brands
             };
 
-            return View(products); 
+            return View(products);
         }
 
 
@@ -204,7 +205,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             if (product == null || !product.isAvailable)
                 return NotFound();
 
-            decimal finalPrice;
+            decimal finalPrice = 0;
             int? selectedVariantId = null;
 
             var variants = await _productVariantRepository.GetByProductIdAsync(id);
@@ -213,7 +214,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 if (!variantId.HasValue)
                     return BadRequest("Vui lòng chọn phiên bản sản phẩm.");
 
-                var selectedVariant = variants.FirstOrDefault(v => v.ProductVariantId == variantId.Value);
+                var selectedVariant = variants.FirstOrDefault(v => v.ProductVariantId == variantId);
                 if (selectedVariant == null)
                     return NotFound("Không tìm thấy phiên bản sản phẩm.");
 
@@ -253,7 +254,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             {
                 // Load lại giỏ hàng từ DB có tracking
                 var existingItem = cart.DetailCartItems
-                    .FirstOrDefault(d => d.ProductId == id && d.ProductVariantId == selectedVariantId);
+                    .FirstOrDefault(d => d.ProductId == id && d.ProductVariantId == variantId);
 
                 if (existingItem != null)
                 {
@@ -269,8 +270,15 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                         Quanity = 1,
                         Price = finalPrice
                     });
+                    await _cartItemRepositorycartItem.UpdateAsync(cart);
+
                 }
 
+                foreach (var item in cart.DetailCartItems)
+                {
+                    var unitPrice = item.ProductVariant?.Price ?? item.Product?.ProductPrice ?? 0;
+                    item.Price = item.Quanity * unitPrice;
+                }
                 cart.TotalPrice = cart.DetailCartItems.Sum(x => x.Price);
                 await _cartItemRepositorycartItem.UpdateAsync(cart);
             }
@@ -282,7 +290,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UpdateQuantity(int productId, string actionType)
+        public async Task<IActionResult> UpdateQuantity(int productId, int? variantId, string actionType)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
@@ -297,7 +305,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var detail = cart.DetailCartItems.FirstOrDefault(d => d.ProductId == productId);
+            var detail = cart.DetailCartItems.FirstOrDefault(d => d.ProductId == productId && (variantId == null || d.ProductVariantId == variantId));
             if (detail == null)
             {
                 return NotFound();
@@ -319,8 +327,26 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                     cart.DetailCartItems.Remove(detail);
                 }
             }
+            var product = await _productRepository.GetProductWithDetailsAsync(productId); // dùng hàm mới đã thêm ở repo
 
-            detail.Price = detail.Quanity * (detail.Product?.ProductPrice ?? 0);
+            if (product.HasVariants && variantId.HasValue)
+            {
+                // Lấy thông tin biến thể nếu có
+                var variant = await _productVariantRepository.GetByIdAsync(variantId.Value);
+                if (variant == null)
+                {
+                    return NotFound("Không tìm thấy biến thể sản phẩm.");
+                }
+                detail.Price = detail.Quanity * variant.Price;
+            }
+            else
+            {
+                // Nếu không có biến thể, sử dụng giá sản phẩm gốc
+                detail.Price = detail.Quanity * product.ProductPrice;
+            }
+
+
+            await _detailCartItemRepositorydetailCartItem.UpdateAsync(detail);
             cart.TotalPrice = cart.DetailCartItems.Sum(d => d.Price);
 
             await _cartItemRepositorycartItem.UpdateAsync(cart);
@@ -416,7 +442,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             order.UserId = userId;
             order.OrderDate = DateTime.Now;
             order.OrderStatus = "Chờ xác nhận";
-            order.Total = selectedItems.Sum(d => d.Price)+order.ShippingFee;
+            order.Total = selectedItems.Sum(d => d.Price) + order.ShippingFee;
             order.OrderProducts = selectedItems.Select(d => new OrderProduct
             {
                 ProductId = d.ProductId,
