@@ -40,7 +40,9 @@
                         {
                             <tr>
                                 <td class="align-middle">
-                                    <input type="checkbox" name="SelectedItemIds" value="@item.Id" class="itemCheckbox" data-price="@item.Price" />
+                                    <input type="checkbox" name="SelectedItemIds" value="@item.Id"
+                                           class="itemCheckbox"
+                                           data-price="@( (item.ProductVariant?.Price ?? item.Product.ProductPrice) * item.Quanity )" />
                                 </td>
                                 <td class="align-middle">@item.Product?.ProductName</td>
                                 <td class="align-middle">
@@ -53,29 +55,10 @@
                                         <span class="text-muted fst-italic">-</span>
                                     }
                                 </td>
-                                <td class="align-middle">@String.Format("{0:N0}", item.Product?.ProductPrice) đ</td>
-                                <div style="display: none;">
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
-                                            <input type="hidden" name="productId" value="@item.ProductId" />
-                                            <input type="hidden" name="actionType" value="decrease" />
-                                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-circle px-2">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                        </form>
-
-                                        <span class="fw-semibold px-2">@item.Quanity</span>
-
-                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
-                                            <input type="hidden" name="productId" value="@item.ProductId" />
-                                            <input type="hidden" name="actionType" value="increase" />
-                                            <button type="submit" class="btn btn-sm btn-outline-success rounded-circle px-2">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
                                 <td class="align-middle">
+                                    @string.Format("{0:N0} đ", item.ProductVariant?.Price ?? item.Product.ProductPrice)
+                                </td>
+                                <td class="d-none">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
                                         <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
                                             <input type="hidden" name="productId" value="@item.ProductId" />
@@ -96,9 +79,34 @@
                                         </form>
                                     </div>
                                 </td>
-                                <td class="align-middle text-success fw-bold">@String.Format("{0:N0}", item.Price) đ</td>
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <input type="hidden" name="variantId" value="@item.ProductVariantId" />
 
+                                            <input type="hidden" name="actionType" value="decrease" />
+                                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-circle px-2">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </form>
 
+                                        <span class="fw-semibold px-2">@item.Quanity</span>
+
+                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <input type="hidden" name="variantId" value="@item.ProductVariantId" />
+
+                                            <input type="hidden" name="actionType" value="increase" />
+                                            <button type="submit" class="btn btn-sm btn-outline-success rounded-circle px-2">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    @string.Format("{0:N0} đ", item.ProductVariant?.Price * item.Quanity ?? item.Product.ProductPrice * item.Quanity)
+                                </td>
                             </tr>
                         }
                     </tbody>
