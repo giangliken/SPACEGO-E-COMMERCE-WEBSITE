@@ -4,10 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-4">
-    <h2 class="text-center text-primary mb-4 bg-light py-3 rounded-top" style="border-bottom: 2px solid #007bff;">
-        <i class="fas fa-shopping-cart"></i> @ViewBag.Title
+<div class="container">
+    <h2 class="text-center text-black mb-4 bg-light py-3 rounded-top" style="border-bottom: 2px solid #007bff;">
+        <strong>Giỏ hàng</strong> &gt;&gt; Thanh Toán &gt;&gt; Hoàn thành
     </h2>
+
 
     @if (Model == null || Model.DetailCartItems == null || !Model.DetailCartItems.Any())
     {
@@ -28,10 +29,10 @@
                             <th class="p-3"><input type="checkbox" id="checkAll" /></th>
                             <th class="p-3">Sản phẩm</th>
                             <th class="p-3">Biến thể</th>
-                            <th class="p-3">Số lượng</th>
                             <th class="p-3">Đơn giá</th>
+                            <th class="p-3">Số lượng</th>
                             <th class="p-3">Thành tiền</th>
-                            <th class="p-3">Điều chỉnh</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +40,7 @@
                         {
                             <tr>
                                 <td class="align-middle">
-                                    <input type="checkbox" name="SelectedItemIds" value="@item.Id" class="itemCheckbox" />
+                                    <input type="checkbox" name="SelectedItemIds" value="@item.Id" class="itemCheckbox" data-price="@item.Price" />
                                 </td>
                                 <td class="align-middle">@item.Product?.ProductName</td>
                                 <td class="align-middle">
@@ -52,27 +53,52 @@
                                         <span class="text-muted fst-italic">-</span>
                                     }
                                 </td>
-                                <td class="align-middle">@item.Quanity</td>
                                 <td class="align-middle">@String.Format("{0:N0}", item.Product?.ProductPrice) đ</td>
-                                <td class="align-middle text-success fw-bold">@String.Format("{0:N0}", item.Price) đ</td>
-                                <td class="align-middle">
-                                    <div class="btn-group" role="group">
-                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post">
+                                <div style="display: none;">
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <input type="hidden" name="actionType" value="decrease" />
+                                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-circle px-2">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </form>
+
+                                        <span class="fw-semibold px-2">@item.Quanity</span>
+
+                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
                                             <input type="hidden" name="productId" value="@item.ProductId" />
                                             <input type="hidden" name="actionType" value="increase" />
-                                            <button type="submit" class="btn btn-sm btn-outline-success rounded-circle">
+                                            <button type="submit" class="btn btn-sm btn-outline-success rounded-circle px-2">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                         </form>
-                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post">
+                                    </div>
+                                </div>
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
                                             <input type="hidden" name="productId" value="@item.ProductId" />
                                             <input type="hidden" name="actionType" value="decrease" />
-                                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-circle">
+                                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-circle px-2">
                                                 <i class="fas fa-minus"></i>
+                                            </button>
+                                        </form>
+
+                                        <span class="fw-semibold px-2">@item.Quanity</span>
+
+                                        <form asp-action="UpdateQuantity" asp-controller="Home" method="post" class="m-0">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <input type="hidden" name="actionType" value="increase" />
+                                            <button type="submit" class="btn btn-sm btn-outline-success rounded-circle px-2">
+                                                <i class="fas fa-plus"></i>
                                             </button>
                                         </form>
                                     </div>
                                 </td>
+                                <td class="align-middle text-success fw-bold">@String.Format("{0:N0}", item.Price) đ</td>
+
+
                             </tr>
                         }
                     </tbody>
@@ -80,8 +106,9 @@
             </div>
 
             <div class="text-end mt-4 p-3 bg-light rounded-3 shadow-sm">
-                <h4 class="text-danger mb-0">Tổng cộng: @String.Format("{0:N0}", Model.TotalPrice) đ</h4>
+                <h4 class="text-danger mb-0">Tổng cộng: <span id="totalPriceDisplay">0 đ</span></h4>
             </div>
+
 
             <div class="d-flex justify-content-between mt-4 gap-2">
                 <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary rounded-pill w-50">
@@ -93,13 +120,31 @@
             </div>
         </form>
 
-        @section Scripts {
-            <script>
-                document.getElementById('checkAll').addEventListener('change', function () {
-                    const checked = this.checked;
-                    document.querySelectorAll('.itemCheckbox').forEach(cb => cb.checked = checked);
-                });
-            </script>
-        }
+       
+       
     }
 </div>
+@section Scripts {
+    <script>
+        function updateTotalPrice() {
+            let total = 0;
+            document.querySelectorAll('.itemCheckbox:checked').forEach(cb => {
+                total += parseFloat(cb.getAttribute('data-price') || 0);
+            });
+            document.getElementById('totalPriceDisplay').innerText = total.toLocaleString('vi-VN') + ' đ';
+        }
+
+        document.querySelectorAll('.itemCheckbox').forEach(cb => {
+            cb.addEventListener('change', updateTotalPrice);
+        });
+
+        document.getElementById('checkAll').addEventListener('change', function () {
+            const checked = this.checked;
+            document.querySelectorAll('.itemCheckbox').forEach(cb => cb.checked = checked);
+            updateTotalPrice();
+        });
+
+        // Init on load
+        updateTotalPrice();
+    </script>
+}

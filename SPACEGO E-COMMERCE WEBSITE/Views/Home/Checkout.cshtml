@@ -1,6 +1,11 @@
 ﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Order
 
-<h2>Thanh Toán</h2>
+<h2 class="text-center text-black mb-4 bg-light py-3 rounded-top" style="border-bottom: 2px solid #007bff;">
+    <a href="/Home/Cart" class="text-decoration-none text-black">Giỏ hàng</a>
+    &gt;&gt; <strong>Thanh Toán</strong> &gt;&gt; Hoàn thành
+</h2>
+
+
 @if (TempData["Test"] != null)
 {
     <div class="alert alert-danger">
@@ -22,79 +27,120 @@
 }
 
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-<form asp-action="Checkout" method="post" class="row g-3">
-    <div class="col-md-6">
-        <label asp-for="FullName" class="form-label">Họ và tên</label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
-    </div>
-    <div class="col-md-6">
-        <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-    <div class="col-md-6">
-        <label asp-for="Email" class="form-label">Email</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="col-md-6">
-        <label asp-for="PaymentMethod" class="form-label">Phương thức thanh toán</label>
-        <select asp-for="PaymentMethod" class="form-select">
-            <option value="">-- Chọn phương thức --</option>
-            <option>Tiền mặt</option>
-            <option>Chuyển khoản</option>
-            <option>Ví điện tử</option>
-        </select>
-        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+
+<div class="row">
+    <!-- Cột bên trái: Form -->
+    <div class="col-lg-8 col-md-12">
+        @* Form thanh toán *@
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <form asp-action="Checkout" method="post" class="row g-3">
+            <form asp-action="Checkout" method="post" class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="FullName" class="form-label">Họ và tên</label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PaymentMethod" class="form-label">Phương thức thanh toán</label>
+                    <select asp-for="PaymentMethod" class="form-select">
+                        <option value="">-- Chọn phương thức --</option>
+                        <option>Tiền mặt</option>
+                        <option>Chuyển khoản</option>
+                        <option>Ví điện tử</option>
+                    </select>
+                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label">Phí vận chuyển</label>
+                    <div id="shippingFeeDisplay" style="font-weight: bold;">0 đ</div>
+                </div>
+                <input type="hidden" name="ShippingFee" id="shippingFeeInput" value="0" />
+                <div class="row">
+                    <!-- Cột 1: Tỉnh -->
+                    <div class="col-md-4">
+                        <label for="provinceSelect" class="form-label">Tỉnh/Thành phố</label>
+                        <select asp-for="ProvinceName" id="provinceSelect" name="ProvinceName" class="form-select">
+                        </select>
+                        <span asp-validation-for="ProvinceName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Cột 2: Huyện -->
+                    <div class="col-md-4">
+                        <label for="districtSelect" class="form-label">Quận/Huyện</label>
+                        <select asp-for="DistrictName" id="districtSelect" name="DistrictName" class="form-select">
+                        </select>
+                        <span asp-validation-for="DistrictName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Cột 3: Xã -->
+                    <div class="col-md-4">
+                        <label for="wardSelect" class="form-label">Xã/Phường/Thị Trấn</label>
+                        <select asp-for="WardName" id="wardSelect" name="WardName" class="form-select">
+                        </select>
+                        <span asp-validation-for="WardName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label asp-for="AddressDetail" class="form-label">Địa chỉ chi tiết</label>
+                    <textarea asp-for="AddressDetail" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="AddressDetail" class="text-danger"></span>
+                </div>
+                @{
+                    var selectedItemIds = ViewBag.SelectedItemIds as List<int>;
+                }
+
+                @if (selectedItemIds != null)
+                {
+                    foreach (var id in selectedItemIds)
+                    {
+                        <input type="hidden" name="SelectedItemIds" value="@id" />
+                    }
+                }
+
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Xác nhận đặt hàng</button>
+                </div>
+
+            </form>
+            @{
+                var selectedItemIds = ViewBag.SelectedItemIds as List<int>;
+            }
+
+            @if (selectedItemIds != null)
+            {
+                foreach (var id in selectedItemIds)
+                {
+                    <input type="hidden" name="SelectedItemIds" value="@id" />
+                }
+            }
+
+
+        </form>
     </div>
 
-    <div class="col-md-12">
-        <label class="form-label">Phí vận chuyển</label>
-        <div id="shippingFeeDisplay" style="font-weight: bold;">0 đ</div>
-    </div>
-    <input type="hidden" name="ShippingFee" id="shippingFeeInput" value="0" />
-    <div class="row">
-        <!-- Cột 1: Tỉnh -->
-        <div class="col-md-4">
-            <label for="provinceSelect" class="form-label">Tỉnh/Thành phố</label>
-            <select asp-for="ProvinceName" id="provinceSelect" name="ProvinceName" class="form-select">
-            </select>
-            <span asp-validation-for="ProvinceName" class="text-danger"></span>
+    <!-- Cột bên phải: Thông tin đơn hàng -->
+    <div class="col-lg-4 col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white fw-bold">
+                Thông tin đơn hàng
+            </div>
         </div>
-
-        <!-- Cột 2: Huyện -->
-        <div class="col-md-4">
-            <label for="districtSelect" class="form-label">Quận/Huyện</label>
-            <select asp-for="DistrictName" id="districtSelect" name="DistrictName" class="form-select">
-            </select>
-            <span asp-validation-for="DistrictName" class="text-danger"></span>
-        </div>
-
-        <!-- Cột 3: Xã -->
-        <div class="col-md-4">
-            <label for="wardSelect" class="form-label">Xã/Phường/Thị Trấn</label>
-            <select asp-for="WardName" id="wardSelect" name="WardName" class="form-select">
-            </select>
-            <span asp-validation-for="WardName" class="text-danger"></span>
-        </div>
     </div>
-
-    <div class="col-md-12">
-        <label asp-for="AddressDetail" class="form-label">Địa chỉ chi tiết</label>
-        <textarea asp-for="AddressDetail" class="form-control" rows="2"></textarea>
-        <span asp-validation-for="AddressDetail" class="text-danger"></span>
-    </div>
-    @foreach (var id in (List<int>)ViewBag.SelectedItemIds)
-    {
-        <input type="hidden" name="SelectedItemIds" value="@id" />
-    }
-
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary">Xác nhận đặt hàng</button>
-    </div>
-
-</form>
+</div>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
