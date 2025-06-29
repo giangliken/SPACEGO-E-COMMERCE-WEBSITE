@@ -24,8 +24,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Models
         public string Email { get; set; }
 
         // Thông tin địa chỉ
+        public string ProvinceId { get; set; } 
+
         public string ProvinceName { get; set; }
+        public string DistrictId { get; set; }
+
         public string DistrictName { get; set; }
+        public string WardCode { get; set; }
+
         public string WardName { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ chi tiết")]
