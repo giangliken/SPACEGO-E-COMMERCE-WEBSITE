@@ -29,7 +29,7 @@ public class OrderController : Controller
         var orders = await _orderRepository.GetOrdersByUserIdAsync(user.Id);
         return View(orders);
     }
-    [Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Admin,Customer")]
     public async Task<IActionResult> Details(int id)
     {
         var order = await _orderRepository.GetByIdAsync(id);
