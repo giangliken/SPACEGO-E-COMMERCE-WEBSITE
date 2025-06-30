@@ -177,19 +177,18 @@
                     <div class="text-danger">Không có sản phẩm nào.</div>
                 }
                 <hr />
-                <div class="col-md-12">
+                <div class="col-md-12 mb-3">
                     <div class="d-flex align-items-center">
                         <label class="form-label mb-0 me-2">Phí vận chuyển:</label>
                         <div id="shippingFeeDisplay" style="font-weight: bold;">0 đ</div>
                     </div>
                 </div>
 
-
-                <div class="d-flex justify-content-between fw-bold">
-                    <span>Tổng:</span>
-                    <span class="text-danger">
-                        @total.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".") đ
-                    </span>
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between fw-bold">
+                        <label class="form-label mb-0 me-2">Tổng (Bao gồm phí vận chuyển):</label>
+                        <div id="finalTotalDisplay" style="font-weight: bold; color:red">0 đ</div>
+                    </div>
                 </div>
 
             </div>
@@ -267,6 +266,7 @@
 
         // gọi sau khi khai báo tất cả hàm trên
                 $(document).ready(function () {
+                    const productTotal = @total;
             console.log("jQuery is ready");
             loadProvinces();
 
@@ -341,6 +341,9 @@
                                     const fee = result.data.total;
                                     $('#shippingFeeDisplay').text(fee.toLocaleString('vi-VN') + ' đ');
                                     $('#shippingFeeInput').val(fee);
+                                    const finalTotal = productTotal + fee;
+                                         // 👉 Hiển thị tổng cộng ở đâu đó (phải có thẻ để hiển thị)
+                                    $('#finalTotalDisplay').text(finalTotal.toLocaleString('vi-VN') + ' đ');
                                 } else {
                                     $('#shippingFeeDisplay').text("Không xác định");
                                 }
