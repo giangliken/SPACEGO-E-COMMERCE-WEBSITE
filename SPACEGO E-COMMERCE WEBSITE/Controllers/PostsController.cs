@@ -1,17 +1,23 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
+using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using System.Security.Claims;
 
 public class PostsController : Controller
 {
     private readonly IPostRepository _postRepo;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IActivityLogService _activityLogService;
 
-    public PostsController(IPostRepository postRepo, UserManager<ApplicationUser> userManager)
+    public PostsController(IPostRepository postRepo, UserManager<ApplicationUser> userManager, IActivityLogService activityLogService)
     {
         _postRepo = postRepo;
         _userManager = userManager;
+        _activityLogService = activityLogService;
     }
 
     public async Task<IActionResult> Index()
@@ -42,6 +48,14 @@ public class PostsController : Controller
             post.UserId = user.Id;
             post.CreatedAt = DateTime.Now;
             await _postRepo.AddAsync(post);
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Add",
+                tableName: "Post",
+                objectId: post.PostId.ToString(),
+                description: $"Người dùng {user.UserName} đã thêm bài viết mới: {post.Title}"
+            );
             return RedirectToAction(nameof(Index));
         }
         return View(post);
@@ -67,8 +81,17 @@ public class PostsController : Controller
     {
         if (ModelState.IsValid)
         {
+            var user = await _userManager.GetUserAsync(User);
             post.UpdatedAt = DateTime.Now;
             await _postRepo.UpdateAsync(post);
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Update",
+                tableName: "Post",
+                objectId: post.PostId.ToString(),
+                description: $"Người dùng {user.UserName} đã sửa bài viết : {post.Title}"
+            );
             return RedirectToAction(nameof(Index));
         }
         return View(post);
@@ -85,7 +108,17 @@ public class PostsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
+        var user = await _userManager.GetUserAsync(User);
+        var post = await _postRepo.GetByIdAsync(id);
         await _postRepo.DeleteAsync(id);
+        await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Delete",
+                tableName: "Post",
+                objectId: post.PostId.ToString(),
+                description: $"Người dùng {user.UserName} đã xóa bài viết : {post.Title}"
+            );
         return RedirectToAction(nameof(Index));
     }
 }
