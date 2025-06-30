@@ -565,50 +565,80 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             cart.TotalPrice = cart.DetailCartItems.Sum(x => x.Price);
             await _cartItemRepositorycartItem.UpdateAsync(cart);
 
-            //// 2. Chuẩn bị danh sách sản phẩm HTML
-            //string productListHtml = "";
-            //foreach (var item in order.OrderProducts)
-            //{
-            //    productListHtml += $"<li>{item.Product.ProductName} - SL: {item.Quantity} - Giá: {item.:N0}₫</li>";
-            //}
-
-            // 3. Gửi mail xác nhận
-            string subject = "Xác nhận đơn hàng từ SPACEGO";
-            string body = $@"
-        <p>Chào {order.FullName},</p>
-
-        <p>Cảm ơn bạn đã đặt hàng tại <strong>SPACEGO</strong>!</p>
-
-        <p>Thông tin đơn hàng của bạn như sau:</p>
-        <ul>
-            <li><strong>Mã đơn hàng:</strong> #{order.OrderId}</li>
-            <li><strong>Ngày đặt hàng:</strong> {order.OrderDate:dd/MM/yyyy HH:mm}</li>
-            <li><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</li>
-            <li><strong>Phí vận chuyển:</strong> {order.ShippingFee:N0}₫</li>
-            <li><strong>Tổng thanh toán:</strong> {order.Total:N0}₫</li>
-        </ul>
-
-        <p><strong>Sản phẩm đã đặt:</strong></p>
-
-        <p><strong>Địa chỉ giao hàng:</strong></p>
-        <p>
-            {order.FullName}<br />
-            {order.PhoneNumber}<br />
-            {order.AddressDetail}, {order.WardName}, {order.DistrictName}, {order.ProvinceName}
-        </p>
-
-        <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email này hoặc số điện thoại hỗ trợ trên website.</p>
-
-        <p>Trân trọng,<br><strong>SPACEGO TEAM</strong></p>
-    ";
-
-            await _emailSender.SendEmailAsync(order.Email, subject, body);
+            
             TempData["Success"] = "Đơn hàng đã được đặt thành công. Thông tin đã được gửi qua email.";
             if (order.PaymentMethod == "Chuyển khoản ngân hàng")
             {
                 order.PaymentMethod = "Chuyển khoản ngân hàng";
                 order.OrderStatus = "Chưa thanh toán"; // Cập nhật trạng thái đơn hàng
                 await _orderRepository.UpdateAsync(order); // Cập nhật phương thức thanh toán vào đơn hàng
+                                                           // 2. Chuẩn bị danh sách sản phẩm HTML
+                string itemsTable = "<table border='1' cellspacing='0' cellpadding='8' style='border-collapse:collapse; width: 100%;'>"
+                       + "<thead>"
+                       + "<tr style='background-color: #f2f2f2;'>"
+                       + "<th>Tên sản phẩm</th>"
+                       + "<th>Biến thể</th>"
+                       + "<th>Số lượng</th>"
+                       + "<th>Đơn giá</th>"
+                       + "<th>Thành tiền</th>"
+                       + "</tr>"
+                       + "</thead><tbody>";
+
+                foreach (var item in selectedItems)
+                {
+                    string productName = item.Product.ProductName;
+                    string variantText = item.ProductVariant != null
+                        ? $"{item.ProductVariant.Color?.ColorName ?? ""} {item.ProductVariant.Capacity?.CapacityName ?? ""}".Trim()
+                        : "Không có";
+
+                    decimal unitPrice = item.Product.HasVariants
+                        ? item.ProductVariant.Price
+                        : item.Product.ProductPrice;
+
+                    itemsTable += $@"
+                <tr>
+                    <td>{productName}</td>
+                    <td>{variantText}</td>
+                    <td>{item.Quanity}</td>
+                    <td>{unitPrice:N0}₫</td>
+                    <td>{(unitPrice * item.Quanity):N0}₫</td>
+                </tr>";
+                }
+
+                itemsTable += "</tbody></table>";
+
+                // 3. Gửi mail xác nhận
+                string subject = "Xác nhận đơn hàng từ SPACEGO";
+                string body = $@"
+            <p>Chào {order.FullName},</p>
+
+            <p>Cảm ơn bạn đã đặt hàng tại <strong>SPACEGO</strong>!</p>
+
+            <p>Thông tin đơn hàng của bạn như sau:</p>
+            <ul>
+                <li><strong>Mã đơn hàng:</strong> #{order.OrderId}</li>
+                <li><strong>Ngày đặt hàng:</strong> {order.OrderDate:dd/MM/yyyy HH:mm}</li>
+                <li><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</li>
+                <li><strong>Trạng thái đơn hàng:</strong> {order.OrderStatus}</li> 
+                <li><strong>Phí vận chuyển:</strong> {order.ShippingFee:N0}₫</li>
+                <li><strong>Tổng thanh toán:</strong> {order.Total:N0}₫</li>
+            </ul>
+
+            <p><strong>Sản phẩm đã đặt:</strong></p>
+            {itemsTable}
+
+            <p><strong>Địa chỉ giao hàng:</strong></p>
+            <p>
+                {order.FullName}<br />
+                {order.PhoneNumber}<br />
+                {order.AddressDetail}, {order.WardName}, {order.DistrictName}, {order.ProvinceName}
+            </p>
+
+            <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email này hoặc số điện thoại hỗ trợ trên website.</p>
+
+            <p>Trân trọng,<br><strong>SPACEGO TEAM</strong></p>";
+
+                await _emailSender.SendEmailAsync(order.Email, subject, body);
                 return RedirectToAction("BankTransferInfo", new { orderId = order.OrderId });
             }
             else if (order.PaymentMethod == "Thanh toán bằng VNPAY")
@@ -625,10 +655,144 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 order.PaymentMethod = "Thanh toán bằng VNPAY";
                 order.OrderStatus = "Chưa thanh toán"; // Cập nhật trạng thái đơn hàng
                 await _orderRepository.UpdateAsync(order); // Cập nhật phương thức thanh toán vào đơn hàng
+                                                           // 2. Chuẩn bị danh sách sản phẩm HTML
+                string itemsTable = "<table border='1' cellspacing='0' cellpadding='8' style='border-collapse:collapse; width: 100%;'>"
+                       + "<thead>"
+                       + "<tr style='background-color: #f2f2f2;'>"
+                       + "<th>Tên sản phẩm</th>"
+                       + "<th>Biến thể</th>"
+                       + "<th>Số lượng</th>"
+                       + "<th>Đơn giá</th>"
+                       + "<th>Thành tiền</th>"
+                       + "</tr>"
+                       + "</thead><tbody>";
+
+                foreach (var item in selectedItems)
+                {
+                    string productName = item.Product.ProductName;
+                    string variantText = item.ProductVariant != null
+                        ? $"{item.ProductVariant.Color?.ColorName ?? ""} {item.ProductVariant.Capacity?.CapacityName ?? ""}".Trim()
+                        : "Không có";
+
+                    decimal unitPrice = item.Product.HasVariants
+                        ? item.ProductVariant.Price
+                        : item.Product.ProductPrice;
+
+                    itemsTable += $@"
+                <tr>
+                    <td>{productName}</td>
+                    <td>{variantText}</td>
+                    <td>{item.Quanity}</td>
+                    <td>{unitPrice:N0}₫</td>
+                    <td>{(unitPrice * item.Quanity):N0}₫</td>
+                </tr>";
+                }
+
+                itemsTable += "</tbody></table>";
+
+                // 3. Gửi mail xác nhận
+                string subject = "Xác nhận đơn hàng từ SPACEGO";
+                string body = $@"
+            <p>Chào {order.FullName},</p>
+
+            <p>Cảm ơn bạn đã đặt hàng tại <strong>SPACEGO</strong>!</p>
+
+            <p>Thông tin đơn hàng của bạn như sau:</p>
+            <ul>
+                <li><strong>Mã đơn hàng:</strong> #{order.OrderId}</li>
+                <li><strong>Ngày đặt hàng:</strong> {order.OrderDate:dd/MM/yyyy HH:mm}</li>
+                <li><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</li>
+                <li><strong>Trạng thái đơn hàng:</strong> {order.OrderStatus}</li> 
+                <li><strong>Phí vận chuyển:</strong> {order.ShippingFee:N0}₫</li>
+                <li><strong>Tổng thanh toán:</strong> {order.Total:N0}₫</li>
+            </ul>
+
+            <p><strong>Sản phẩm đã đặt:</strong></p>
+            {itemsTable}
+
+            <p><strong>Địa chỉ giao hàng:</strong></p>
+            <p>
+                {order.FullName}<br />
+                {order.PhoneNumber}<br />
+                {order.AddressDetail}, {order.WardName}, {order.DistrictName}, {order.ProvinceName}
+            </p>
+
+            <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email này hoặc số điện thoại hỗ trợ trên website.</p>
+
+            <p>Trân trọng,<br><strong>SPACEGO TEAM</strong></p>";
+
+                await _emailSender.SendEmailAsync(order.Email, subject, body);
                 return RedirectToAction("CreatePaymentUrlVnpay", "Home", paymentModel);
             }
             else
             {
+                // 2. Chuẩn bị danh sách sản phẩm HTML
+                string itemsTable = "<table border='1' cellspacing='0' cellpadding='8' style='border-collapse:collapse; width: 100%;'>"
+                       + "<thead>"
+                       + "<tr style='background-color: #f2f2f2;'>"
+                       + "<th>Tên sản phẩm</th>"
+                       + "<th>Biến thể</th>"
+                       + "<th>Số lượng</th>"
+                       + "<th>Đơn giá</th>"
+                       + "<th>Thành tiền</th>"
+                       + "</tr>"
+                       + "</thead><tbody>";
+
+                foreach (var item in selectedItems)
+                {
+                    string productName = item.Product.ProductName;
+                    string variantText = item.ProductVariant != null
+                        ? $"{item.ProductVariant.Color?.ColorName ?? ""} {item.ProductVariant.Capacity?.CapacityName ?? ""}".Trim()
+                        : "Không có";
+
+                    decimal unitPrice = item.Product.HasVariants
+                        ? item.ProductVariant.Price
+                        : item.Product.ProductPrice;
+
+                    itemsTable += $@"
+                <tr>
+                    <td>{productName}</td>
+                    <td>{variantText}</td>
+                    <td>{item.Quanity}</td>
+                    <td>{unitPrice:N0}₫</td>
+                    <td>{(unitPrice * item.Quanity):N0}₫</td>
+                </tr>";
+                }
+
+                itemsTable += "</tbody></table>";
+
+                // 3. Gửi mail xác nhận
+                string subject = "Xác nhận đơn hàng từ SPACEGO";
+                string body = $@"
+            <p>Chào {order.FullName},</p>
+
+            <p>Cảm ơn bạn đã đặt hàng tại <strong>SPACEGO</strong>!</p>
+
+            <p>Thông tin đơn hàng của bạn như sau:</p>
+            <ul>
+                <li><strong>Mã đơn hàng:</strong> #{order.OrderId}</li>
+                <li><strong>Ngày đặt hàng:</strong> {order.OrderDate:dd/MM/yyyy HH:mm}</li>
+                <li><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</li>
+                <li><strong>Trạng thái đơn hàng:</strong> {order.OrderStatus}</li> 
+                <li><strong>Phí vận chuyển:</strong> {order.ShippingFee:N0}₫</li>
+                <li><strong>Tổng thanh toán:</strong> {order.Total:N0}₫</li>
+            </ul>
+
+            <p><strong>Sản phẩm đã đặt:</strong></p>
+            {itemsTable}
+
+            <p><strong>Địa chỉ giao hàng:</strong></p>
+            <p>
+                {order.FullName}<br />
+                {order.PhoneNumber}<br />
+                {order.AddressDetail}, {order.WardName}, {order.DistrictName}, {order.ProvinceName}
+            </p>
+
+            <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email này hoặc số điện thoại hỗ trợ trên website.</p>
+
+            <p>Trân trọng,<br><strong>SPACEGO TEAM</strong></p>";
+
+                await _emailSender.SendEmailAsync(order.Email, subject, body);
                 return RedirectToAction("OrderSuccess", new { orderCode = order.OrderId });
             }
         }
