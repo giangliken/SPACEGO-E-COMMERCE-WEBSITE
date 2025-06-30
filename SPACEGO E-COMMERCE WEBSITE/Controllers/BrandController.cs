@@ -53,6 +53,7 @@ public class BrandController : Controller
             }
 
             await _brandRepository.AddAsync(brand);
+
             return RedirectToAction("Index");
         }
 
