@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "Báo cáo thống kê";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-4">
+    <h2 class="text-primary mb-4"><i class="fas fa-chart-line"></i> Báo cáo thống kê đơn hàng</h2>
+
+    <!-- Bộ lọc thời gian -->
+    <form method="get" asp-action="Index" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <label for="dateFrom" class="form-label">Từ ngày</label>
+            <input type="date" id="dateFrom" name="dateFrom" class="form-control" value="@ViewBag.DateFrom" />
+        </div>
+        <div class="col-md-3">
+            <label for="dateTo" class="form-label">Đến ngày</label>
+            <input type="date" id="dateTo" name="dateTo" class="form-control" value="@ViewBag.DateTo" />
+        </div>
+        <div class="col-md-3 align-self-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter"></i> Lọc thống kê
+            </button>
+        </div>
+    </form>
+    <!-- Nút xuất Excel -->
+    <div class="mb-4 text-end">
+        <a asp-action="ExportToExcel"
+           asp-route-dateFrom="@ViewBag.DateFrom"
+           asp-route-dateTo="@ViewBag.DateTo"
+           class="btn btn-success">
+            <i class="fas fa-file-excel me-1"></i> Xuất Excel
+        </a>
+    </div>
+    <!-- Kết quả thống kê -->
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center border-0 rounded-4 bg-light">
+                <div class="card-body">
+                    <h2 class="fw-bold text-primary">@ViewBag.TotalOrders</h2>
+                    <div class="text-muted">Tổng số đơn hàng</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center border-0 rounded-4 bg-light">
+                <div class="card-body">
+                    <h2 class="fw-bold text-success">@ViewBag.TotalRevenue.ToString("N0") ₫</h2>
+                    <div class="text-muted">Tổng doanh thu</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center border-0 rounded-4 bg-light">
+                <div class="card-body">
+                    <h2 class="fw-bold text-info">@ViewBag.CompletedOrders</h2>
+                    <div class="text-muted">Đơn hàng hoàn tất</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center border-0 rounded-4 bg-light">
+                <div class="card-body">
+                    <h2 class="fw-bold text-danger">@ViewBag.CancelledOrders</h2>
+                    <div class="text-muted">Đơn hàng đã hủy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <h4 class="text-secondary mb-3">Biểu đồ trạng thái đơn hàng</h4>
+        <canvas id="orderStatusChart" height="100"></canvas>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('orderStatusChart').getContext('2d');
+
+        const chartData = {
+            labels: ['Hoàn tất', 'Đã hủy', 'Khác'],
+            datasets: [{
+                label: 'Trạng thái đơn hàng',
+                data: [
+        @ViewBag.ChartData.Completed,
+        @ViewBag.ChartData.Cancelled,
+        @ViewBag.ChartData.Pending
+                ],
+                backgroundColor: [
+                    'rgba(40, 167, 69, 0.7)',   // Xanh lá - Hoàn tất
+                    'rgba(220, 53, 69, 0.7)',   // Đỏ - Đã hủy
+                    'rgba(255, 193, 7, 0.7)'    // Vàng - Khác
+                ],
+                borderColor: [
+                    'rgba(40, 167, 69, 1)',
+                    'rgba(220, 53, 69, 1)',
+                    'rgba(255, 193, 7, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const config = {
+            type: 'pie',
+            data: chartData,
+            options: {
+                responsive: true,
+                layout: {
+                    padding: 20
+                },
+                plugins: {
+                    legend: {
+                        position: 'right', // ⬅️ Di chuyển chú thích sang bên phải
+                        labels: {
+                            boxWidth: 20,
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const value = context.parsed;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${context.label}: ${value} đơn (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                // Giảm bán kính
+                cutout: '0%', // Nếu muốn "doughnut", có thể set '40%' ở đây
+                radius: '60%'  // ⬅️ Giảm bán kính tổng thể
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+}
+
