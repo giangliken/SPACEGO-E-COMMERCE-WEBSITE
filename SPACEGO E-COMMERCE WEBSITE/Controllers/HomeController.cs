@@ -127,6 +127,21 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 ViewData["Title"] = "Trang chủ";
             }
 
+            var ratingDict = new Dictionary<int, (double average, int count)>();
+
+            foreach (var product in products)
+            {
+                // Truy vấn tất cả comment theo ProductId từ _commentRepository
+                var comments = await _commentRepository.GetByProductIdAsync(product.ProductId);
+                comments = comments.Where(c => c.isActive).ToList();
+
+                var count = comments.Count();
+                var average = count > 0 ? Math.Round(comments.Average(c => c.Rating), 1) : 0;
+
+                ratingDict[product.ProductId] = (average, count);
+            }
+
+            ViewBag.RatingDict = ratingDict;
             ViewData["CurrentFilter"] = searchString;
             ViewBag.TopProducts = await _productRepository.GetTopSellingProductsAsync(8);
             ViewBag.ProductsByBrand = await _productRepository.GetProductsGroupedByBrandAsync();

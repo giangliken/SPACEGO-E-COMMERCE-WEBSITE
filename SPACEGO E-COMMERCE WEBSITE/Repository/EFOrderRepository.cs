@@ -94,5 +94,13 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<Order>> GetOrdersByIdsAsync(List<int> orderIds)
+        {
+            return await _context.Orders
+                .Where(o => orderIds.Contains(o.OrderId))
+                .Include(o => o.OrderProducts) // nếu cần thông tin sản phẩm trong đơn
+                .ThenInclude(op => op.Product) // nếu cần luôn tên sản phẩm
+                .ToListAsync();
+        }
     }
 }
