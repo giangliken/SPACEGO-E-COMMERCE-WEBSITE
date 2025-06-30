@@ -234,6 +234,16 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             // Nếu không trùng thì thêm
             await _productVariantRepository.AddAsync(variant);
             TempData["Success"] = "Đã thêm biến thể thành công!";
+            var product = await _productRepository.GetByIdAsync(variant.ProductId);
+
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Add",
+                tableName: "ProductVariant",
+                objectId: variant.ProductVariantId.ToString(),
+                description: $"Đã thêm biến thể cho sản phẩm '{product?.ProductName}' - Màu: {variant.Color.ColorName}, Dung lượng: {variant.Capacity.CapacityName}"
+            );
             return RedirectToAction("AddVariants", new { id = variant.ProductId });
         }
 
@@ -347,6 +357,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
                 // Lưu vào DB
                 await _productRepository.UpdateAsync(existingProduct);
+                await _activityLogService.LogAsync(
+                    userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    userName: User.Identity?.Name ?? "Unknown",
+                    actionType: "Update",
+                    tableName: "Product",
+                    objectId: existingProduct.ProductId.ToString(),
+                    description: $"Đã cập nhật sản phẩm: {existingProduct.ProductName}"
+                );
 
                 return RedirectToAction(nameof(Index));
             }
@@ -415,6 +433,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             existingVariant.Quantity = variant.Quantity;
 
             await _productVariantRepository.UpdateAsync(existingVariant);
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Update",
+                tableName: "ProductVariant",
+                objectId: existingVariant.ProductVariantId.ToString(),
+                description: $"Đã cập nhật biến thể cho sản phẩm ID {variant.ProductId} - Màu: {variant.Color.ColorName}, Dung lượng: {variant.Capacity.CapacityName}"
+            );
             return RedirectToAction("Edit", new { id = variant.ProductId });
         }
 
@@ -427,6 +453,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             var variant = await _productVariantRepository.GetByIdAsync(id);
             if (variant != null)
                 await _productVariantRepository.DeleteAsync(id);
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Delete",
+                tableName: "ProductVariant",
+                objectId: id.ToString(),
+                description: $"Đã xóa biến thể ID {id} của sản phẩm ID {variant?.ProductId}"
+            );
             return RedirectToAction("Edit", new { id = variant?.ProductId });
         }
 
@@ -471,6 +505,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 }
             }
             await _productRepository.DeleteAsync(id);
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Delete",
+                tableName: "Product",
+                objectId: id.ToString(),
+                description: $"Đã xóa sản phẩm ID {id} - {product.ProductName}"
+            );
             return RedirectToAction(nameof(Index));
         }
 
@@ -494,6 +536,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             await _productImageRepository.DeleteAsync(imageId);
 
             // Quay lại trang edit
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Delete",
+                tableName: "ProductImage",
+                objectId: imageId.ToString(),
+                description: $"Đã xóa ảnh ID {imageId} của sản phẩm ID {productId}"
+            );
             return RedirectToAction("Edit", new { id = productId });
         }
 
