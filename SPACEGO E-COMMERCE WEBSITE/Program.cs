@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using SPACEGO_E_COMMERCE_WEBSITE.Services.VNPAY;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IDistrictRepository, EFDistrictRepository>();
 builder.Services.AddScoped<IWardRepository, EFWardRepository>();
 builder.Services.AddScoped<ICommentRepository, EFCommentRepository>();
 builder.Services.AddScoped<IPostRepository, EFPostRepository>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 // Add authentication services
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
