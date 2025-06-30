@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using System.Security.Claims;
 
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
@@ -10,9 +11,11 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepository)
+        private readonly IActivityLogService _activityLogService;
+        public CategoryController(ICategoryRepository categoryRepository, IActivityLogService activityLogService)
         {
             _categoryRepository = categoryRepository;
+            _activityLogService = activityLogService;
         }
 
         public async Task<IActionResult> Index(string searchString)
@@ -44,6 +47,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             if (ModelState.IsValid)
             {
                 await _categoryRepository.AddAsync(category);
+                await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Add",
+                tableName: "Category",
+                objectId: category.CategoryId.ToString(),
+                description: $"Đã thêm danh mục mới: {category.CategoryName}"
+                );
                 return RedirectToAction("Index");
             }
 
@@ -79,6 +90,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 existingCategory.CategoryName = category.CategoryName;
          
                 await _categoryRepository.UpdateAsync(existingCategory);
+                await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Update",
+                tableName: "Category",
+                objectId: category.CategoryId.ToString(),
+                description: $"Đã sửa danh mục : {category.CategoryName}"
+                );
                 return RedirectToAction(nameof(Index));
             }
 
@@ -96,6 +115,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             }
 
             await _categoryRepository.DeleteAsync(id);
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Delete",
+                tableName: "Category",
+                objectId: category.CategoryId.ToString(),
+                description: $"Đã xóa danh mục : {category.CategoryName}"
+                );
             return RedirectToAction(nameof(Index));
         }
 
