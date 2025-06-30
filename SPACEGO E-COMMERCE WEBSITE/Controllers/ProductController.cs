@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
 using System.Globalization;
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -20,6 +21,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private readonly ICapacityRepository _capacityRepository;
         private readonly IColorRepository _colorRepository;
         private readonly IProductVariantRepository _productVariantRepository;
+        private readonly IActivityLogService _activityLogService;
         public List<ProductImage> ImageUrls { get; set; } = new List<ProductImage>();
         public ProductController(
             IProductRepository productRepository,
@@ -28,7 +30,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             IProductImageRepository productImageRepository,
             ICapacityRepository capacityRepository,
             IColorRepository colorRepository,
-            IProductVariantRepository productVariantRepository)
+            IProductVariantRepository productVariantRepository,
+            IActivityLogService activityLogService)
         {
             _productRepository = productRepository;
             _brandRepository = brandRepository;
@@ -37,6 +40,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _capacityRepository = capacityRepository;
             _colorRepository = colorRepository;
             _productVariantRepository = productVariantRepository;
+            _activityLogService = activityLogService;
         }
 
         public async Task<IActionResult> Index(string searchString)
@@ -160,6 +164,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
                 {
                     return RedirectToAction("AddVariants", new { id = product.ProductId });
                 }
+                await _activityLogService.LogAsync(
+                    userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    userName: User.Identity?.Name ?? "Unknown",
+                    actionType: "Add",
+                    tableName: "Product",
+                    objectId: product.ProductId.ToString(),
+                    description: $"Đã thêm sản phẩm mới: {product.ProductName}"
+                );
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
