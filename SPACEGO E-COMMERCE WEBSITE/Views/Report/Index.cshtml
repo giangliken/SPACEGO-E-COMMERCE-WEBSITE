@@ -66,9 +66,11 @@
             </div>
         </div>
     </div>
-    <div class="mt-5">
+    <div class="text-center mb-4">
         <h4 class="text-secondary mb-3">Biểu đồ trạng thái đơn hàng</h4>
-        <canvas id="orderStatusChart" height="100"></canvas>
+        <div style="max-width: 400px; margin: 0 auto;">
+            <canvas id="orderStatusChart" width="400" height="400"></canvas>
+        </div>
     </div>
 </div>
 @section Scripts {
@@ -128,7 +130,7 @@
                 },
                 // Giảm bán kính
                 cutout: '0%', // Nếu muốn "doughnut", có thể set '40%' ở đây
-                radius: '60%'  // ⬅️ Giảm bán kính tổng thể
+                radius: '100%'  // ⬅️ Giảm bán kính tổng thể
             }
         };
 
