@@ -1,4 +1,47 @@
 ﻿@{
     ViewData["Title"] = "Admin Index";
 }
-<h2>Welcome to Admin Dashboard</h2>
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h2 class="text-primary fw-bold">
+            <i class="fas fa-tools me-2"></i> Chào mừng đến trang Quản trị
+        </h2>
+        <p class="text-muted">Tại đây, bạn có thể quản lý toàn bộ hệ thống website một cách hiệu quả và an toàn.</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-box fa-2x text-primary mb-3"></i>
+                    <h5 class="card-title">Quản lý sản phẩm</h5>
+                    <p class="card-text text-muted">Thêm, sửa, xoá sản phẩm và kiểm soát tồn kho.</p>
+                    <a href="/Product" class="btn btn-outline-primary">Đi tới</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-2x text-success mb-3"></i>
+                    <h5 class="card-title">Quản lý người dùng</h5>
+                    <p class="card-text text-muted">Theo dõi hoạt động người dùng, phân quyền truy cập.</p>
+                    <a href="/User" class="btn btn-outline-success">Đi tới</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-alt fa-2x text-warning mb-3"></i>
+                    <h5 class="card-title">Quản lý bài viết</h5>
+                    <p class="card-text text-muted">Đăng tải, chỉnh sửa và ẩn/hiện các bài viết.</p>
+                    <a href="/Posts" class="btn btn-outline-warning">Đi tới</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
