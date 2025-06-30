@@ -10,9 +10,11 @@ using Newtonsoft.Json;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Models.ViewModel;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using SPACEGO_E_COMMERCE_WEBSITE.Services.VNPAY;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using IEmailSender = SPACEGO_E_COMMERCE_WEBSITE.Repository.IEmailSender;
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
@@ -36,13 +38,15 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private readonly ICommentRepository _commentRepository;
         private readonly IProductVariantRepository _productVariantRepository;
         private readonly IEmailSender _emailSender;
+        private readonly IVnPayService _vnPayService;
+
 
         public HomeController(IProductRepository productRepository, ICategoryRepository categoryRepository,
                               IBrandRepository brandRepository, IProductImageRepository productImageRepositoryproductImage,
                               IReviewRepository reviewRepositoryreview, ICartItemRepository cartItemRepositorycartItem,
                               IDetailCartItemRepository detailCartItemRepositorydetailCartItem, IOrderRepository orderRepository,
                               IOrderProductRepository orderProductRepository, IProvinceRepository provinceRepository,
-                              IDistrictRepository districtRepository, IWardRepository wardRepository, ICommentRepository commentRepository, IProductVariantRepository productVariantRepository, ApplicationUserManager userManager, IEmailSender emailSender)
+                              IDistrictRepository districtRepository, IWardRepository wardRepository, ICommentRepository commentRepository, IProductVariantRepository productVariantRepository, ApplicationUserManager userManager, IEmailSender emailSender, IVnPayService vnPayService)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -60,6 +64,43 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _productVariantRepository = productVariantRepository;
             _userManager = userManager;
             _emailSender = emailSender;
+            _vnPayService = vnPayService;
+        }
+
+        public IActionResult CreatePaymentUrlVnpay(PaymentInformationModel model)
+        {
+            var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
+
+            return Redirect(url);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> PaymentReturn()
+        {
+            var response = _vnPayService.PaymentExecute(Request.Query);
+
+            var responseCode = response.VnPayData.TryGetValue("vnp_ResponseCode", out var code) ? code : "";
+            var status = response.VnPayData.TryGetValue("vnp_TransactionStatus", out var transStatus) ? transStatus : "";
+            var orderIdStr = response.VnPayData.TryGetValue("vnp_TxnRef", out var txnRef) ? txnRef : null;
+
+            if (responseCode == "00" && status == "00" && int.TryParse(orderIdStr, out int orderId))
+            {
+
+                // ✅ Update trạng thái đơn nếu cần ở đây
+                ViewBag.Message = "✅ Thanh toán thành công!";
+                var order = await _orderRepository.GetByIdAsync(orderId);
+                if (order != null)
+                {
+                    order.OrderStatus = "Đã thanh toán";
+                    order.PaymentMethod = "Thanh toán bằng VNPAY";
+                    await _orderRepository.UpdateAsync(order);
+                }
+
+                return RedirectToAction("OrderSuccess", "Home", new { orderCode = orderId });
+            }
+
+
+            return RedirectToAction("PaymentFail", "Home");
         }
 
 
@@ -177,10 +218,13 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         }
 
         //SubmitComment
+        [Authorize]
         public IActionResult SubmitComment()
         {
             return View();
         }
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitComment(Comment comment)
@@ -196,6 +240,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             // Quay lại trang sản phẩm với id
             return RedirectToAction("Details", "Home", new { id = comment.ProductId });
         }
+        
         [Authorize]
         public async Task<IActionResult> EditComment(int productId)
         {
@@ -208,6 +253,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return View(comment);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditComment(Comment comment)
@@ -333,9 +379,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             return RedirectToAction("Cart", "Home");
         }
 
-
-
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int productId, int? variantId, string actionType)
         {
@@ -401,6 +445,8 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             // Trả về trực tiếp view Cart mới
             return View("Cart", cart);
         }
+
+        [Authorize]
 
         [HttpGet]
         public async Task<IActionResult> Checkout([FromQuery] List<int> SelectedItemIds)
@@ -543,20 +589,33 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
             await _emailSender.SendEmailAsync(order.Email, subject, body);
             TempData["Success"] = "Đơn hàng đã được đặt thành công. Thông tin đã được gửi qua email.";
-            if (order.PaymentMethod == "Chuyển khoản")
+            if (order.PaymentMethod == "Chuyển khoản ngân hàng")
             {
-                // 👉 Redirect qua trang chứa thông tin chuyển khoản, có thể truyền thêm order ID nếu cần
+                order.PaymentMethod = "Chuyển khoản ngân hàng";
+                order.OrderStatus = "Chưa thanh toán"; // Cập nhật trạng thái đơn hàng
+                await _orderRepository.UpdateAsync(order); // Cập nhật phương thức thanh toán vào đơn hàng
                 return RedirectToAction("BankTransferInfo", new { orderId = order.OrderId });
             }
-            else if (order.PaymentMethod == "VNPAY / MOMO")
+            else if (order.PaymentMethod == "Thanh toán bằng VNPAY")
             {
+                var paymentModel = new PaymentInformationModel
+                {
+                    OrderType = "other",
+                    Amount = (double)order.Total,
+                    Name = order.FullName,
+                    OrderDescription = "Thanh toán đơn hàng",
+                    OrderId = order.OrderId,
 
+                };
+                order.PaymentMethod = "Thanh toán bằng VNPAY";
+                order.OrderStatus = "Chưa thanh toán"; // Cập nhật trạng thái đơn hàng
+                await _orderRepository.UpdateAsync(order); // Cập nhật phương thức thanh toán vào đơn hàng
+                return RedirectToAction("CreatePaymentUrlVnpay", "Home", paymentModel);
             }
             else
             {
                 return RedirectToAction("OrderSuccess", new { orderCode = order.OrderId });
             }
-            return RedirectToAction("OrderSuccess", new { orderCode = order.OrderId });
         }
 
         public async Task<IActionResult> BankTransferInfo(int orderId)
