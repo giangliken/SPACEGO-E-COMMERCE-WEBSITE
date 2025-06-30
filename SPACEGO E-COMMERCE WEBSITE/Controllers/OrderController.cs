@@ -4,17 +4,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
+using System.Security.Claims;
 
 
 public class OrderController : Controller
 {
     private readonly IOrderRepository _orderRepository;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IActivityLogService _activityLogService;
 
-    public OrderController(IOrderRepository orderRepository, UserManager<ApplicationUser> userManager)
+    public OrderController(IOrderRepository orderRepository, UserManager<ApplicationUser> userManager, IActivityLogService activityLogService)
     {
         _orderRepository = orderRepository;
         _userManager = userManager;
+        _activityLogService = activityLogService;
     }
     // OrderController.cs
     [Authorize(SD.Role_Admin)]
@@ -73,6 +76,14 @@ public class OrderController : Controller
     public async Task<IActionResult> UpdateStatus(int orderId, string status)
     {
         await _orderRepository.UpdateStatusAsync(orderId, status);
+        await _activityLogService.LogAsync(
+            userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+            userName: User.Identity?.Name ?? "Unknown",
+            actionType: "Update",
+            tableName: "Order",
+            objectId: orderId.ToString(),
+            description: $"Cập nhật trạng thái đơn hàng #{orderId} thành: {status}"
+        );
         return RedirectToAction(nameof(Index));
     }
 
