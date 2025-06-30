@@ -63,29 +63,37 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var cart = await _cartItemRepositorycartItem.GetActiveCartByUserIdAsync(userId);
             ViewBag.CartCount = cart?.DetailCartItems?.Sum(x => x.Quanity) ?? 0;
 
-            var products = await _productRepository.GetAllAsync(); // nhớ đảm bảo đã Include(p => p.Variants)
+            var products = await _productRepository.GetAllAsync();
             var brands = await _brandRepository.GetAllAsync();
             var categories = await _categoryRepository.GetAllAsync();
 
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                products = products
+                    .Where(p => p.ProductName.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                             || p.ProductId.ToString().Contains(searchString))
+                    .ToList();
+                ViewData["Title"] = $"Kết quả tìm kiếm: {searchString}";
+            }
+            else
+            {
+                ViewData["Title"] = "Trang chủ";
+            }
 
+            ViewData["CurrentFilter"] = searchString;
             ViewBag.TopProducts = await _productRepository.GetTopSellingProductsAsync(8);
             ViewBag.ProductsByBrand = await _productRepository.GetProductsGroupedByBrandAsync();
-            var model = new HomeIndexViewModel
-            {
-                Products = products,
-                Categories = categories,
-                Brands = brands
-            };
-
             ViewBag.Categories = categories;
-            return View(products); 
+
+            return View(products); // Trả về View Index.cshtml với model là danh sách Product
         }
+
         public async Task<IActionResult> Category(int id)
         {
             var products = await _productRepository.GetAllAsync();
@@ -98,27 +106,27 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
             return View(filtered);
         }
-        public async Task<IActionResult> Search(string query)
-        {
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                return RedirectToAction("Index");
-            }
+        //public async Task<IActionResult> Search(string query)
+        //{
+        //    if (string.IsNullOrWhiteSpace(query))
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
 
-            var allProducts = await _productRepository.GetAllAsync();
-            var matchedProducts = allProducts
-                .Where(p => p.ProductName.Contains(query, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+        //    var allProducts = await _productRepository.GetAllAsync();
+        //    var matchedProducts = allProducts
+        //        .Where(p => p.ProductName.Contains(query, StringComparison.OrdinalIgnoreCase))
+        //        .ToList();
 
-            var categories = await _categoryRepository.GetAllAsync();
-            var brands = await _brandRepository.GetAllAsync();
+        //    var categories = await _categoryRepository.GetAllAsync();
+        //    var brands = await _brandRepository.GetAllAsync();
 
-            ViewBag.Categories = categories;
-            ViewBag.Query = query;
-            ViewData["Title"] = $"Kết quả tìm kiếm: {query}";
+        //    ViewBag.Categories = categories;
+        //    ViewBag.Query = query;
+        //    ViewData["Title"] = $"Kết quả tìm kiếm: {query}";
 
-            return View("Index", matchedProducts); // tái sử dụng Index.cshtml
-        }
+        //    return View("Index", matchedProducts); // tái sử dụng Index.cshtml
+        //}
         public async Task<IActionResult> Details(int id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
