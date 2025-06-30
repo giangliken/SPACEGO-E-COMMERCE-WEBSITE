@@ -55,10 +55,10 @@ public class OrderController : Controller
         // Tạo dictionary ánh xạ phương thức thanh toán => danh sách trạng thái
         var statusMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
         {
-            ["chuyển khoản"] = new() { "Chờ chuyển khoản", "Chuyển khoản thành công", "Đơn hàng bị huỷ", "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
-            ["vnpay / momo"] = new() { "Thanh toán thất bại", "Đã thanh toán", "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
+            ["Chuyển khoản ngân hàng"] = new() { "Chờ chuyển khoản", "Chuyển khoản thành công", "Đơn hàng bị huỷ", "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
+            ["Thanh toán bằng VNPAY"] = new() { "Thanh toán thất bại", "Đã thanh toán", "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
             ["tiền mặt"] = new() { "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
-            ["thanh toán khi nhận hàng"] = new() { "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
+            ["Thanh toán khi nhận hàng"] = new() { "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
         };
 
         ViewBag.StatusMap = statusMap;

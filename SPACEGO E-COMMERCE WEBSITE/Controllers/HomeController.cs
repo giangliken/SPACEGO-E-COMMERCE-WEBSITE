@@ -561,6 +561,38 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 
             await _orderRepository.AddAsync(order);
 
+            // Trừ số lượng sản phẩm đã đặt hàng
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                var product = await _productRepository.GetByIdAsync(orderProduct.ProductId);
+                if (product != null)
+                {
+                    // Nếu sản phẩm có biến thể
+                    if (orderProduct.ProductVariantId != null)
+                    {
+                        var productVariant = await _productVariantRepository.LayBienTheTheoID(orderProduct.ProductVariantId);
+                        if (productVariant != null)
+                        {
+                            // Trừ số lượng sản phẩm đã đặt hàng vào biến thể
+                            productVariant.Quantity -= orderProduct.Quantity;
+
+                            // Lưu thay đổi vào database
+                            await _productVariantRepository.UpdateAsync(productVariant);
+                        }
+                    }
+                    else
+                    {
+                        // Trừ số lượng sản phẩm đã đặt hàng vào sản phẩm chung
+                        product.ProductQuantity -= orderProduct.Quantity;
+
+                        // Lưu thay đổi vào database
+                        await _productRepository.UpdateAsync(product);
+                    }
+                }
+            }
+
+
+
             cart.DetailCartItems.RemoveAll(d => SelectedItemIds.Contains(d.Id));
             cart.TotalPrice = cart.DetailCartItems.Sum(x => x.Price);
             await _cartItemRepositorycartItem.UpdateAsync(cart);
