@@ -1,0 +1,7 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Libraries.PaymentResponseModel
+
+<h2>Trang trả về VNPAY</h2>
+
+<p>CheckSum: @Model.Success</p>
+<p>Response Code: @Model.VnPayData["vnp_ResponseCode"]</p>
+<p>Transaction Status: @Model.VnPayData["vnp_TransactionStatus"]</p>
