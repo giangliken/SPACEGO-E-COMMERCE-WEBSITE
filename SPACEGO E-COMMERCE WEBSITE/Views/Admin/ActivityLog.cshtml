@@ -27,7 +27,7 @@
                 };
 
                 <tr class="@rowClass">
-                    <td>@log.Timestamp.ToLocalTime().ToString("HH:mm dd/MM/yyyy")</td>
+                    <td>@log.Timestamp.ToString()</td>
                     <td>@log.UserName</td>
                     <td>@log.TableName</td>
                     <td>

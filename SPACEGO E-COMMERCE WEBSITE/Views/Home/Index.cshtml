@@ -10,10 +10,7 @@
 @* <h2 class="text-primary mb-4 text-center">
     @ViewData["Title"]
 </h2> *@
-<!-- Banner Image -->
-<div class="container my-4">
-    <img src="~/assets/images/Logo/banner.jpg" alt="Banner quảng cáo" class="img-fluid rounded shadow" style="width:100%; object-fit:cover;">
-</div>
+
 @if (Model != null && !Model.Any() && !string.IsNullOrWhiteSpace(ViewData["CurrentFilter"] as string))
 {
     <p class="text-center text-danger fw-semibold">Không tìm thấy sản phẩm phù hợp.</p>
