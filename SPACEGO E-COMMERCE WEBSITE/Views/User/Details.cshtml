@@ -22,13 +22,13 @@
 
         <dt class="col-sm-3">Trạng thái</dt>
         <dd class="col-sm-9">
-            @if (Model.IsActive)
+            @if (!Model.IsActive)
             {
                 <span class="badge bg-success">Hoạt động</span>
             }
             else
             {
-                <span class="badge bg-danger">Không hoạt động</span>
+                <span class="badge bg-danger">Tạm khóa</span>
             }
         </dd>
     </dl>
