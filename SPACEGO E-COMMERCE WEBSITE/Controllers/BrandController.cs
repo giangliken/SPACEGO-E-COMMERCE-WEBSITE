@@ -57,6 +57,7 @@ public class BrandController : Controller
 
             await _brandRepository.AddAsync(brand);
 
+
             await _activityLogService.LogAsync(
                 userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
                 userName: User.Identity?.Name ?? "Unknown",
@@ -65,6 +66,7 @@ public class BrandController : Controller
                 objectId: brand.BrandId.ToString(),
                 description: $"Đã thêm nhãn hiệu mới: {brand.BrandName}"
             );
+
             return RedirectToAction("Index");
         }
 
