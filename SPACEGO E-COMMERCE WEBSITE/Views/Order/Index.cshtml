@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Danh sách đơn hàng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var currentSearch = ViewBag.CurrentSearch as string;
+    var currentStatus = ViewBag.CurrentStatus as string;
+    var currentDateFrom = ViewBag.CurrentDateFrom as DateTime?;
+    var currentDateTo = ViewBag.CurrentDateTo as DateTime?;
+    var statusOptions = ViewBag.AllStatuses as List<string>;
 }
 
 <div class="container">
@@ -12,18 +18,54 @@
         </h2>
     </div>
 
+    <!-- Form lọc -->
+    <form method="get" asp-action="Index" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="searchString" class="form-control"
+                   placeholder="Tìm theo mã đơn hàng..."
+                   value="@currentSearch" />
+        </div>
+        <div class="col-md-3">
+            <select name="statusFilter" class="form-select">
+                <option value="">-- Tất cả trạng thái --</option>
+                @foreach (var stt in statusOptions)
+                {
+                    <option value="@stt" selected="@(stt == currentStatus ? "selected" : null)">@stt</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="dateFrom" class="form-control"
+                   value="@(currentDateFrom?.ToString("yyyy-MM-dd"))" />
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="dateTo" class="form-control"
+                   value="@(currentDateTo?.ToString("yyyy-MM-dd"))" />
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter"></i> Lọc
+            </button>
+        </div>
+        <div class="col-auto">
+            <a asp-action="Index" class="btn btn-secondary">Xóa lọc</a>
+        </div>
+    </form>
+
+    <!-- Bảng đơn hàng -->
     <div class="card shadow-sm">
         <div class="card-body">
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark text-center">
                     <tr>
-                        <th><i class="fas fa-receipt"></i><br>Mã đơn hàng</th>
-                        <th><i class="fas fa-money-bill-wave"></i><br>Tổng tiền</th>
-                        <th><i class="fas fa-shipping-fast"></i><br>Phí vận chuyển</th>
-                        <th><i class="fas fa-calendar-alt"></i><br>Ngày đặt</th>
-                        <th><i class="fas fa-credit-card"></i><br>Thanh toán</th>
-                        <th><i class="fas fa-info-circle"></i><br>Trạng thái</th>
-                        <th><i class="fas fa-cogs"></i><br>Thao tác</th>
+                        <th><i class="fas fa-receipt"></i><br />Mã đơn hàng</th>
+                        <th><i class="fas fa-money-bill-wave"></i><br />Tổng tiền</th>
+                        <th><i class="fas fa-shipping-fast"></i><br />Phí vận chuyển</th>
+                        <th><i class="fas fa-calendar-alt"></i><br />Ngày đặt</th>
+                        <th><i class="fas fa-credit-card"></i><br />Thanh toán</th>
+                        <th><i class="fas fa-info-circle"></i><br />Trạng thái</th>
+                        <th><i class="fas fa-cogs"></i><br />Thao tác</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
@@ -37,18 +79,32 @@
                     {
                         foreach (var item in Model)
                         {
+                            var statusMap = ViewBag.StatusMap as Dictionary<string, List<string>>;
+                            var availableStatuses = statusMap != null && statusMap.ContainsKey(item.PaymentMethod?.ToLower())
+                            ? statusMap[item.PaymentMethod.ToLower()]
+                            : new List<string>();
+
                             <tr>
                                 <td>@item.OrderId</td>
                                 <td>@String.Format("{0:N0}₫", item.Total)</td>
                                 <td>@String.Format("{0:N0}₫", item.ShippingFee)</td>
-                                <td>
-                                    @(item.OrderDate != null
-                                        ? item.OrderDate.Value.ToString("dd/MM/yyyy HH:mm")
-                                        : "")
-                                </td>
+                                <td>@(item.OrderDate?.ToString("dd/MM/yyyy HH:mm"))</td>
                                 <td>@item.PaymentMethod</td>
                                 <td>
-                                    <span class="badge bg-info text-dark">@item.OrderStatus</span>
+                                    <form asp-action="UpdateStatus" method="post" class="d-flex flex-column align-items-center">
+                                        <input type="hidden" name="orderId" value="@item.OrderId" />
+                                        <select name="status" class="form-select form-select-sm mb-1 text-center status-select" style="width: 140px;">
+                                            @foreach (var status in availableStatuses)
+                                            {
+                                                <option value="@status" selected="@(item.OrderStatus == status ? "selected" : null)">
+                                                    @status
+                                                </option>
+                                            }
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-success update-btn d-none">
+                                            <i class="fas fa-sync-alt"></i> Cập nhật
+                                        </button>
+                                    </form>
                                 </td>
                                 <td>
                                     <a asp-action="Details" asp-route-id="@item.OrderId" class="btn btn-sm btn-info me-1">
@@ -67,3 +123,14 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.status-select').forEach(select => {
+            select.addEventListener('change', function () {
+                const btn = this.closest('form').querySelector('.update-btn');
+                btn.classList.remove('d-none');
+            });
+        });
+    </script>
+}

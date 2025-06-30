@@ -85,5 +85,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Repository
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
         }
+        public async Task UpdateStatusAsync(int orderId, string status)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order != null)
+            {
+                order.OrderStatus = status;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

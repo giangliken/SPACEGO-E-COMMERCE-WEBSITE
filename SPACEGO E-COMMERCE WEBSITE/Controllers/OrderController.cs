@@ -16,12 +16,66 @@ public class OrderController : Controller
         _orderRepository = orderRepository;
         _userManager = userManager;
     }
+    // OrderController.cs
     [Authorize(SD.Role_Admin)]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchString, string statusFilter, DateTime? dateFrom, DateTime? dateTo)
     {
         var orders = await _orderRepository.GetAllAsync();
+
+        // Filter theo mã đơn hàng hoặc phương thức thanh toán
+        if (!string.IsNullOrWhiteSpace(searchString))
+        {
+            orders = orders.Where(o => o.OrderId.ToString().Contains(searchString)
+                                    || (!string.IsNullOrEmpty(o.PaymentMethod) && o.PaymentMethod.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
+                             .ToList();
+        }
+
+        // Filter theo trạng thái
+        if (!string.IsNullOrWhiteSpace(statusFilter))
+        {
+            orders = orders.Where(o => string.Equals(o.OrderStatus, statusFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        // Filter theo ngày đặt hàng
+        if (dateFrom.HasValue)
+        {
+            orders = orders.Where(o => o.OrderDate.HasValue && o.OrderDate.Value.Date >= dateFrom.Value.Date).ToList();
+        }
+        if (dateTo.HasValue)
+        {
+            orders = orders.Where(o => o.OrderDate.HasValue && o.OrderDate.Value.Date <= dateTo.Value.Date).ToList();
+        }
+
+        // Tạo danh sách trạng thái để lọc dropdown
+        var allStatuses = orders.Select(o => o.OrderStatus).Distinct().Where(s => !string.IsNullOrEmpty(s)).ToList();
+
+        // Tạo dictionary ánh xạ phương thức thanh toán => danh sách trạng thái
+        var statusMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["chuyển khoản"] = new() { "Chờ chuyển khoản", "Chuyển khoản thành công", "Đơn hàng bị huỷ", "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
+            ["vnpay / momo"] = new() { "Thanh toán thất bại", "Đã thanh toán", "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
+            ["tiền mặt"] = new() { "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
+            ["thanh toán khi nhận hàng"] = new() { "Chờ đóng gói", "Chờ vận chuyển", "Chờ nhận hàng", "Hoàn tất" },
+        };
+
+        ViewBag.StatusMap = statusMap;
+        ViewBag.AllStatuses = allStatuses;
+        ViewBag.CurrentFilter = searchString;
+        ViewBag.CurrentStatus = statusFilter;
+        ViewBag.DateFrom = dateFrom?.ToString("yyyy-MM-dd");
+        ViewBag.DateTo = dateTo?.ToString("yyyy-MM-dd");
+
         return View(orders);
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> UpdateStatus(int orderId, string status)
+    {
+        await _orderRepository.UpdateStatusAsync(orderId, status);
+        return RedirectToAction(nameof(Index));
+    }
+
     [Authorize(Roles = "Customer")]
     public async Task<IActionResult> MyOrders()
     {

@@ -37,26 +37,7 @@
                                 <td>#@o.OrderId</td>
                                 <td>@o.OrderDate?.ToString("dd/MM/yyyy")</td>
                                 <td>@String.Format("{0:N0} đ", o.Total)</td>
-                                <td>
-                                    @switch (o.OrderStatus?.ToLower())
-                                    {
-                                        case "hoàn tất":
-                                            <span class="badge bg-success">Hoàn tất</span>
-                                            ; break;
-                                        case "đã giao":
-                                            <span class="badge bg-success">Đã giao</span>
-                                            ; break;
-                                        case "đã hủy":
-                                            <span class="badge bg-danger">Đã hủy</span>
-                                            ; break;
-                                        case "đang xử lý":
-                                            <span class="badge bg-warning text-dark">Đang xử lý</span>
-                                            ; break;
-                                        default:
-                                            <span class="badge bg-secondary">Chờ Xác nhận</span>
-                                            ; break;
-                                    }
-                                </td>
+                                <td>@o.OrderStatus</td>
                                 <td>
                                     <a class="btn btn-sm btn-outline-primary"
                                        asp-controller="Order"
