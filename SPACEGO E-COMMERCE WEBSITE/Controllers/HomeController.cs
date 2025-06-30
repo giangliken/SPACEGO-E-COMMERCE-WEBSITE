@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.VariantTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using IEmailSender = SPACEGO_E_COMMERCE_WEBSITE.Repository.IEmailSender;
 namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
 {
     public class HomeController : Controller
@@ -33,13 +35,14 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
         private readonly IWardRepository _wardRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IProductVariantRepository _productVariantRepository;
+        private readonly IEmailSender _emailSender;
 
         public HomeController(IProductRepository productRepository, ICategoryRepository categoryRepository,
                               IBrandRepository brandRepository, IProductImageRepository productImageRepositoryproductImage,
                               IReviewRepository reviewRepositoryreview, ICartItemRepository cartItemRepositorycartItem,
                               IDetailCartItemRepository detailCartItemRepositorydetailCartItem, IOrderRepository orderRepository,
                               IOrderProductRepository orderProductRepository, IProvinceRepository provinceRepository,
-                              IDistrictRepository districtRepository, IWardRepository wardRepository, ICommentRepository commentRepository, IProductVariantRepository productVariantRepository, ApplicationUserManager userManager)
+                              IDistrictRepository districtRepository, IWardRepository wardRepository, ICommentRepository commentRepository, IProductVariantRepository productVariantRepository, ApplicationUserManager userManager, IEmailSender emailSender)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -56,6 +59,7 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             _commentRepository = commentRepository;
             _productVariantRepository = productVariantRepository;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
 
@@ -492,7 +496,67 @@ namespace SPACEGO_E_COMMERCE_WEBSITE.Controllers
             cart.TotalPrice = cart.DetailCartItems.Sum(x => x.Price);
             await _cartItemRepositorycartItem.UpdateAsync(cart);
 
+            //// 2. Chuẩn bị danh sách sản phẩm HTML
+            //string productListHtml = "";
+            //foreach (var item in order.OrderProducts)
+            //{
+            //    productListHtml += $"<li>{item.Product.ProductName} - SL: {item.Quantity} - Giá: {item.:N0}₫</li>";
+            //}
+
+            // 3. Gửi mail xác nhận
+            string subject = "Xác nhận đơn hàng từ SPACEGO";
+            string body = $@"
+        <p>Chào {order.FullName},</p>
+
+        <p>Cảm ơn bạn đã đặt hàng tại <strong>SPACEGO</strong>!</p>
+
+        <p>Thông tin đơn hàng của bạn như sau:</p>
+        <ul>
+            <li><strong>Mã đơn hàng:</strong> #{order.OrderId}</li>
+            <li><strong>Ngày đặt hàng:</strong> {order.OrderDate:dd/MM/yyyy HH:mm}</li>
+            <li><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</li>
+            <li><strong>Phí vận chuyển:</strong> {order.ShippingFee:N0}₫</li>
+            <li><strong>Tổng thanh toán:</strong> {order.Total:N0}₫</li>
+        </ul>
+
+        <p><strong>Sản phẩm đã đặt:</strong></p>
+
+        <p><strong>Địa chỉ giao hàng:</strong></p>
+        <p>
+            {order.FullName}<br />
+            {order.PhoneNumber}<br />
+            {order.AddressDetail}, {order.WardName}, {order.DistrictName}, {order.ProvinceName}
+        </p>
+
+        <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email này hoặc số điện thoại hỗ trợ trên website.</p>
+
+        <p>Trân trọng,<br><strong>SPACEGO TEAM</strong></p>
+    ";
+
+            await _emailSender.SendEmailAsync(order.Email, subject, body);
+            TempData["Success"] = "Đơn hàng đã được đặt thành công. Thông tin đã được gửi qua email.";
+            if (order.PaymentMethod == "Chuyển khoản")
+            {
+                // 👉 Redirect qua trang chứa thông tin chuyển khoản, có thể truyền thêm order ID nếu cần
+                return RedirectToAction("BankTransferInfo", new { orderId = order.OrderId });
+            }
+            else if (order.PaymentMethod == "VNPAY / MOMO")
+            {
+
+            }
+            else
+            {
+                return RedirectToAction("OrderSuccess", new { orderCode = order.OrderId });
+            }
             return RedirectToAction("OrderSuccess", new { orderCode = order.OrderId });
+        }
+
+        public async Task<IActionResult> BankTransferInfo(int orderId)
+        {
+            var order = await _orderRepository.GetByIdAsync(orderId);
+            if (order == null) return NotFound();
+
+            return View(order); // View sẽ hiển thị thông tin chuyển khoản và đơn hàng
         }
 
 
