@@ -6,8 +6,7 @@
     //var query = ViewBag.Query as string;
     var topProducts = ViewBag.TopProducts as IEnumerable<SPACEGO_E_COMMERCE_WEBSITE.Models.Product>;
     var productsByBrand = ViewBag.ProductsByBrand as Dictionary<string, List<SPACEGO_E_COMMERCE_WEBSITE.Models.Product>>;
-
-}
+    }
 @* <h2 class="text-primary mb-4 text-center">
     @ViewData["Title"]
 </h2> *@
@@ -45,8 +44,28 @@
                                 <p class="text-danger fw-bold mb-2">
                                     @item.ProductPrice.ToString("#,##0") ₫
                                 </p>
-                            </div>
+                                    @{
+                                        var ratingDict = ViewBag.RatingDict as Dictionary<int, (double average, int count)>;
+                                        var ratingInfo = ratingDict != null && ratingDict.ContainsKey(item.ProductId)
+                                        ? ratingDict[item.ProductId]
+                                        : (0.0, 0);
+                                    }
 
+                                <div class="mb-2 text-center">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= Math.Round(ratingInfo.Item1))
+                                            {
+                                                <i class="fas fa-star text-warning"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star text-muted"></i>
+                                            }
+                                        }
+                                        <small class="text-muted">(@ratingInfo.Item2 đánh giá)</small>
+                                    </div>
+                                </div>
                             <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
                                 @if (item.Variants != null && item.Variants.Any())
                                 {
@@ -106,6 +125,27 @@
                                 <p class="text-danger fw-bold mb-2">
                                     @item.ProductPrice.ToString("#,##0") ₫
                                 </p>
+                                    @{
+                                        var ratingDict = ViewBag.RatingDict as Dictionary<int, (double average, int count)>;
+                                        var ratingInfo = ratingDict != null && ratingDict.ContainsKey(item.ProductId)
+                                        ? ratingDict[item.ProductId]
+                                        : (0.0, 0);
+                                    }
+
+                                    <div class="mb-2 text-center">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= Math.Round(ratingInfo.Item1))
+                                            {
+                                                <i class="fas fa-star text-warning"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star text-muted"></i>
+                                            }
+                                        }
+                                        <small class="text-muted">(@ratingInfo.Item2 đánh giá)</small>
+                                    </div>
                             </div>
 
                             <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
@@ -172,6 +212,27 @@
                                             <p class="text-danger fw-bold mb-2">
                                                 @item.ProductPrice.ToString("#,##0") ₫
                                             </p>
+                                            @{
+                                                var ratingDict = ViewBag.RatingDict as Dictionary<int, (double average, int count)>;
+                                                var ratingInfo = ratingDict != null && ratingDict.ContainsKey(item.ProductId)
+                                                ? ratingDict[item.ProductId]
+                                                : (0.0, 0);
+                                            }
+
+                                            <div class="mb-2 text-center">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (i <= Math.Round(ratingInfo.Item1))
+                                                    {
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="far fa-star text-muted"></i>
+                                                    }
+                                                }
+                                                <small class="text-muted">(@ratingInfo.Item2 đánh giá)</small>
+                                            </div>
                                         </div>
 
                                         <div class="card-footer bg-white border-0 text-center d-flex justify-content-center align-items-center py-3" style="border-radius: 0 0 15px 15px;">
