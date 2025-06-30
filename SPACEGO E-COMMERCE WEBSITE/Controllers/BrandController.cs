@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SPACEGO_E_COMMERCE_WEBSITE.Models;
 using SPACEGO_E_COMMERCE_WEBSITE.Repository;
 using System.Globalization;
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -11,9 +12,11 @@ using System.Text.RegularExpressions;
 public class BrandController : Controller
 {
     private readonly IBrandRepository _brandRepository;
-    public BrandController(IBrandRepository brandRepository)
+    private readonly IActivityLogService _activityLogService;
+    public BrandController(IBrandRepository brandRepository, IActivityLogService activityLogService)
     {
         _brandRepository = brandRepository;
+        _activityLogService = activityLogService;
     }
 
 
@@ -53,6 +56,15 @@ public class BrandController : Controller
             }
 
             await _brandRepository.AddAsync(brand);
+
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Add",
+                tableName: "Brand",
+                objectId: brand.BrandId.ToString(),
+                description: $"Đã thêm nhãn hiệu mới: {brand.BrandName}"
+            );
             return RedirectToAction("Index");
         }
 
@@ -140,6 +152,15 @@ public class BrandController : Controller
             existingBrand.ImageUrl = brand.ImageUrl;
 
             await _brandRepository.UpdateAsync(existingBrand);
+
+            await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Edit",
+                tableName: "Brand",
+                objectId: brand.BrandId.ToString(),
+                description: $"Đã sửa nhãn hiệu : {brand.BrandName}"
+            );
             return RedirectToAction(nameof(Index));
         }
 
@@ -168,6 +189,14 @@ public class BrandController : Controller
             }
         }
         await _brandRepository.DeleteAsync(id);
+        await _activityLogService.LogAsync(
+                userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
+                userName: User.Identity?.Name ?? "Unknown",
+                actionType: "Delete",
+                tableName: "Brand",
+                objectId: brand.BrandId.ToString(),
+                description: $"Đã xóa nhãn hiệu : {brand.BrandName}"
+            );
         return RedirectToAction(nameof(Index));
     }
 
