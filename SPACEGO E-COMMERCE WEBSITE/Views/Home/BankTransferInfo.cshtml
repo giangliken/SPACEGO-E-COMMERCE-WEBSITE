@@ -1,0 +1,79 @@
+﻿@model SPACEGO_E_COMMERCE_WEBSITE.Models.Order
+
+@{
+    var bankCode = "TPB"; // TPBank
+    var accountNumber = "0367509647"; // STK
+    var amount = Model.Total;
+    var note = $"Thanh toan don hang {Model.OrderId}";
+    var encodedNote = System.Web.HttpUtility.UrlEncode(note);
+    var vietQRUrl = $"https://img.vietqr.io/image/{bankCode}-{accountNumber}-compact2.png?amount={amount}&addInfo={encodedNote}";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-lg rounded-4 border-0">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h4 class="mb-0 fw-bold">Thông tin chuyển khoản</h4>
+
+                </div>
+                <div class="row mb-4 mt-4">
+                    <div class="col-12 text-center">
+                        <p class="text-success fw-semibold fs-5 m-0">
+                            Cảm ơn bạn đã đặt hàng! Vui lòng chuyển khoản theo thông tin sau:
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="row">
+     
+                        <!-- Cột thông tin ngân hàng -->
+                        <div class="col-md-6">
+
+                            <ul class="list-group list-group-flush mb-3">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>Ngân hàng:</strong> <span>TP Bank</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>Số tài khoản:</strong> <span>@accountNumber</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>Chủ tài khoản:</strong> <span>SPACEGO SHOP</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>Nội dung CK:</strong>
+                                    <span class="text-danger fw-bold">@note</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>Số tiền:</strong>
+                                    <span class="text-danger fw-bold">@Model.Total.ToString("N0") ₫</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Cột QR code -->
+                        <div class="col-md-6 text-center">
+                            <h5 class="mb-3">Quét mã QR để chuyển khoản</h5>
+                            <img src="@vietQRUrl"
+                                 alt="QR VietQR"
+                                 class="img-fluid rounded shadow border"
+                                 style="max-width: 100%; max-height: 250px;" />
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning text-center mt-4" role="alert">
+                        💡 Sau khi chuyển khoản, đơn hàng của bạn sẽ được xử lý và xác nhận qua email.
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                            ⬅️ Quay về trang chủ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
