@@ -81,21 +81,35 @@ public class PostsController : Controller
     {
         if (ModelState.IsValid)
         {
+            var existingPost = await _postRepo.GetByIdAsync(post.PostId);
+            if (existingPost == null)
+            {
+                return NotFound();
+            }
+
+            // Cập nhật các trường có thể chỉnh sửa
+            existingPost.Title = post.Title;
+            existingPost.Content = post.Content;
+            existingPost.UpdatedAt = DateTime.Now;
+
+            await _postRepo.UpdateAsync(existingPost);
+
             var user = await _userManager.GetUserAsync(User);
-            post.UpdatedAt = DateTime.Now;
-            await _postRepo.UpdateAsync(post);
             await _activityLogService.LogAsync(
                 userId: User.FindFirstValue(ClaimTypes.NameIdentifier),
-                userName: User.Identity?.Name ?? "Unknown",
+                userName: user?.UserName ?? "Unknown",
                 actionType: "Update",
                 tableName: "Post",
                 objectId: post.PostId.ToString(),
-                description: $"Người dùng {user.UserName} đã sửa bài viết : {post.Title}"
+                description: $"Người dùng {user.UserName} đã sửa bài viết: {post.Title}"
             );
+
             return RedirectToAction(nameof(Index));
         }
+
         return View(post);
     }
+
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
