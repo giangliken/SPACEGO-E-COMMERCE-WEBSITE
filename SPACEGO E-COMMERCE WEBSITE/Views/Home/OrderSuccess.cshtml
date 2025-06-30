@@ -31,9 +31,11 @@
                     <a href="/Home/Index" class="btn btn-outline-primary me-2">
                         <i class="fas fa-home"></i> Về trang chủ
                     </a>
-                    <a href="/User/Orders" class="btn btn-primary">
+                    <a href="@Url.Action("Details", "Order", new { id = ViewBag.OrderCode })" class="btn btn-primary">
                         <i class="fas fa-receipt"></i> Xem đơn hàng của tôi
                     </a>
+
+
                 </div>
             </div>
         </div>

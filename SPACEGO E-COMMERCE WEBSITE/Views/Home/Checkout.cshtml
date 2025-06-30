@@ -30,8 +30,14 @@
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 <div class="row">
-    
 
+    <form asp-action="CreatePaymentUrlVnpay" asp-controller="Home" method="post">
+        <input type="hidden" name="OrderType" value="other" />
+        <input type="hidden" name="Amount" value="10000" />
+        <input type="hidden" name="Name" value="Nguyễn Văn A" />
+        <input type="hidden" name="OrderDescription" value="Thanh toán đơn hàng" />
+        <button type="submit" class="btn btn-primary">🔗 Thanh toán qua VNPAY</button>
+    </form>
     <!-- Cột bên trái: Form -->
     <div class="col-lg-8 col-md-12">
         <div class="card shadow-sm mb-4">
@@ -64,8 +70,8 @@
                         <select asp-for="PaymentMethod" class="form-select">
                             <option value="">-- Chọn phương thức --</option>
                             <option>Thanh toán khi nhận hàng</option>
-                            <option>Chuyển khoản</option>
-                            <option>VNPAY / MOMO</option>
+                            <option>Chuyển khoản ngân hàng</option>
+                            <option>Thanh toán bằng VNPAY</option>
                         </select>
                         <span asp-validation-for="PaymentMethod" class="text-danger"></span>
                     </div>
@@ -189,7 +195,7 @@
             </div>
         </div>
     </div>
-
+   
 
 </div>
 
